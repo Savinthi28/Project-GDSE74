@@ -35,7 +35,7 @@
                         <Font size="14.0" />
                      </font>
                   </Label>
-                  <TextField prefHeight="34.0" prefWidth="486.0" HBox.hgrow="ALWAYS" />
+                  <TextField fx:id="txtCheckId" prefHeight="34.0" prefWidth="486.0" HBox.hgrow="ALWAYS" />
                </children>
             </HBox>
             <HBox prefHeight="43.0" prefWidth="608.0">
@@ -45,7 +45,7 @@
                         <Font size="14.0" />
                      </font>
                   </Label>
-                  <TextField prefHeight="34.0" prefWidth="486.0" HBox.hgrow="ALWAYS" />
+                  <TextField fx:id="txtCollectionId" prefHeight="34.0" prefWidth="486.0" HBox.hgrow="ALWAYS" />
                </children>
             </HBox>
             <HBox prefHeight="43.0" prefWidth="608.0">
@@ -55,7 +55,7 @@
                         <Font size="14.0" />
                      </font>
                   </Label>
-                  <TextField prefHeight="34.0" prefWidth="486.0" HBox.hgrow="ALWAYS" />
+                  <TextField fx:id="txtAppearance" prefHeight="34.0" prefWidth="486.0" HBox.hgrow="ALWAYS" />
                </children>
             </HBox>
             <HBox prefHeight="43.0" prefWidth="608.0">
@@ -65,7 +65,7 @@
                         <Font size="14.0" />
                      </font>
                   </Label>
-                  <TextField prefHeight="34.0" prefWidth="486.0" HBox.hgrow="ALWAYS" />
+                  <TextField fx:id="txtFatContent" prefHeight="34.0" prefWidth="486.0" HBox.hgrow="ALWAYS" />
                </children>
             </HBox>
             <HBox prefHeight="43.0" prefWidth="608.0">
@@ -75,7 +75,7 @@
                         <Font size="14.0" />
                      </font>
                   </Label>
-                  <TextField prefHeight="34.0" prefWidth="486.0" HBox.hgrow="ALWAYS" />
+                  <TextField fx:id="txtTemperature" prefHeight="34.0" prefWidth="486.0" HBox.hgrow="ALWAYS" />
                </children>
             </HBox>
             <HBox prefHeight="43.0" prefWidth="608.0">
@@ -85,7 +85,7 @@
                         <Font size="14.0" />
                      </font>
                   </Label>
-                  <TextField prefHeight="34.0" prefWidth="486.0" HBox.hgrow="ALWAYS" />
+                  <TextField fx:id="txtDate" prefHeight="34.0" prefWidth="486.0" HBox.hgrow="ALWAYS" />
                </children>
             </HBox>
             <HBox prefHeight="43.0" prefWidth="608.0">
@@ -95,26 +95,26 @@
                         <Font size="14.0" />
                      </font>
                   </Label>
-                  <TextField prefHeight="34.0" prefWidth="486.0" HBox.hgrow="ALWAYS" />
+                  <TextField fx:id="txtNotes" prefHeight="34.0" prefWidth="486.0" HBox.hgrow="ALWAYS" />
                </children>
             </HBox>
             <ButtonBar prefHeight="50.0" prefWidth="608.0">
               <buttons>
-                <Button mnemonicParsing="false" text="Save" />
-                  <Button mnemonicParsing="false" text="Update" />
-                  <Button mnemonicParsing="false" text="Clear" />
-                  <Button mnemonicParsing="false" text="Delete" />
+                <Button mnemonicParsing="false" onAction="#btnSaveOnAction" text="Save" />
+                  <Button mnemonicParsing="false" onAction="#btnUpdateOnAction" text="Update" />
+                  <Button mnemonicParsing="false" onAction="#btnClearOnAction" text="Clear" />
+                  <Button mnemonicParsing="false" onAction="#btnDeleteOnAction" text="Delete" />
               </buttons>
             </ButtonBar>
-            <TableView prefHeight="246.0" prefWidth="616.0" VBox.vgrow="ALWAYS">
+            <TableView fx:id="tblQualityCheck" prefHeight="246.0" prefWidth="616.0" VBox.vgrow="ALWAYS">
               <columns>
-                <TableColumn prefWidth="75.0" text="Check_ID" />
-                <TableColumn prefWidth="86.0" text="Collection_ID" />
-                  <TableColumn prefWidth="111.0" text=" Appearance" />
-                  <TableColumn prefWidth="82.0" text="Fat_Content" />
-                  <TableColumn prefWidth="76.0" text="Temperature" />
-                  <TableColumn prefWidth="102.0" text="Check_Date" />
-                  <TableColumn prefWidth="83.0" text="Notes" />
+                <TableColumn fx:id="colCheckId" prefWidth="75.0" text="Check_ID" />
+                <TableColumn fx:id="colCollectionId" prefWidth="86.0" text="Collection_ID" />
+                  <TableColumn fx:id="colAppearance" prefWidth="111.0" text=" Appearance" />
+                  <TableColumn fx:id="colFatContent" prefWidth="82.0" text="Fat_Content" />
+                  <TableColumn fx:id="colTemperature" prefWidth="76.0" text="Temperature" />
+                  <TableColumn fx:id="colDate" prefWidth="102.0" text="Check_Date" />
+                  <TableColumn fx:id="colNotes" prefWidth="83.0" text="Notes" />
               </columns>
                <columnResizePolicy>
                   <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
