@@ -1,27 +1,42 @@
 package lk.ijse.desktop.myfx.myfinalproject.Controller;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
+import lk.ijse.desktop.myfx.myfinalproject.Dto.MilkCollectionDto;
+import lk.ijse.desktop.myfx.myfinalproject.Model.MilkCollectionModel;
 
-public class MilkCollectionController {
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.ResourceBundle;
+
+public class MilkCollectionController implements Initializable {
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        loadTable();
+    }
 
     @FXML
-    private TableColumn<?, ?> colBuffaloId;
+    private TableColumn<MilkCollectionDto, String> colBuffaloId;
 
     @FXML
-    private TableColumn<?, ?> colDate;
+    private TableColumn<MilkCollectionDto, String> colDate;
 
     @FXML
-    private TableColumn<?, ?> colId;
+    private TableColumn<MilkCollectionDto, Integer> colId;
 
     @FXML
-    private TableColumn<?, ?> colQuantity;
+    private TableColumn<MilkCollectionDto, Double> colQuantity;
 
     @FXML
-    private TableView<?> tblMilkCollection;
+    private TableView<MilkCollectionDto> tblMilkCollection;
 
     @FXML
     private TextField txtBuffaloId;
@@ -46,8 +61,50 @@ public class MilkCollectionController {
     }
 
     @FXML
-    void btnSaveOnAction(ActionEvent event) {
+    public void btnSaveOnAction(ActionEvent event) {
+        int id = Integer.parseInt(txtId.getText());
+        double quantity = Double.parseDouble(txtQuantity.getText());
+        MilkCollectionDto milkCollectionDto = new MilkCollectionDto(id,txtDate.getText(),quantity,txtBuffaloId.getText());
 
+        try {
+            MilkCollectionModel milkCollectionModel = new MilkCollectionModel();
+            boolean isSave = milkCollectionModel.saveMilkCollection(milkCollectionDto);
+            if (isSave) {
+                clearFields();
+                new Alert(Alert.AlertType.INFORMATION, "Milk Collection has been saved successfully").show();
+            }else {
+                new Alert(Alert.AlertType.ERROR, "Milk Collection has not been saved").show();
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Milk Collection has not been saved");
+        }
+    }
+    private void clearFields(){
+        loadTable();
+        txtId.setText("");
+        txtDate.setText("");
+        txtQuantity.setText("");
+        txtBuffaloId.setText("");
+    }
+    private void loadTable(){
+        colId.setCellValueFactory(new PropertyValueFactory<>("id"));
+        colDate.setCellValueFactory(new PropertyValueFactory<>("date"));
+        colQuantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+        colBuffaloId.setCellValueFactory(new PropertyValueFactory<>("buffaloId"));
+
+        try {
+            MilkCollectionModel milkCollectionModel = new MilkCollectionModel();
+            ArrayList<MilkCollectionDto> milkCollectionDtos = milkCollectionModel.viewAllMilkCollection();
+            if (milkCollectionDtos != null) {
+                ObservableList<MilkCollectionDto> observableList = FXCollections.observableArrayList(milkCollectionDtos);
+                tblMilkCollection.setItems(observableList);
+            }else {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     @FXML
