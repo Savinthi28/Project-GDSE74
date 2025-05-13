@@ -55,7 +55,7 @@ public class BuffaloController implements Initializable {
 
     @FXML
     void btnClearOnAction(ActionEvent event) {
-
+        clearFields();
     }
 
     @FXML

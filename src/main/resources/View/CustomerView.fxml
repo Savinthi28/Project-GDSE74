@@ -76,7 +76,7 @@
                   <Button mnemonicParsing="false" onAction="#btnDeleteOnAction" text="Delete" />
               </buttons>
             </ButtonBar>
-            <TableView fx:id="tblCustomer" prefHeight="266.0" prefWidth="608.0">
+            <TableView fx:id="tblCustomer" onMouseClicked="#tableOnClick" prefHeight="266.0" prefWidth="608.0">
               <columns>
                 <TableColumn fx:id="colCustId" prefWidth="102.0" text="Customer_ID" />
                 <TableColumn fx:id="colName" prefWidth="163.0" text="Customer_Name" />

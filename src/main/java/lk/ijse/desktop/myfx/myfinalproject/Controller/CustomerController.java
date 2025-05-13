@@ -10,6 +10,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import lk.ijse.desktop.myfx.myfinalproject.Dto.CustomerDto;
 import lk.ijse.desktop.myfx.myfinalproject.Model.CustomerModel;
 
@@ -49,12 +50,25 @@ public class CustomerController implements Initializable {
 
     @FXML
     void btnClearOnAction(ActionEvent event) {
-
+        clearFields();
     }
 
     @FXML
     void btnDeleteOnAction(ActionEvent event) {
-
+        int id = Integer.parseInt(txtCustId.getText());
+        try {
+            boolean isDelete = new CustomerModel().deleteCustomer(new CustomerDto(id));
+            if (isDelete) {
+                clearFields();
+                loadTable();
+                new Alert(Alert.AlertType.INFORMATION, "Customer has been deleted").show();
+            }else {
+                new Alert(Alert.AlertType.ERROR, "Customer has not been deleted").show();
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR, "Customer has not been delete").show();
+        }
     }
 
     @FXML
@@ -112,4 +126,13 @@ public class CustomerController implements Initializable {
 
     }
 
+    public void tableOnClick(MouseEvent mouseEvent) {
+        CustomerDto customerDto = (CustomerDto) tblCustomer.getSelectionModel().getSelectedItem();
+        if (customerDto != null) {
+            txtCustId.setText(String.valueOf(customerDto.getCustomerId()));
+            txtName.setText(customerDto.getCustomerName());
+            txtAddress.setText(customerDto.getAddress());
+            txtNumber.setText(customerDto.getCustomerNumber());
+        }
+    }
 }

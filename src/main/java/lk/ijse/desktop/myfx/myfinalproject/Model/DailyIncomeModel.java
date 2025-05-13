@@ -33,4 +33,9 @@ public class DailyIncomeModel {
                 dailyIncomeDto.getAmount()
         );
     }
+
+    public boolean deleteDailyIncome(DailyIncomeDto dailyIncomeDto) throws SQLException{
+        String sql = "delete from Daily_Income where Income_ID=?";
+        return CrudUtil.execute(sql, dailyIncomeDto.getId());
+    }
 }

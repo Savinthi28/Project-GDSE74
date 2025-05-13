@@ -31,4 +31,9 @@ public class SupplierModel {
                 supplierDto.getAddress()
         );
     }
+
+    public boolean deleteSupplier(SupplierDto supplierDto) throws SQLException{
+        String sql = "delete from Supplier where Supplier_ID=?";
+        return CrudUtil.execute(sql,supplierDto.getSupplierId());
+    }
 }

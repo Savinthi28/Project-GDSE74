@@ -35,4 +35,9 @@ public class PaymentModel {
                 paymentDto.getAmount()
         );
     }
+
+    public boolean deletePayment(PaymentDto paymentDto) throws SQLException{
+        String sql = "delete from Payment where Payment_ID=?";
+        return CrudUtil.execute(sql, paymentDto.getPaymentId());
+    }
 }

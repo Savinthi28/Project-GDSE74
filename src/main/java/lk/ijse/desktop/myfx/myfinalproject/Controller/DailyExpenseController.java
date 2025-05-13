@@ -10,6 +10,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import lk.ijse.desktop.myfx.myfinalproject.Dto.DailyExpenseDto;
 import lk.ijse.desktop.myfx.myfinalproject.Model.DailyExpenseModel;
 
@@ -54,12 +55,25 @@ public class DailyExpenseController implements Initializable {
 
     @FXML
     void btnClearOnAction(ActionEvent event) {
-
+        clearFields();
     }
 
     @FXML
     void btnDeleteOnAction(ActionEvent event) {
-
+        int id = Integer.parseInt(txtId.getText());
+        try {
+            boolean isDelete = new DailyExpenseModel().deleteDailyExpense(new DailyExpenseDto(id));
+            if (isDelete) {
+                clearFields();
+                loadTable();
+                new Alert(Alert.AlertType.INFORMATION, "Deleted Successfully").show();
+            }else {
+                new Alert(Alert.AlertType.ERROR, "Something went wrong").show();
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR, "Something went error").show();
+        }
     }
 
     @FXML
@@ -121,4 +135,14 @@ public class DailyExpenseController implements Initializable {
 
     }
 
+    public void tableOnClick(MouseEvent mouseEvent) {
+        DailyExpenseDto dailyExpenseDto = (DailyExpenseDto) tblExpense.getSelectionModel().getSelectedItem();
+        if (dailyExpenseDto != null) {
+            txtId.setText(String.valueOf(dailyExpenseDto.getId()));
+            txtDate.setText(String.valueOf(dailyExpenseDto.getDate()));
+            txtDescription.setText(String.valueOf(dailyExpenseDto.getDescription()));
+            txtAmount.setText(String.valueOf(dailyExpenseDto.getAmount()));
+            txtExpense.setText(String.valueOf(dailyExpenseDto.isDailyExpense()));
+        }
+    }
 }

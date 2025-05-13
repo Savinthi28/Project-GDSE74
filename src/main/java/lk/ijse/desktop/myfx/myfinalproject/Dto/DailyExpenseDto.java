@@ -14,4 +14,8 @@ public class DailyExpenseDto {
     private String description;
     private double amount;
     private boolean dailyExpense;
+
+    public DailyExpenseDto(int id) {
+        this.id = id;
+    }
 }

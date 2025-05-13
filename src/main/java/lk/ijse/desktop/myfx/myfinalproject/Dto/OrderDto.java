@@ -17,4 +17,8 @@ public class OrderDto {
     private Time time;
     private int potsSize;
     private int quantity;
+
+    public OrderDto(int id) {
+        this.orderId = id;
+    }
 }

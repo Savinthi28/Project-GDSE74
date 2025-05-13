@@ -44,12 +44,25 @@ public class UserController implements Initializable {
 
     @FXML
     void btnClearOnAction(ActionEvent event) {
-
+        clearFields();
     }
 
     @FXML
     void btnDeleteOnAction(ActionEvent event) {
-
+        int id = Integer.parseInt(txtId.getText());
+        try {
+            boolean isDelete = new UserModel().deleteUser(new UserDto(id));
+            if (isDelete) {
+                clearFields();
+                loadTable();
+                new Alert(Alert.AlertType.INFORMATION, "Deleted Successfully").show();
+            }else {
+                new Alert(Alert.AlertType.ERROR, "Something went wrong").show();
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR, "Something went error").show();
+        }
     }
 
     @FXML
@@ -108,6 +121,12 @@ public class UserController implements Initializable {
     }
 
     public void tableOnClick(MouseEvent mouseEvent) {
+        UserDto userDto = (UserDto) tblUser.getSelectionModel().getSelectedItem();
+        if (userDto != null) {
+            txtId.setText(String.valueOf(userDto.getId()));
+            txtName.setText(userDto.getUserName());
+            txtPassword.setText(userDto.getPassword());
+        }
 
     }
 }

@@ -15,4 +15,8 @@ public class PaymentDto {
     private String date;
     private String paymentMethod;
     private double amount;
+
+    public PaymentDto(int id) {
+        this.paymentId = id;
+    }
 }

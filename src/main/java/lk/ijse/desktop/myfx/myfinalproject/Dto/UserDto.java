@@ -12,4 +12,8 @@ public class UserDto {
     private int id;
     private String userName;
     private String password;
+
+    public UserDto(int id) {
+        this.id = id;
+    }
 }

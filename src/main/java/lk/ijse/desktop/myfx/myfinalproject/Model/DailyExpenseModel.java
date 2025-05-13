@@ -33,4 +33,9 @@ public class DailyExpenseModel {
                 expenseDto.isDailyExpense()
         );
     }
+
+    public boolean deleteDailyExpense(DailyExpenseDto dailyExpenseDto) throws SQLException{
+        String sql = "delete from Expense where Expense_ID=?";
+        return CrudUtil.execute(sql, dailyExpenseDto.getId());
+    }
 }

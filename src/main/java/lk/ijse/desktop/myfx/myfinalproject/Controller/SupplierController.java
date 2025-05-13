@@ -50,12 +50,25 @@ public class SupplierController implements Initializable {
 
     @FXML
     void btnClearOnAction(ActionEvent event) {
-
+        clearFields();
     }
 
     @FXML
     void btnDeleteOnAction(ActionEvent event) {
-
+        int id = Integer.parseInt(txtId.getText());
+        try {
+            boolean isDelete = new SupplierModel().deleteSupplier(new SupplierDto(id));
+            if (isDelete) {
+                clearFields();
+                loadTable();
+                new Alert(Alert.AlertType.CONFIRMATION, "Deleted Successfully").show();
+            }else {
+                new Alert(Alert.AlertType.ERROR, "Deletion Failed").show();
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR, "Delete Failed").show();
+        }
     }
 
     @FXML
@@ -117,6 +130,12 @@ public class SupplierController implements Initializable {
     }
 
     public void tableOnClick(MouseEvent mouseEvent) {
-        
+        SupplierDto supplierDto = (SupplierDto) tblSupplier.getSelectionModel().getSelectedItem();
+        if (supplierDto != null) {
+            txtId.setText(String.valueOf(supplierDto.getSupplierId()));
+            txtName.setText(supplierDto.getSupplierName());
+            txtNumber.setText(supplierDto.getContactNumber());
+            txtAddress.setText(supplierDto.getAddress());
+        }
     }
 }

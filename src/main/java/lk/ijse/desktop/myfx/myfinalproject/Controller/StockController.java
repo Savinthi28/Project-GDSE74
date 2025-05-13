@@ -59,14 +59,14 @@ public class StockController implements Initializable {
 
     @FXML
     void btnClearOnAction(ActionEvent event) {
-
+        clearFields();
     }
 
     @FXML
     public void btnDeleteOnAction(ActionEvent event) {
-        int stockId = Integer.parseInt(txtStockId.getText());
+        int id = Integer.parseInt(txtStockId.getText());
         try {
-            boolean isDelete = new StockModel().deleteStock(new StockDto(stockId));
+            boolean isDelete = new StockModel().deleteStock(new StockDto(id));
             if (isDelete) {
                 clearFields();
                 loadTable();
@@ -81,7 +81,7 @@ public class StockController implements Initializable {
     }
 
     @FXML
-    void btnSaveOnAction(ActionEvent event) {
+    public void btnSaveOnAction(ActionEvent event) {
         int stockId = Integer.parseInt(txtStockId.getText());
         int productionId = Integer.parseInt(txtProdctionId.getText());
         int quantity = Integer.parseInt(txtQuantity.getText());

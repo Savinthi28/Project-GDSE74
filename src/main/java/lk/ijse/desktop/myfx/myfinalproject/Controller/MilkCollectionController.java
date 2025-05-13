@@ -53,7 +53,7 @@ public class MilkCollectionController implements Initializable {
 
     @FXML
     void btnClearOnAction(ActionEvent event) {
-
+        clearFields();
     }
 
     @FXML

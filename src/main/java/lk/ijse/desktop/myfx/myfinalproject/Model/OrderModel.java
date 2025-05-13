@@ -35,4 +35,9 @@ public class OrderModel {
                 orderDto.getQuantity()
         );
     }
+
+    public boolean deleteOrder(OrderDto orderDto) throws SQLException{
+        String sql = "delete from Orders where Order_ID=?";
+        return CrudUtil.execute(sql,orderDto.getOrderId());
+    }
 }

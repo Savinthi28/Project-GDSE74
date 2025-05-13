@@ -54,7 +54,7 @@ public class PotsInventoryController implements Initializable {
 
     @FXML
     void btnClearOnAction(ActionEvent event) {
-
+        clearFields();
     }
 
     @FXML

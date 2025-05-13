@@ -14,4 +14,8 @@ public class DailyIncomeDto {
     private String date;
     private String description;
     private double amount;
+
+    public DailyIncomeDto(int id) {
+        this.id = id;
+    }
 }

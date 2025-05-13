@@ -10,6 +10,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import lk.ijse.desktop.myfx.myfinalproject.Dto.OrderDto;
 import lk.ijse.desktop.myfx.myfinalproject.Model.OrderModel;
 
@@ -65,12 +66,25 @@ public class OrderController implements Initializable {
 
     @FXML
     void btnClearOnAction(ActionEvent event) {
-
+        clearFields();
     }
 
     @FXML
     void btnDeleteOnAction(ActionEvent event) {
-
+        int id = Integer.parseInt(txtOrderId.getText());
+        try {
+            boolean isDelete = new OrderModel().deleteOrder(new OrderDto(id));
+            if (isDelete) {
+                clearFields();
+                loadTable();
+                new Alert(Alert.AlertType.INFORMATION, "Order Deleted").show();
+            }else {
+                new Alert(Alert.AlertType.ERROR, "Order Not Deleted").show();
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR, "Order Not Delete").show();
+        }
     }
 
     @FXML
@@ -132,4 +146,15 @@ public class OrderController implements Initializable {
 
     }
 
+    public void tableOnClick(MouseEvent mouseEvent) {
+        OrderDto orderDto = (OrderDto) tblOrder.getSelectionModel().getSelectedItem();
+        if(orderDto != null){
+            txtOrderId.setText(String.valueOf(orderDto.getOrderId()));
+            txtCustomerId.setText(String.valueOf(orderDto.getCustomerId()));
+            txtDate.setText(String.valueOf(orderDto.getDate()));
+            txtTime.setText(String.valueOf(orderDto.getTime()));
+            txtPotsSize.setText(String.valueOf(orderDto.getPotsSize()));
+            txtQuantity.setText(String.valueOf(orderDto.getQuantity()));
+        }
+    }
 }

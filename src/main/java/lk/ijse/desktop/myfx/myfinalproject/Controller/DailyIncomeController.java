@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import lk.ijse.desktop.myfx.myfinalproject.Dto.DailyIncomeDto;
 import lk.ijse.desktop.myfx.myfinalproject.Model.DailyIncomeModel;
 import lombok.SneakyThrows;
@@ -52,12 +53,25 @@ public class DailyIncomeController implements Initializable {
 
     @FXML
     void btnClearOnAction(ActionEvent event) {
-
+        clearFilds();
     }
 
     @FXML
     void btnDeleteOnAction(ActionEvent event) {
-
+        int id = Integer.parseInt(txtId.getText());
+        try {
+            boolean isDelete = new DailyIncomeModel().deleteDailyIncome(new DailyIncomeDto(id));
+            if (isDelete) {
+                clearFilds();
+                loadTable();
+                new Alert(Alert.AlertType.INFORMATION, "Deleted Successfully").show();
+            }else {
+                new Alert(Alert.AlertType.ERROR, "Something went wrong").show();
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR, "Something went error").show();
+        }
     }
 
     @FXML
@@ -119,4 +133,14 @@ public class DailyIncomeController implements Initializable {
 
     }
 
+    public void tableOnClick(MouseEvent mouseEvent) {
+        DailyIncomeDto dailyIncomeDto = (DailyIncomeDto) tblIncome.getSelectionModel().getSelectedItem();
+        if (dailyIncomeDto != null) {
+            txtId.setText(String.valueOf(dailyIncomeDto.getId()));
+            txtName.setText(dailyIncomeDto.getCustomerName());
+            txtDate.setText(dailyIncomeDto.getDate());
+            txtDescription.setText(dailyIncomeDto.getDescription());
+            txtAmount.setText(String.valueOf(dailyIncomeDto.getAmount()));
+        }
+    }
 }

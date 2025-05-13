@@ -29,4 +29,9 @@ public class UserModel {
                 userDto.getPassword()
         );
     }
+
+    public boolean deleteUser(UserDto userDto) throws SQLException{
+        String sql = "delete from User where User_ID=?";
+        return CrudUtil.execute(sql, userDto.getId());
+    }
 }

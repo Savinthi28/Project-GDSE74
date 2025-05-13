@@ -59,7 +59,7 @@ public class PotsPurchaseController implements Initializable {
 
     @FXML
     void btnClearOnAction(ActionEvent event) {
-
+        clearFields();
     }
 
     @FXML

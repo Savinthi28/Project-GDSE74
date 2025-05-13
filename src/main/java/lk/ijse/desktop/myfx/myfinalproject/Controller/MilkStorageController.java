@@ -60,11 +60,11 @@ public class MilkStorageController implements Initializable {
 
     @FXML
     void btnClearOnAction(ActionEvent event) {
-
+        clearField();
     }
 
     @FXML
-    void btnDeleteOnAction(ActionEvent event) {
+    public void btnDeleteOnAction(ActionEvent event) {
         int id = Integer.parseInt(txtCollectionId.getText());
         try {
             boolean isDelete = new MilkStorageModel().deleteMilkStorage(new MilkStorageDto(id));
@@ -136,7 +136,7 @@ private void loadTable() {
 
     }
 
-    public void tableOnAction(MouseEvent mouseEvent) {
+    public void tableOnClick(MouseEvent mouseEvent) {
         MilkStorageDto milkStorageDto = (MilkStorageDto) tblMilkStorage.getSelectionModel().getSelectedItem();
         if (milkStorageDto != null) {
             txtStorageId.setText(String.valueOf(milkStorageDto.getStorageId()));

@@ -62,7 +62,7 @@ public class RawMaterialPurchaseController implements Initializable {
 
     @FXML
     void btnClearOnAction(ActionEvent event) {
-
+        clearFields();
     }
 
     @FXML
