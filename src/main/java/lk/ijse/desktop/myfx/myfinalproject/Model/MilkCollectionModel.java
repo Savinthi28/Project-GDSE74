@@ -11,7 +11,11 @@ public class MilkCollectionModel {
 
     public static boolean updateMilkCollection(MilkCollectionDto milkCollectionDto) throws SQLException {
         return CrudUtil.execute(
-                "update Milk_Collection set Collection_Date = ?, Quantity = ?, Buffalo_ID = ? where Collection_ID = ?"
+                "update Milk_Collection set Collection_Date = ?, Quantity = ?, Buffalo_ID = ? where Collection_ID = ?",
+                milkCollectionDto.getDate(),
+                milkCollectionDto.getQuantity(),
+                milkCollectionDto.getBuffaloId(),
+                milkCollectionDto.getId()
         );
     }
 

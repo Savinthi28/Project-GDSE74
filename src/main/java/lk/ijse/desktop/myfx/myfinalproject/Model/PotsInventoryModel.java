@@ -11,7 +11,7 @@ public class PotsInventoryModel {
 
     public static boolean updatePotsInventory(PotsInventoryDto potsInventoryDto) throws SQLException {
         return CrudUtil.execute(
-                "update Pots_Inventory set Quantity = ?, Pots_Size = ?, Condition = ? where Inventory_ID = ?",
+                "update Pots_Inventory set Quantity = ?, Pots_Size = ?, `Condition` = ? where Inventory_ID = ?",
                 potsInventoryDto.getQuantity(),
                 potsInventoryDto.getPotsSize(),
                 potsInventoryDto.getCondition(),

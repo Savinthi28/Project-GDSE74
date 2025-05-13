@@ -65,7 +65,7 @@ public class MilkStorageController implements Initializable {
 
     @FXML
     public void btnDeleteOnAction(ActionEvent event) {
-        int id = Integer.parseInt(txtCollectionId.getText());
+        int id = Integer.parseInt(txtStorageId.getText());
         try {
             boolean isDelete = new MilkStorageModel().deleteMilkStorage(new MilkStorageDto(id));
             if (isDelete) {

@@ -154,7 +154,7 @@ public class StockController implements Initializable {
     public void tableOnClick(MouseEvent mouseEvent) {
         StockDto stockDto = (StockDto) tblStock.getSelectionModel().getSelectedItem();
         if (stockDto != null) {
-            txtStockId.setText(stockDto.getStockType());
+            txtStockId.setText(String.valueOf(stockDto.getStockId()));
             txtProdctionId.setText(String.valueOf(stockDto.getProductionId()));
             txtDate.setText(stockDto.getDate());
             txtQuantity.setText(String.valueOf(stockDto.getQuantity()));
