@@ -34,5 +34,10 @@ public class BuffaloModel {
 
         );
     }
+
+    public boolean deleteBuffalo(BuffaloDto buffaloDto) throws SQLException {
+        String sql = "delete from Buffalo where Buffalo_ID=?";
+        return CrudUtil.execute(sql, buffaloDto.getBuffaloID());
+    }
 }
 

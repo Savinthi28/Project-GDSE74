@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import lk.ijse.desktop.myfx.myfinalproject.Dto.BuffaloDto;
 import lk.ijse.desktop.myfx.myfinalproject.Model.BuffaloModel;
 
@@ -58,8 +59,21 @@ public class BuffaloController implements Initializable {
     }
 
     @FXML
-    void btnDeleteOnAction(ActionEvent event) {
-
+    public void btnDeleteOnAction(ActionEvent event) {
+        String id = txtBuffaloID.getText();
+        try {
+            boolean isDelete = new BuffaloModel().deleteBuffalo(new BuffaloDto(id));
+            if (isDelete) {
+                clearFields();
+                loadTable();
+                new Alert(Alert.AlertType.INFORMATION, "Buffalo Deleted").show();
+            }else {
+                new Alert(Alert.AlertType.ERROR, "Buffalo Not Deleted").show();
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR, "Error").show();
+        }
     }
 
     @FXML
@@ -121,4 +135,14 @@ private void loadTable() {
 
     }
 
+    public void tableOnClick(MouseEvent mouseEvent) {
+        BuffaloDto buffaloDto = (BuffaloDto) tblBuffalo.getSelectionModel().getSelectedItem();
+        if (buffaloDto != null) {
+            txtBuffaloID.setText(buffaloDto.getBuffaloID());
+            txtMilkProduction.setText(String.valueOf(buffaloDto.getMilkProduction()));
+            txtGender.setText(buffaloDto.getGender());
+            txtAge.setText(String.valueOf(buffaloDto.getAge()));
+            txtHealth.setText(String.valueOf(buffaloDto.getHealthStatus()));
+        }
+    }
 }

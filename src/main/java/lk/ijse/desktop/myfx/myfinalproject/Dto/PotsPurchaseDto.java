@@ -14,4 +14,8 @@ public class PotsPurchaseDto {
     private String date;
     private int quantity;
     private double price;
+
+    public PotsPurchaseDto(int id) {
+        this.purchaseId = id;
+    }
 }

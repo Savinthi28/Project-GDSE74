@@ -10,6 +10,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import lk.ijse.desktop.myfx.myfinalproject.Dto.CurdProductionDto;
 import lk.ijse.desktop.myfx.myfinalproject.Model.CurdProductionModel;
 
@@ -72,8 +73,21 @@ public class CurdProductionController implements Initializable {
     }
 
     @FXML
-    void btnDeleteOnAction(ActionEvent event) {
-
+    public void btnDeleteOnAction(ActionEvent event) {
+        int id = Integer.parseInt(txtId.getText());
+        try {
+            boolean isDelete = new CurdProductionModel().deleteCurdProduction(new CurdProductionDto(id));
+            if (isDelete) {
+                clearFields();
+                loadTable();
+                new Alert(Alert.AlertType.INFORMATION, "Deleted").show();
+            }else {
+                new Alert(Alert.AlertType.ERROR, "Not Deleted").show();
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR, "Not Deleted").show();
+        }
     }
 
     @FXML
@@ -141,4 +155,16 @@ public class CurdProductionController implements Initializable {
 
     }
 
+    public void tableOnClick(MouseEvent mouseEvent) {
+        CurdProductionDto curdProductionDto = (CurdProductionDto) tblCurdProduction.getSelectionModel().getSelectedItem();
+        if(curdProductionDto != null){
+            txtId.setText(String.valueOf(curdProductionDto.getProductionId()));
+            txtProductionDate.setText(String.valueOf(curdProductionDto.getProductionDate()));
+            txtExpiryDate.setText(String.valueOf(curdProductionDto.getExpiryDate()));
+            txtQuantity.setText(String.valueOf(curdProductionDto.getQuantity()));
+            txtPotsSize.setText(String.valueOf(curdProductionDto.getPotsSize()));
+            txtIngredients.setText(String.valueOf(curdProductionDto.getIngredients()));
+            txtStorageId.setText(String.valueOf(curdProductionDto.getStorageId()));
+        }
+    }
 }

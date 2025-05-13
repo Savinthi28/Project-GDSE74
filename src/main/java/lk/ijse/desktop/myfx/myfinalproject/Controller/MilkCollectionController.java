@@ -10,6 +10,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import lk.ijse.desktop.myfx.myfinalproject.Dto.MilkCollectionDto;
 import lk.ijse.desktop.myfx.myfinalproject.Model.MilkCollectionModel;
 
@@ -56,8 +57,21 @@ public class MilkCollectionController implements Initializable {
     }
 
     @FXML
-    void btnDeleteOnAction(ActionEvent event) {
-
+    public void btnDeleteOnAction(ActionEvent event) {
+        int id = Integer.parseInt(txtId.getText());
+        try {
+            boolean isDelete = new MilkCollectionModel().deleteMikCollection(new MilkCollectionDto(id));
+            if (isDelete) {
+                clearFields();
+                loadTable(); 
+                new Alert(Alert.AlertType.INFORMATION,"MikCollection deleted successfully").show();
+            }else {
+                new Alert(Alert.AlertType.ERROR,"MikCollection deleted Faield").show();
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR,"MikCollection deleted Faield").show();
+        }
     }
 
     @FXML
@@ -112,4 +126,13 @@ public class MilkCollectionController implements Initializable {
 
     }
 
+    public void tableOnClick(MouseEvent mouseEvent) {
+        MilkCollectionDto milkCollectionDto = (MilkCollectionDto) tblMilkCollection.getSelectionModel().getSelectedItem();
+        if (milkCollectionDto != null) {
+            txtId.setText(String.valueOf(milkCollectionDto.getId()));
+            txtDate.setText(milkCollectionDto.getDate());
+            txtQuantity.setText(String.valueOf(milkCollectionDto.getQuantity()));
+            txtBuffaloId.setText(milkCollectionDto.getBuffaloId());
+        }
+    }
 }

@@ -14,4 +14,8 @@ public class ReportsDto {
     private int userId;
     private String reportType;
     private String generateBy;
+
+    public ReportsDto(int reportId) {
+        this.reportId = reportId;
+    }
 }

@@ -14,4 +14,7 @@ public class BuffaloDto {
     private int age;
     private String healthStatus;
 
+    public BuffaloDto(String id) {
+        this.buffaloID = id;
+    }
 }

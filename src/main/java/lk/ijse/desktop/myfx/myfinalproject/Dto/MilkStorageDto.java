@@ -16,4 +16,8 @@ public class MilkStorageDto {
     private String date;
     private Time duration;
     private double temperature;
+
+    public MilkStorageDto(int id) {
+        this.storageId = id;
+    }
 }

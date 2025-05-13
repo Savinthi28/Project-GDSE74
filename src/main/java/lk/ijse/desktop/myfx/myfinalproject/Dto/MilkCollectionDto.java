@@ -14,4 +14,7 @@ public class MilkCollectionDto {
     private double quantity;
     private String buffaloId;
 
+    public MilkCollectionDto(int id) {
+        this.id = id;
+    }
 }

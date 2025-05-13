@@ -16,4 +16,8 @@ public class QualityCheckDto {
     private double temperature;
     private String date;
     private String notes;
+
+    public QualityCheckDto(int id) {
+        this.checkId = id;
+    }
 }

@@ -112,7 +112,7 @@
                   <Insets />
                </VBox.margin>
             </ButtonBar>
-            <TableView fx:id="tblCurdProduction" prefHeight="283.0" prefWidth="613.0" VBox.vgrow="ALWAYS">
+            <TableView fx:id="tblCurdProduction" onMouseClicked="#tableOnClick" prefHeight="283.0" prefWidth="613.0" VBox.vgrow="ALWAYS">
               <columns>
                 <TableColumn fx:id="colId" prefWidth="83.0" text="Production_ID" />
                 <TableColumn fx:id="colProductionDate" prefWidth="104.0" text="Production_Date" />

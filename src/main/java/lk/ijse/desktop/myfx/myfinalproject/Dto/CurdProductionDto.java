@@ -16,4 +16,8 @@ public class CurdProductionDto {
     private int potsSize;
     private String ingredients;
     private int storageId;
+
+    public CurdProductionDto(int id) {
+        this.productionId = id;
+    }
 }

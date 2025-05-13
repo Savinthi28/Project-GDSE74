@@ -10,6 +10,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import lk.ijse.desktop.myfx.myfinalproject.Dto.MilkStorageDto;
 import lk.ijse.desktop.myfx.myfinalproject.Model.MilkStorageModel;
 
@@ -64,7 +65,20 @@ public class MilkStorageController implements Initializable {
 
     @FXML
     void btnDeleteOnAction(ActionEvent event) {
-
+        int id = Integer.parseInt(txtCollectionId.getText());
+        try {
+            boolean isDelete = new MilkStorageModel().deleteMilkStorage(new MilkStorageDto(id));
+            if (isDelete) {
+                clearField();
+                loadTable();
+                new Alert(Alert.AlertType.INFORMATION, "Milk Storage Deleted Successfully").show();
+            }else {
+                new Alert(Alert.AlertType.ERROR, "Milk Storage Deletion Failed").show();
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR, "Milk Storage Deletion Failed").show();
+        }
     }
 
     @FXML
@@ -122,4 +136,14 @@ private void loadTable() {
 
     }
 
+    public void tableOnAction(MouseEvent mouseEvent) {
+        MilkStorageDto milkStorageDto = (MilkStorageDto) tblMilkStorage.getSelectionModel().getSelectedItem();
+        if (milkStorageDto != null) {
+            txtStorageId.setText(String.valueOf(milkStorageDto.getStorageId()));
+            txtCollectionId.setText(String.valueOf(milkStorageDto.getCollectionId()));
+            txtDate.setText(String.valueOf(milkStorageDto.getDate()));
+            txtDuration.setText(String.valueOf(milkStorageDto.getDuration()));
+            txtTemperature.setText(String.valueOf(milkStorageDto.getTemperature()));
+        }
+    }
 }

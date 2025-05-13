@@ -33,4 +33,9 @@ public class MilkStorageModel {
                 milkStorageDto.getTemperature()
         );
     }
+
+    public boolean deleteMilkStorage(MilkStorageDto milkStorageDto) throws SQLException {
+        String sql = "delete from Milk_Storage where Storage_ID=?";
+        return CrudUtil.execute(sql, milkStorageDto.getStorageId());
+    }
 }

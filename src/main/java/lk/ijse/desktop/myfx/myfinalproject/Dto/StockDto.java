@@ -14,4 +14,8 @@ public class StockDto {
     private String date;
     private int quantity;
     private String stockType;
+
+    public StockDto(int stockId) {
+        this.stockId = stockId;
+    }
 }

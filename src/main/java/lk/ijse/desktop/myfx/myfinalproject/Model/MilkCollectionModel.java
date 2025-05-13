@@ -31,4 +31,9 @@ public class MilkCollectionModel {
                 milkCollection.getBuffaloId()
         );
     }
+
+    public boolean deleteMikCollection(MilkCollectionDto milkCollectionDto) throws SQLException {
+        String sql = "delete from Milk_Collection where Collection_ID=?";
+        return CrudUtil.execute(sql, milkCollectionDto.getId());
+    }
 }

@@ -86,7 +86,7 @@
                   <Button mnemonicParsing="false" onAction="#btnDeleteOnAction" text="Delete" />
               </buttons>
             </ButtonBar>
-            <TableView fx:id="tblReports" prefHeight="302.0" prefWidth="610.0" VBox.vgrow="ALWAYS">
+            <TableView fx:id="tblReports" onMouseClicked="#tableOnClick" prefHeight="302.0" prefWidth="610.0" VBox.vgrow="ALWAYS">
               <columns>
                 <TableColumn fx:id="colReportId" prefWidth="110.0" text="Report_ID" />
                 <TableColumn fx:id="colDate" prefWidth="104.0" text="Report_date" />

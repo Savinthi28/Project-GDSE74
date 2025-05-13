@@ -37,4 +37,9 @@ public class CurdProductionModel {
           curdProductionDto.getStorageId()
         );
     }
+
+    public boolean deleteCurdProduction(CurdProductionDto curdProductionDto) throws SQLException{
+        String sql = "delete from Curd_Production where Production_ID=?";
+        return CrudUtil.execute(sql, curdProductionDto.getProductionId());
+    }
 }

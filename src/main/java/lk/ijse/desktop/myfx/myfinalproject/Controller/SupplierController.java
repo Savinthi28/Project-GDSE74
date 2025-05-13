@@ -10,6 +10,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import lk.ijse.desktop.myfx.myfinalproject.Dto.SupplierDto;
 import lk.ijse.desktop.myfx.myfinalproject.Model.SupplierModel;
 
@@ -115,4 +116,7 @@ public class SupplierController implements Initializable {
 
     }
 
+    public void tableOnClick(MouseEvent mouseEvent) {
+        
+    }
 }

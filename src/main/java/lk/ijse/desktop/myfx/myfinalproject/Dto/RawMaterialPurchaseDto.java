@@ -15,4 +15,8 @@ public class RawMaterialPurchaseDto {
     private String Date;
     private int quantity;
     private double unitPrice;
+
+    public RawMaterialPurchaseDto(int id) {
+        this.purchaseId = id;
+    }
 }

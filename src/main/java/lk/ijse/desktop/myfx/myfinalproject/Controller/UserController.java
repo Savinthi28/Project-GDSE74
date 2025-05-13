@@ -10,6 +10,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import lk.ijse.desktop.myfx.myfinalproject.Dto.UserDto;
 import lk.ijse.desktop.myfx.myfinalproject.Model.UserModel;
 
@@ -106,4 +107,7 @@ public class UserController implements Initializable {
 
     }
 
+    public void tableOnClick(MouseEvent mouseEvent) {
+
+    }
 }

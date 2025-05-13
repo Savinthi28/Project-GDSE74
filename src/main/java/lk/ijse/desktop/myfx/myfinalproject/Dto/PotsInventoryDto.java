@@ -13,4 +13,8 @@ public class PotsInventoryDto {
     private int quantity;
     private int potsSize;
     private String condition;
+
+    public PotsInventoryDto(int id) {
+        this.id = id;
+    }
 }
