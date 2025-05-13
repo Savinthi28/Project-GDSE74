@@ -151,8 +151,25 @@ public class CurdProductionController implements Initializable {
     }
 
     @FXML
-    void btnUpdateOnAction(ActionEvent event) {
-
+    public void btnUpdateOnAction(ActionEvent event) {
+        int id = Integer.parseInt(txtId.getText());
+        int quantity = Integer.parseInt(txtQuantity.getText());
+        int potsSize = Integer.parseInt(txtPotsSize.getText());
+        int storageID = Integer.parseInt(txtStorageId.getText());
+        CurdProductionDto curdProductionDto = new CurdProductionDto(id,txtProductionDate.getText(),txtExpiryDate.getText(),quantity,potsSize,txtIngredients.getText(),storageID);
+        try {
+            boolean isSave = CurdProductionModel.updateCurdProduction(curdProductionDto);
+            if(isSave){
+                clearFields();
+                loadTable();
+                new Alert(Alert.AlertType.INFORMATION,"Updated successfully").show();
+            }else {
+                new Alert(Alert.AlertType.ERROR,"Error while updating Curd Production").show();
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR,"Error updating Curd Production").show();
+        }
     }
 
     public void tableOnClick(MouseEvent mouseEvent) {

@@ -8,6 +8,18 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class BuffaloModel {
+
+    public static boolean updateFarmer(BuffaloDto buffaloDto) throws SQLException {
+        return CrudUtil.execute(
+                "update Buffalo set Milk_Production = ?, Gender = ?, Age = ?, Health_Status = ? where Buffalo_ID = ?",
+                buffaloDto.getMilkProduction(),
+                buffaloDto.getGender(),
+                buffaloDto.getAge(),
+                buffaloDto.getHealthStatus(),
+                buffaloDto.getBuffaloID()
+        );
+    }
+
     public ArrayList<BuffaloDto> viewAllBuffalo() throws SQLException, ClassNotFoundException {
         ResultSet rs = CrudUtil.execute("SELECT * FROM Buffalo");
         ArrayList<BuffaloDto> viewBuffalo = new ArrayList<>();

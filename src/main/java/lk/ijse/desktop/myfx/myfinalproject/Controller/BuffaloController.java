@@ -131,8 +131,23 @@ private void loadTable() {
         }
 }
     @FXML
-    void btnUpdateOnAction(ActionEvent event) {
-
+    public void btnUpdateOnAction(ActionEvent event) {
+        double milkProduction = Double.parseDouble(txtMilkProduction.getText());
+        int age = Integer.parseInt(txtAge.getText());
+        BuffaloDto buffaloDto = new BuffaloDto(txtBuffaloID.getText(),milkProduction,txtGender.getText(),age,txtHealth.getText());
+        try {
+            boolean isSave = BuffaloModel.updateFarmer(buffaloDto);
+            if (isSave) {
+                clearFields();
+                loadTable();
+                new Alert(Alert.AlertType.INFORMATION, "Buffalo has been updated successfully").show();
+            }else {
+                new Alert(Alert.AlertType.ERROR, "Failed to update buffalo").show();
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR, "Failed to save buffalo").show();
+        }
     }
 
     public void tableOnClick(MouseEvent mouseEvent) {

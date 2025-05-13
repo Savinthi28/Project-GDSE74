@@ -8,6 +8,20 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class CurdProductionModel {
+
+    public static boolean updateCurdProduction(CurdProductionDto curdProductionDto) throws SQLException {
+        return CrudUtil.execute(
+                "update Curd_Production set Production_Date = ?, Expiry_Date = ?, Quantity = ?, Pots_Size = ?, Ingredients = ?, Storage_ID = ? where Production_ID = ?",
+                curdProductionDto.getProductionDate(),
+                curdProductionDto.getExpiryDate(),
+                curdProductionDto.getQuantity(),
+                curdProductionDto.getPotsSize(),
+                curdProductionDto.getIngredients(),
+                curdProductionDto.getStorageId(),
+                curdProductionDto.getProductionId()
+        );
+    }
+
     public ArrayList<CurdProductionDto> viewAllCurdProduction() throws ClassNotFoundException, SQLException{
         ResultSet rs = CrudUtil.execute("SELECT * FROM Curd_Production");
         ArrayList<CurdProductionDto> viewCurdProduction = new ArrayList<>();
