@@ -132,8 +132,25 @@ public class PotsPurchaseController implements Initializable {
     }
 
     @FXML
-    void btnUpdateOnAction(ActionEvent event) {
-
+    public void btnUpdateOnAction(ActionEvent event) {
+        int id = Integer.parseInt(txtId.getText());
+        int potsSize = Integer.parseInt(txtPotsSize.getText());
+        int quantity = Integer.parseInt(txtQuantity.getText());
+        double unitPrice = Double.parseDouble(txtUnitPrice.getText());
+        PotsPurchaseDto potsPurchaseDto = new PotsPurchaseDto(id,potsSize,txtDate.getText(),quantity,unitPrice);
+        try {
+            boolean isSave = PotsPurchaseModel.updatePotsPurchase(potsPurchaseDto);
+            if (isSave) {
+                clearFields();
+                loadTable();
+                new Alert(Alert.AlertType.INFORMATION, "Pots Purchase Successfully Updated").show();
+            }else {
+                new Alert(Alert.AlertType.ERROR, "Pots Purchase Failed").show();
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR, "Pots Purchase Faile").show();
+        }
     }
 
     public void tableOnClick(MouseEvent mouseEvent) {

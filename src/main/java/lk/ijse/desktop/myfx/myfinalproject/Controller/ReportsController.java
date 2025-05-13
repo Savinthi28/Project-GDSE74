@@ -12,6 +12,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import lk.ijse.desktop.myfx.myfinalproject.Dto.ReportsDto;
+import lk.ijse.desktop.myfx.myfinalproject.Dto.UserDto;
 import lk.ijse.desktop.myfx.myfinalproject.Model.ReportsModel;
 
 import java.net.URL;
@@ -131,8 +132,23 @@ public class ReportsController implements Initializable {
     }
 
     @FXML
-    void btnUpdateOnAction(ActionEvent event) {
-
+    public void btnUpdateOnAction(ActionEvent event) {
+        int reportId = Integer.parseInt(txtReportId.getText());
+        int userId = Integer.parseInt(txtUserId.getText());
+        ReportsDto reportsDto= new ReportsDto(reportId,txtDate.getText(),userId,txtType.getText(),txtGenerateBy.getText());
+        try {
+            boolean isSave = ReportsModel.updateReports(reportsDto);
+            if (isSave) {
+                clearFields();
+                loadTable();
+                new Alert(Alert.AlertType.INFORMATION, "Report has been updated successfully").show();
+            }else {
+                new Alert(Alert.AlertType.ERROR, "Report could not be updated").show();
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR, "Report could not be updated").show();
+        }
     }
 
     public void tableOnClick(MouseEvent mouseEvent) {

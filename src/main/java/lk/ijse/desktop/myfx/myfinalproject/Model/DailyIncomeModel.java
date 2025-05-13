@@ -8,6 +8,18 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class DailyIncomeModel {
+
+    public static boolean updateDailyIncome(DailyIncomeDto dailyIncomeDto) throws SQLException {
+        return CrudUtil.execute(
+                "update Daily_Income set Customer_Name = ?, Income_Date = ?, Description = ?, Amount = ? where Income_ID = ?",
+                dailyIncomeDto.getCustomerName(),
+                dailyIncomeDto.getDate(),
+                dailyIncomeDto.getDescription(),
+                dailyIncomeDto.getAmount(),
+                dailyIncomeDto.getId()
+        );
+    }
+
     public ArrayList<DailyIncomeDto> viewDailyIncome()throws SQLException, ClassNotFoundException {
         ResultSet rs = CrudUtil.execute("SELECT * FROM Daily_Income");
         ArrayList<DailyIncomeDto> dailyIncome = new ArrayList<>();

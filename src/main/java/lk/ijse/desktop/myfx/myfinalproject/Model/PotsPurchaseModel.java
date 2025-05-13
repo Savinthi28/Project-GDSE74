@@ -8,6 +8,18 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class PotsPurchaseModel {
+
+    public static boolean updatePotsPurchase(PotsPurchaseDto potsPurchaseDto) throws SQLException {
+        return CrudUtil.execute(
+                "update Pots_Purchase_ID set Pots_Size = ?, Purchase_Date = ?, Quantity = ?, Unit_Price = ? where Purchase_ID = ?",
+                potsPurchaseDto.getPotsSize(),
+                potsPurchaseDto.getDate(),
+                potsPurchaseDto.getQuantity(),
+                potsPurchaseDto.getPrice(),
+                potsPurchaseDto.getPurchaseId()
+        );
+    }
+
     public ArrayList<PotsPurchaseDto> viewAllPotsPurchase() throws SQLException {
         ResultSet rs = CrudUtil.execute("SELECT * FROM Pots_Purchase_ID");
         ArrayList<PotsPurchaseDto> potsPurchase = new ArrayList<>();

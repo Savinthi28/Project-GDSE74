@@ -8,6 +8,19 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class OrderModel {
+
+    public static boolean updateOrder(OrderDto orderDto) throws SQLException {
+        return CrudUtil.execute(
+                "update Orders set Customer_ID = ?, Order_Date = ?, Order_Time = ?, Pots_Size = ?, Quantity = ? where Order_ID = ?",
+                orderDto.getCustomerId(),
+                orderDto.getDate(),
+                orderDto.getTime(),
+                orderDto.getPotsSize(),
+                orderDto.getQuantity(),
+                orderDto.getOrderId()
+        );
+    }
+
     public ArrayList<OrderDto> viewAllOrder() throws SQLException {
         ResultSet rs = CrudUtil.execute("SELECT * FROM Orders");
         ArrayList<OrderDto> orders = new ArrayList<>();

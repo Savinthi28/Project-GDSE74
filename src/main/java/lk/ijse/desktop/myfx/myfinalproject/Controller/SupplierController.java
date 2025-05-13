@@ -125,8 +125,22 @@ public class SupplierController implements Initializable {
     }
 
     @FXML
-    void btnUpdateOnAction(ActionEvent event) {
-
+    public void btnUpdateOnAction(ActionEvent event) {
+        int id = Integer.parseInt(txtId.getText());
+        SupplierDto supplierDto = new SupplierDto(id, txtName.getText(), txtNumber.getText(), txtAddress.getText());
+        try {
+            boolean isSave = SupplierModel.updateSupplier(supplierDto);
+            if (isSave) {
+                clearFields();
+                loadTable();
+                new Alert(Alert.AlertType.INFORMATION, "Supplier has been updated successfully").show();
+            }else {
+                new Alert(Alert.AlertType.ERROR, "Failed to update supplier").show();
+            }
+        }catch (Exception e) {
+            e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR, "Failed to update supplier").show();
+        }
     }
 
     public void tableOnClick(MouseEvent mouseEvent) {

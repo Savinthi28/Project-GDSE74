@@ -8,6 +8,17 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class CustomerModel {
+
+    public static boolean updateCustomer(CustomerDto customerDto) throws SQLException {
+        return CrudUtil.execute(
+                "update Customer set Customer_Name = ?, Address = ?, Customer_Number = ? where Customer_ID = ?",
+                customerDto.getCustomerName(),
+                customerDto.getAddress(),
+                customerDto.getCustomerNumber(),
+                customerDto.getCustomerId()
+        );
+    }
+
     public ArrayList<CustomerDto> viewAllCustomer() throws SQLException {
         ResultSet ts = CrudUtil.execute("SELECT * FROM Customer");
         ArrayList<CustomerDto> customers = new ArrayList<>();

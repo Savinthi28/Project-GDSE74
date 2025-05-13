@@ -123,7 +123,21 @@ public class CustomerController implements Initializable {
 
     @FXML
     void btnUpdateOnAction(ActionEvent event) {
-
+        int id = Integer.parseInt(txtCustId.getText());
+        CustomerDto customerDto = new CustomerDto(id, txtName.getText(), txtAddress.getText(), txtNumber.getText());
+        try {
+            boolean isSave = CustomerModel.updateCustomer(customerDto);
+            if (isSave) {
+                clearFields();
+                loadTable();
+                new Alert(Alert.AlertType.INFORMATION, "Customer Updated").show();
+            }else {
+                new Alert(Alert.AlertType.ERROR, "Customer Not Updated").show();
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR, "Customer Not Update").show();
+        }
     }
 
     public void tableOnClick(MouseEvent mouseEvent) {

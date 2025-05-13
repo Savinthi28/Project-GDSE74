@@ -122,8 +122,23 @@ public class MilkCollectionController implements Initializable {
     }
 
     @FXML
-    void btnUpdateOnAction(ActionEvent event) {
-
+    public void btnUpdateOnAction(ActionEvent event) {
+        int id = Integer.parseInt(txtId.getText());
+        double quantity = Double.parseDouble(txtQuantity.getText());
+        MilkCollectionDto milkCollectionDto = new MilkCollectionDto(id,txtDate.getText(),quantity,txtBuffaloId.getText());
+        try {
+            boolean isSave = MilkCollectionModel.updateMilkCollection(milkCollectionDto);
+            if (isSave) {
+                clearFields();
+                loadTable();
+                new Alert(Alert.AlertType.INFORMATION,"Milk Collection has been updated successfully").show();
+            }else {
+                new Alert(Alert.AlertType.ERROR,"Milk Collection has not been updated").show();
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Milk Collection has not been update");
+        }
     }
 
     public void tableOnClick(MouseEvent mouseEvent) {

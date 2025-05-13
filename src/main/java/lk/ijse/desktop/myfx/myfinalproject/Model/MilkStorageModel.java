@@ -8,6 +8,18 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class MilkStorageModel {
+
+    public static boolean updateMilkStorage(MilkStorageDto milkStorageDto) throws SQLException {
+        return CrudUtil.execute(
+                "update Milk_Storage set Collection_ID = ?, Storage_Date = ?, Duration = ?, Temperature = ? where Storage_ID = ?",
+                milkStorageDto.getCollectionId(),
+                milkStorageDto.getDate(),
+                milkStorageDto.getDuration(),
+                milkStorageDto.getTemperature(),
+                milkStorageDto.getStorageId()
+        );
+    }
+
     public ArrayList<MilkStorageDto> viewAllMilkStorage() throws SQLException, ClassNotFoundException {
         ResultSet rs = CrudUtil.execute("SELECT * FROM Milk_Storage");
         ArrayList<MilkStorageDto> list = new ArrayList<>();

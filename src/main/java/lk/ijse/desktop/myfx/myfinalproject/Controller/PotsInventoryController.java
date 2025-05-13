@@ -125,8 +125,24 @@ public class PotsInventoryController implements Initializable {
 
 
     @FXML
-    void btnUpdateOnAction(ActionEvent event) {
-
+    public void btnUpdateOnAction(ActionEvent event) {
+        int id = Integer.parseInt(txtId.getText());
+        int quantity = Integer.parseInt(txtQuantity.getText());
+        int potsSize = Integer.parseInt(txtPotsSize.getText());
+        PotsInventoryDto potsInventoryDto = new PotsInventoryDto(id,quantity,potsSize,txtCondition.getText());
+        try {
+            boolean isSave = PotsInventoryModel.updatePotsInventory(potsInventoryDto);
+            if (isSave) {
+                clearFields();
+                loadTable();
+                new Alert(Alert.AlertType.INFORMATION, "Pots updated successfully").show();
+            }else {
+                new Alert(Alert.AlertType.ERROR, "Pots not updated").show();
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR, "Pots not update").show();
+        }
     }
 
     public void tableOnClick(MouseEvent mouseEvent) {

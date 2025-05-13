@@ -61,7 +61,7 @@ public class PaymentController implements Initializable {
 
     @FXML
     void btnClearOnAction(ActionEvent event) {
-
+        clearFields();
     }
 
     @FXML
@@ -141,8 +141,25 @@ public class PaymentController implements Initializable {
     }
 
     @FXML
-    void btnUpdateOnAction(ActionEvent event) {
-        clearFields();
+    public void btnUpdateOnAction(ActionEvent event) {
+        int paymentId = Integer.parseInt(txtPaymentId.getText());
+        int orderId = Integer.parseInt(txtOrderId.getText());
+        int customerId = Integer.parseInt(txtCustomerId.getText());
+        double amount = Double.parseDouble(txtAmount.getText());
+        PaymentDto paymentDto = new PaymentDto(paymentId,orderId,customerId,txtDate.getText(),txtPaymentMethod.getText(),amount);
+        try {
+            boolean isSave = PaymentModel.updatePayment(paymentDto);
+            if (isSave) {
+                clearFields();
+                loadTable();
+                new Alert(Alert.AlertType.INFORMATION, "Payment Updated Successfully").show();
+            }else {
+                new Alert(Alert.AlertType.ERROR, "Payment Not Updated").show();
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR, "Payment Not Updated").show();
+        }
     }
 
     public void tableOnClick(MouseEvent mouseEvent) {

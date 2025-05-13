@@ -8,6 +8,18 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class ReportsModel {
+
+    public static boolean updateReports(ReportsDto reportsDto) throws SQLException {
+        return CrudUtil.execute(
+                "update Reports set Report_date = ?, User_ID = ?, Report_Type = ?, Generate_By = ? where Report_ID = ?",
+                reportsDto.getDate(),
+                reportsDto.getUserId(),
+                reportsDto.getReportType(),
+                reportsDto.getGenerateBy(),
+                reportsDto.getReportId()
+        );
+    }
+
     public ArrayList<ReportsDto> viewAllReports() throws SQLException , ClassNotFoundException {
         ResultSet rs = CrudUtil.execute("SELECT * FROM Reports");
         ArrayList<ReportsDto> reports = new ArrayList<>();

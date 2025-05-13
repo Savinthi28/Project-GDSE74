@@ -137,8 +137,25 @@ public class RawMaterialPurchaseController implements Initializable {
     }
 
     @FXML
-    void btnUpdateOnAction(ActionEvent event) {
-
+    public void btnUpdateOnAction(ActionEvent event) {
+        int purchaseId=Integer.parseInt(txtPurchaseId.getText());
+        int supplierId=Integer.parseInt(txtSupplierId.getText());
+        int quantity=Integer.parseInt(txtQuantity.getText());
+        double price=Double.parseDouble(txtPrice.getText());
+        RawMaterialPurchaseDto rawMaterialPurchaseDto = new RawMaterialPurchaseDto(purchaseId,supplierId,txtMaterialName.getText(),txtDate.getText(),quantity,price);
+        try {
+            boolean isSave = RawMaterialPurchaseModel.updateRawMaterialPurchase(rawMaterialPurchaseDto);
+            if(isSave){
+                clearFields();
+                loadTable();
+                new Alert(Alert.AlertType.INFORMATION,"Updated Successfully", ButtonType.OK).show();
+            }else {
+                new Alert(Alert.AlertType.ERROR, "Update Failed", ButtonType.OK).show();
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR, "Update Failed", ButtonType.OK).show();
+        }
     }
 
     public void tableOnClick(MouseEvent mouseEvent) {

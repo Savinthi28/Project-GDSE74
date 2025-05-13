@@ -132,7 +132,23 @@ public class DailyExpenseController implements Initializable {
 
     @FXML
     void btnUpdateOnAction(ActionEvent event) {
-
+        int id = Integer.parseInt(txtId.getText());
+        double amount = Double.parseDouble(txtAmount.getText());
+        boolean expense = Boolean.parseBoolean(txtExpense.getText());
+        DailyExpenseDto dailyExpenseDto = new DailyExpenseDto(id,txtDate.getText(),txtDescription.getText(),amount,expense);
+        try {
+            boolean isSave = DailyExpenseModel.updateDailyExpense(dailyExpenseDto);
+            if (isSave) {
+                clearFields();
+                loadTable();
+                new Alert(Alert.AlertType.INFORMATION,"Updated Successfully").show();
+            }else {
+                new Alert(Alert.AlertType.ERROR,"Failed to update daily expense").show();
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR,"Failed to add daily expense").show();
+        }
     }
 
     public void tableOnClick(MouseEvent mouseEvent) {

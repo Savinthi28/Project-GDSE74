@@ -8,6 +8,20 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class QualityCheckModel {
+
+    public static boolean updateQualityCheck(QualityCheckDto qualityCheckDto) throws SQLException {
+        return CrudUtil.execute(
+                "update Quality_Check set Collection_ID = ?, Appearance = ?, Fat_Content = ?, Temperature = ?, Check_Date = ?, Notes = ? where Check_ID = ?",
+                qualityCheckDto.getCollectionId(),
+                qualityCheckDto.getAppearance(),
+                qualityCheckDto.getFatContent(),
+                qualityCheckDto.getTemperature(),
+                qualityCheckDto.getDate(),
+                qualityCheckDto.getNotes(),
+                qualityCheckDto.getCheckId()
+        );
+    }
+
     public ArrayList<QualityCheckDto> viewAllQualityCheck() throws SQLException, ClassNotFoundException {
         ResultSet rs = CrudUtil.execute("SELECT * FROM Quality_Check");
         ArrayList<QualityCheckDto> qualityCheck = new ArrayList<>();

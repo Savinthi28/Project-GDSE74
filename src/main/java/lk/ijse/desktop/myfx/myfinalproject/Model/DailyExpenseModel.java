@@ -8,6 +8,18 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class DailyExpenseModel {
+
+    public static boolean updateDailyExpense(DailyExpenseDto dailyExpenseDto) throws SQLException {
+        return CrudUtil.execute(
+                "update Expense set Expense_Date = ?, Description = ?, Amount = ?, Daily_Expense = ? where Expense_Id = ?",
+                dailyExpenseDto.getDate(),
+                dailyExpenseDto.getDescription(),
+                dailyExpenseDto.getAmount(),
+                dailyExpenseDto.isDailyExpense(),
+                dailyExpenseDto.getId()
+        );
+    }
+
     public ArrayList<DailyExpenseDto> viewAllDailyExpense() throws SQLException {
         ResultSet rs = CrudUtil.execute("SELECT * FROM Expense");
         ArrayList<DailyExpenseDto> dailyExpenseDto = new ArrayList<>();

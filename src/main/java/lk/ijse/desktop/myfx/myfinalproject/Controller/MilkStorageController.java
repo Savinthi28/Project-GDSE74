@@ -133,7 +133,24 @@ private void loadTable() {
 }
     @FXML
     void btnUpdateOnAction(ActionEvent event) {
-
+        int storageId = Integer.parseInt(txtStorageId.getText());
+        int collectionId = Integer.parseInt(txtCollectionId.getText());
+        Time duration = Time.valueOf(txtDuration.getText());
+        double temperature = Double.parseDouble(txtTemperature.getText());
+        MilkStorageDto milkStorageDto = new MilkStorageDto(storageId,collectionId,txtDate.getText(),duration,temperature);
+        try {
+            boolean isSave = MilkStorageModel.updateMilkStorage(milkStorageDto);
+            if (isSave) {
+                clearField();
+                loadTable();
+                new Alert(Alert.AlertType.INFORMATION, "Milk Storage has been updated successfully").show();
+            }else {
+                new Alert(Alert.AlertType.ERROR, "Milk Storage has not been updated").show();
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR, "Milk Storage has not been updated").show();
+        }
     }
 
     public void tableOnClick(MouseEvent mouseEvent) {

@@ -131,8 +131,24 @@ public class StockController implements Initializable {
     }
 
     @FXML
-    void btnUpdateOnAction(ActionEvent event) {
-
+    public void btnUpdateOnAction(ActionEvent event) {
+        int stockId = Integer.parseInt(txtStockId.getText());
+        int productionId = Integer.parseInt(txtProdctionId.getText());
+        int quantity = Integer.parseInt(txtQuantity.getText());
+        StockDto stockDto = new StockDto(stockId,productionId,txtDate.getText(),quantity,txtStockType.getText());
+        try {
+            boolean isSave = StockModel.updateSrock(stockDto);
+            if (isSave) {
+                clearFields();
+                loadTable();
+                new Alert(Alert.AlertType.INFORMATION,"Stock updated successfully").show();
+            }else {
+                new Alert(Alert.AlertType.ERROR,"Something went wrong").show();
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR, "Something went wrong").show();
+        }
     }
 
     public void tableOnClick(MouseEvent mouseEvent) {

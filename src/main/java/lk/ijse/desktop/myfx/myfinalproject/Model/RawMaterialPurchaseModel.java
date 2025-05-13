@@ -8,6 +8,19 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class RawMaterialPurchaseModel {
+
+    public static boolean updateRawMaterialPurchase(RawMaterialPurchaseDto rawMaterialPurchaseDto) throws SQLException {
+        return CrudUtil.execute(
+                "update Raw_Material_Purchase set Supplier_ID = ?, Material_Name = ?, Purchase_Date = ?, Quantity = ?, Unit_Price = ? where Purchase_ID = ?",
+                rawMaterialPurchaseDto.getSupplierId(),
+                rawMaterialPurchaseDto.getMaterialName(),
+                rawMaterialPurchaseDto.getDate(),
+                rawMaterialPurchaseDto.getQuantity(),
+                rawMaterialPurchaseDto.getUnitPrice(),
+                rawMaterialPurchaseDto.getPurchaseId()
+        );
+    }
+
     public ArrayList<RawMaterialPurchaseDto> viewAllRawMaterialPurchase()throws SQLException, ClassNotFoundException {
         ResultSet rs = CrudUtil.execute("SELECT * FROM Raw_Material_Purchase");
         ArrayList<RawMaterialPurchaseDto> rawMaterialPurchase = new ArrayList<>();

@@ -8,6 +8,16 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class UserModel {
+
+    public static boolean updateUser(UserDto userDto) throws SQLException {
+        return CrudUtil.execute(
+                "update User set User_Name = ?, Password = ? where User_ID = ?",
+                userDto.getUserName(),
+                userDto.getPassword(),
+                userDto.getId()
+        );
+    }
+
     public ArrayList<UserDto> viewAllUser() throws ClassNotFoundException, SQLException {
        ResultSet rs = CrudUtil.execute("SELECT * FROM User");
         ArrayList<UserDto> user = new ArrayList<>();

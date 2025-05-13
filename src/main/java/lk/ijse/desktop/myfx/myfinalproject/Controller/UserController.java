@@ -48,7 +48,7 @@ public class UserController implements Initializable {
     }
 
     @FXML
-    void btnDeleteOnAction(ActionEvent event) {
+    public void btnDeleteOnAction(ActionEvent event) {
         int id = Integer.parseInt(txtId.getText());
         try {
             boolean isDelete = new UserModel().deleteUser(new UserDto(id));
@@ -116,8 +116,22 @@ public class UserController implements Initializable {
     }
 
     @FXML
-    void btnUpdateOnAction(ActionEvent event) {
-
+    public void btnUpdateOnAction(ActionEvent event) {
+        int id = Integer.parseInt(txtId.getText());
+        UserDto userDto = new UserDto(id, txtName.getText(), txtPassword.getText());
+        try {
+            boolean isSave = UserModel.updateUser(userDto);
+            if (isSave) {
+                clearFields();
+                loadTable();
+                new Alert(Alert.AlertType.INFORMATION, "User has been updated successfully").show();
+            }else {
+                new Alert(Alert.AlertType.ERROR, "User has not been updated").show();
+            }
+        }catch (Exception e) {
+            e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR, "User has not been updated").show();
+        }
     }
 
     public void tableOnClick(MouseEvent mouseEvent) {

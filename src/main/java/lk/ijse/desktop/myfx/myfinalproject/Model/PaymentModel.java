@@ -8,6 +8,19 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class PaymentModel {
+
+    public static boolean updatePayment(PaymentDto paymentDto) throws SQLException {
+        return CrudUtil.execute(
+                "update Payment set Order_ID = ?, Customer_ID = ?, Payment_Date = ?, Payment_Method = ?, Payment_Amount = ? where Payment_ID = ?",
+                paymentDto.getOrderId(),
+                paymentDto.getCustomerId(),
+                paymentDto.getDate(),
+                paymentDto.getPaymentMethod(),
+                paymentDto.getAmount(),
+                paymentDto.getPaymentId()
+        );
+    }
+
     public ArrayList<PaymentDto> viewAllPayment() throws SQLException, ClassNotFoundException {
         ResultSet rs = CrudUtil.execute("SELECT * FROM Payment");
         ArrayList<PaymentDto> payments = new ArrayList<>();

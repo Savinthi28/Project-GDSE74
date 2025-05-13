@@ -142,8 +142,26 @@ public class OrderController implements Initializable {
     }
 
     @FXML
-    void btnUpdateOnAction(ActionEvent event) {
-
+    public void btnUpdateOnAction(ActionEvent event) {
+        int orderId = Integer.parseInt(txtOrderId.getText());
+        int customerId = Integer.parseInt(txtCustomerId.getText());
+        Time time = Time.valueOf(txtTime.getText());
+        int potsSize = Integer.parseInt(txtPotsSize.getText());
+        int quantity = Integer.parseInt(txtQuantity.getText());
+        OrderDto orderDto = new OrderDto(orderId,customerId,txtDate.getText(),time,potsSize,quantity);
+        try {
+            boolean isSave = OrderModel.updateOrder(orderDto);
+            if(isSave){
+                clearFields();
+                loadTable();
+                new Alert(Alert.AlertType.INFORMATION,"Order Updated").show();
+            }else {
+                new Alert(Alert.AlertType.ERROR,"Order Not Updated").show();
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR,"Order Not Updated").show();
+        }
     }
 
     public void tableOnClick(MouseEvent mouseEvent) {

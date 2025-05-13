@@ -149,8 +149,25 @@ public class QualityCheckController implements Initializable {
     }
 
     @FXML
-    void btnUpdateOnAction(ActionEvent event) {
-
+    public void btnUpdateOnAction(ActionEvent event) {
+        int checkId = Integer.parseInt(txtCheckId.getText());
+        int collectionId = Integer.parseInt(txtCollectionId.getText());
+        double fatContent = Double.parseDouble(txtFatContent.getText());
+        double temperature = Double.parseDouble(txtTemperature.getText());
+        QualityCheckDto qualityCheckDto = new QualityCheckDto(checkId,collectionId,txtAppearance.getText(),fatContent,temperature,txtDate.getText(),txtNotes.getText());
+        try {
+            boolean isSave = QualityCheckModel.updateQualityCheck(qualityCheckDto);
+            if (isSave) {
+                clearFields();
+                loadTable();
+                new Alert(Alert.AlertType.INFORMATION, "Quality Check Updated Successfully").show();
+            }else {
+                new Alert(Alert.AlertType.ERROR, "Quality Check Not Updated").show();
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR, "Quality Check Not Updated").show();
+        }
     }
 
     public void tableOnClick(MouseEvent mouseEvent) {

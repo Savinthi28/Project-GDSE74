@@ -130,7 +130,22 @@ public class DailyIncomeController implements Initializable {
 
     @FXML
     void btnUpdateOnAction(ActionEvent event) {
-
+        int id = Integer.parseInt(txtId.getText());
+        double amount = Double.parseDouble(txtAmount.getText());
+        DailyIncomeDto dailyIncomeDto = new DailyIncomeDto(id,txtName.getText(),txtDate.getText(),txtDescription.getText(),amount);
+        try {
+            boolean isSave = DailyIncomeModel.updateDailyIncome(dailyIncomeDto);
+            if (isSave) {
+                clearFilds();
+                loadTable();
+                new Alert(Alert.AlertType.INFORMATION, "Updated Successfully").show();
+            }else {
+                new Alert(Alert.AlertType.ERROR, "Failed to save income").show();
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR, "Failed to save income").show();
+        }
     }
 
     public void tableOnClick(MouseEvent mouseEvent) {
