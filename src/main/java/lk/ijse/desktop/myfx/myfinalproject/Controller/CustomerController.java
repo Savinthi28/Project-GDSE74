@@ -101,6 +101,7 @@ public class CustomerController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         loadTable();
     }
+    
     private void loadTable(){
         colCustId.setCellValueFactory(new PropertyValueFactory<>("customerId"));
         colName.setCellValueFactory(new PropertyValueFactory<>("customerName"));

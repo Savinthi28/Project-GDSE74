@@ -4,13 +4,12 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import lk.ijse.desktop.myfx.myfinalproject.Dto.DailyExpenseDto;
 import lk.ijse.desktop.myfx.myfinalproject.Model.DailyExpenseModel;
 
@@ -19,6 +18,13 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class DailyExpenseController implements Initializable {
+    public AnchorPane getAncDailyExpense(){
+        return null;
+    }
+
+    @FXML
+    private AnchorPane ancDailyExpense;
+    private String path;
 
     @FXML
     private TableColumn<DailyExpenseDto, Double> colAmount;
@@ -160,5 +166,28 @@ public class DailyExpenseController implements Initializable {
             txtAmount.setText(String.valueOf(dailyExpenseDto.getAmount()));
             txtExpense.setText(String.valueOf(dailyExpenseDto.isDailyExpense()));
         }
+    }
+
+    public void btnGoToIncomeOnAction(ActionEvent actionEvent) {
+        navigateTo("/View/DailyIncomeView.fxml");
+    }
+
+    private <Sring> void navigateTo(Sring path){
+        try {
+            ancDailyExpense.getChildren().clear();
+            AnchorPane anchorPane = FXMLLoader.load(getClass().getResource((String) path));
+
+            anchorPane.prefWidthProperty().bind(ancDailyExpense.widthProperty());
+            anchorPane.prefHeightProperty().bind(ancDailyExpense.heightProperty());
+            ancDailyExpense.getChildren().add(anchorPane);
+        }catch (Exception e){
+            e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR, "Something went wrong", ButtonType.OK).show();
+
+        }
+    }
+
+    public void btnGoToExpenseOnAction(ActionEvent actionEvent) {
+        navigateTo("/View/DailyExpenseView.fxml");
     }
 }

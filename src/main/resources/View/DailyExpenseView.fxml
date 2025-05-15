@@ -12,66 +12,81 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="750.0" prefWidth="1400.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.desktop.myfx.myfinalproject.Controller.DailyExpenseController">
+<AnchorPane fx:id="ancDailyExpense" prefHeight="750.0" prefWidth="1400.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.desktop.myfx.myfinalproject.Controller.DailyExpenseController">
    <children>
       <VBox alignment="TOP_CENTER" prefHeight="600.0" prefWidth="800.0" spacing="15.0" style="-fx-background-color: #f5f7fa;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <padding>
             <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
          </padding>
          <children>
-            <Label style="-fx-text-fill: #2d3436;" text="Expense Management">
-               <font>
-                  <Font name="System Bold" size="26.0" />
-               </font>
-               <padding>
-                  <Insets bottom="10.0" />
-               </padding>
-            </Label>
-
-            <VBox alignment="CENTER_LEFT" prefWidth="760.0" spacing="10.0" style="-fx-background-color: white; -fx-background-radius: 5; -fx-padding: 15; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 5, 0, 0, 1);">
-               <HBox alignment="CENTER_LEFT" prefHeight="40.0" spacing="15.0">
-                  <Label alignment="CENTER_RIGHT" minWidth="120.0" style="-fx-text-fill: #4a4a4a;" text="Expense ID">
+            <HBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="760.0" style="-fx-background-color: #2a5058;">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#btnGoToIncomeOnAction" style="-fx-background-color: s;" text="Daily Income" textFill="WHITE">
                      <font>
-                        <Font name="Segoe UI" size="14.0" />
+                        <Font name="System Bold" size="24.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="200.0" right="100.0" />
+                     </HBox.margin>
+                  </Button>
+                  <Button mnemonicParsing="false" onAction="#btnGoToExpenseOnAction" style="-fx-background-color: #68a197;" text="Daily Expense" textFill="WHITE">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                     <font>
+                        <Font name="System Bold Italic" size="24.0" />
+                     </font>
+                  </Button>
+               </children>
+            </HBox>
+
+            <VBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="760.0" spacing="5.0" style="-fx-background-color: white; -fx-background-radius: 5; -fx-padding: 15; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 5, 0, 0, 1);">
+               <HBox alignment="CENTER_LEFT" prefHeight="40.0" spacing="15.0">
+                  <Label alignment="CENTER" prefHeight="38.0" prefWidth="120.0" style="-fx-text-fill: #4a4a4a;" text="Expense ID">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="txtId" prefHeight="35.0" style="-fx-background-radius: 3; -fx-border-color: #e0e0e0; -fx-border-radius: 3;" HBox.hgrow="ALWAYS" />
+                  <TextField fx:id="txtId" style="-fx-background-radius: 3; -fx-border-color: #e0e0e0; -fx-border-radius: 3;" HBox.hgrow="ALWAYS">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin></TextField>
                </HBox>
 
                <HBox alignment="CENTER_LEFT" prefHeight="40.0" spacing="15.0">
-                  <Label alignment="CENTER_RIGHT" minWidth="120.0" style="-fx-text-fill: #4a4a4a;" text="Expense Date">
+                  <Label alignment="CENTER" prefHeight="38.0" prefWidth="120.0" style="-fx-text-fill: #4a4a4a;" text="Expense Date">
                      <font>
-                        <Font name="Segoe UI" size="14.0" />
+                        <Font name="System Bold Italic" size="18.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="txtDate" prefHeight="35.0" style="-fx-background-radius: 3; -fx-border-color: #e0e0e0; -fx-border-radius: 3;" HBox.hgrow="ALWAYS" />
+                  <TextField fx:id="txtDate" style="-fx-background-radius: 3; -fx-border-color: #e0e0e0; -fx-border-radius: 3;" HBox.hgrow="ALWAYS" />
                </HBox>
 
                <HBox alignment="CENTER_LEFT" prefHeight="40.0" spacing="15.0">
-                  <Label alignment="CENTER_RIGHT" minWidth="120.0" style="-fx-text-fill: #4a4a4a;" text="Description">
+                  <Label alignment="CENTER" prefHeight="38.0" prefWidth="120.0" style="-fx-text-fill: #4a4a4a;" text="Description">
                      <font>
-                        <Font name="Segoe UI" size="14.0" />
+                        <Font name="System Bold" size="18.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="txtDescription" prefHeight="35.0" style="-fx-background-radius: 3; -fx-border-color: #e0e0e0; -fx-border-radius: 3;" HBox.hgrow="ALWAYS" />
+                  <TextField fx:id="txtDescription" style="-fx-background-radius: 3; -fx-border-color: #e0e0e0; -fx-border-radius: 3;" HBox.hgrow="ALWAYS" />
                </HBox>
 
                <HBox alignment="CENTER_LEFT" prefHeight="40.0" spacing="15.0">
-                  <Label alignment="CENTER_RIGHT" minWidth="120.0" style="-fx-text-fill: #4a4a4a;" text="Amount">
+                  <Label alignment="CENTER" prefHeight="38.0" prefWidth="120.0" style="-fx-text-fill: #4a4a4a;" text="Amount">
                      <font>
-                        <Font name="Segoe UI" size="14.0" />
+                        <Font name="System Bold Italic" size="18.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="txtAmount" prefHeight="35.0" style="-fx-background-radius: 3; -fx-border-color: #e0e0e0; -fx-border-radius: 3;" HBox.hgrow="ALWAYS" />
+                  <TextField fx:id="txtAmount" style="-fx-background-radius: 3; -fx-border-color: #e0e0e0; -fx-border-radius: 3;" HBox.hgrow="ALWAYS" />
                </HBox>
 
                <HBox alignment="CENTER_LEFT" prefHeight="40.0" spacing="15.0">
-                  <Label alignment="CENTER_RIGHT" minWidth="120.0" style="-fx-text-fill: #4a4a4a;" text="Daily Expense">
+                  <Label alignment="CENTER" prefHeight="38.0" prefWidth="120.0" style="-fx-text-fill: #4a4a4a;" text="Daily Expense">
                      <font>
-                        <Font name="Segoe UI" size="14.0" />
+                        <Font name="System Bold" size="18.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="txtExpense" prefHeight="35.0" style="-fx-background-radius: 3; -fx-border-color: #e0e0e0; -fx-border-radius: 3;" HBox.hgrow="ALWAYS" />
+                  <TextField fx:id="txtExpense" style="-fx-background-radius: 3; -fx-border-color: #e0e0e0; -fx-border-radius: 3;" HBox.hgrow="ALWAYS" />
                </HBox>
             </VBox>
 

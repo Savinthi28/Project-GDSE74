@@ -1,11 +1,187 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.desktop.myfx.myfinalproject.Controller.DashboardOverView">
+<AnchorPane prefHeight="900.0" prefWidth="962.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.desktop.myfx.myfinalproject.Controller.DashboardOverController">
    <children>
-      <VBox prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+      <ScrollPane fitToWidth="true" prefHeight="900.0" prefWidth="962.0">
+         <content>
+            <VBox prefHeight="900.0" prefWidth="962.0" spacing="10">
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+
+               <!-- Header -->
+               <HBox alignment="CENTER_LEFT" prefHeight="80.0" prefWidth="942.0" spacing="10" style="-fx-background-color: #f8f9fa;">
+                  <children>
+                     <VBox alignment="CENTER_LEFT" spacing="5">
+                        <children>
+                           <Label style="-fx-font-weight: bold; -fx-font-size: 20;" text="Dashboard Overview">
+                              <font>
+                                 <Font name="System Bold" size="20.0" />
+                              </font>
+                           </Label>
+                           <Label style="-fx-text-fill: #6c757d;" text="Welcome back, Admin" />
+                        </children>
+                     </VBox>
+                  </children>
+               </HBox>
+
+               <!-- Stats Cards -->
+               <HBox alignment="CENTER" prefHeight="150.0" prefWidth="942.0" spacing="15">
+                  <children>
+                     <!-- Today's Milling -->
+                     <VBox alignment="CENTER" prefHeight="150.0" prefWidth="230.0" spacing="5" style="-fx-background-color: #e9f5ff; -fx-background-radius: 10; -fx-padding: 15;">
+                        <children>
+                           <Label style="-fx-text-fill: #495057; -fx-font-size: 14;" text="Today's Milling" />
+                           <Label style="-fx-font-weight: bold; -fx-font-size: 24;" text="2500 Kg">
+                              <font>
+                                 <Font name="System Bold" size="24.0" />
+                              </font>
+                           </Label>
+                           <Label style="-fx-text-fill: #28a745; -fx-font-size: 12;" text="15% From Yesterday" />
+                        </children>
+                     </VBox>
+
+                     <!-- Inventory Value -->
+                     <VBox alignment="CENTER" prefHeight="150.0" prefWidth="230.0" spacing="5" style="-fx-background-color: #fff8e1; -fx-background-radius: 10; -fx-padding: 15;">
+                        <children>
+                           <Label style="-fx-text-fill: #495057; -fx-font-size: 14;" text="Inventory Value" />
+                           <Label style="-fx-font-weight: bold; -fx-font-size: 24;" text="450 000 LKR">
+                              <font>
+                                 <Font name="System Bold" size="24.0" />
+                              </font>
+                           </Label>
+                           <Label style="-fx-text-fill: #6c757d; -fx-font-size: 12;" text="1,200 Bags in stock" />
+                        </children>
+                     </VBox>
+
+                     <!-- Pending Orders -->
+                     <VBox alignment="CENTER" prefHeight="150.0" prefWidth="230.0" spacing="5" style="-fx-background-color: #ffe8e8; -fx-background-radius: 10; -fx-padding: 15;">
+                        <children>
+                           <Label style="-fx-text-fill: #495057; -fx-font-size: 14;" text="Pending Orders" />
+                           <Label style="-fx-font-weight: bold; -fx-font-size: 24;" text="18">
+                              <font>
+                                 <Font name="System Bold" size="24.0" />
+                              </font>
+                           </Label>
+                           <Label style="-fx-text-fill: #6c757d; -fx-font-size: 12;" text="Worth 400 000 LKR" />
+                        </children>
+                     </VBox>
+
+                     <!-- Today's Revenue -->
+                     <VBox alignment="CENTER" prefHeight="150.0" prefWidth="230.0" spacing="5" style="-fx-background-color: #e8f5e9; -fx-background-radius: 10; -fx-padding: 15;">
+                        <children>
+                           <Label style="-fx-text-fill: #495057; -fx-font-size: 14;" text="Today's Revenue" />
+                           <Label style="-fx-font-weight: bold; -fx-font-size: 24;" text="120 000 LKR">
+                              <font>
+                                 <Font name="System Bold" size="24.0" />
+                              </font>
+                           </Label>
+                           <Label style="-fx-text-fill: #6c757d; -fx-font-size: 12;" text="8 orders completed" />
+                        </children>
+                     </VBox>
+                  </children>
+               </HBox>
+
+               <!-- Charts Row -->
+               <HBox prefHeight="300.0" prefWidth="942.0" spacing="15">
+                  <children>
+                     <!-- Milling Timeline Chart -->
+                     <VBox prefHeight="300.0" prefWidth="600.0" spacing="5" style="-fx-background-color: #ffffff; -fx-background-radius: 10; -fx-padding: 15;">
+                        <children>
+                           <Label style="-fx-font-weight: bold;" text="Milling Process Timeline">
+                              <font>
+                                 <Font name="System Bold" size="16.0" />
+                              </font>
+                           </Label>
+                           <Separator prefWidth="570.0" />
+                           <LineChart prefHeight="250.0" prefWidth="570.0">
+                              <xAxis>
+                                 <NumberAxis side="BOTTOM" />
+                              </xAxis>
+                              <yAxis>
+                                 <NumberAxis side="LEFT" />
+                              </yAxis>
+                           </LineChart>
+                        </children>
+                     </VBox>
+
+                     <!-- Stock Distribution Chart -->
+                     <VBox prefHeight="300.0" prefWidth="327.0" spacing="5" style="-fx-background-color: #ffffff; -fx-background-radius: 10; -fx-padding: 15;">
+                        <children>
+                           <Label style="-fx-font-weight: bold;" text="Stock Distribution">
+                              <font>
+                                 <Font name="System Bold" size="16.0" />
+                              </font>
+                           </Label>
+                           <Separator prefWidth="297.0" />
+                           <PieChart prefHeight="250.0" prefWidth="297.0" />
+                        </children>
+                     </VBox>
+                  </children>
+               </HBox>
+
+               <!-- Bottom Row -->
+               <HBox prefHeight="300.0" prefWidth="942.0" spacing="15">
+                  <children>
+                     <!-- Recent Activities -->
+                     <VBox prefHeight="300.0" prefWidth="450.0" spacing="5" style="-fx-background-color: #ffffff; -fx-background-radius: 10; -fx-padding: 15;">
+                        <children>
+                           <Label style="-fx-font-weight: bold;" text="Recent Activities">
+                              <font>
+                                 <Font name="System Bold" size="16.0" />
+                              </font>
+                           </Label>
+                           <Separator prefWidth="420.0" />
+                           <TableView prefHeight="250.0" prefWidth="420.0">
+                              <columns>
+                                 <TableColumn prefWidth="280.0" text="Activity" />
+                                 <TableColumn prefWidth="140.0" text="Time" />
+                              </columns>
+                              <items>
+                                 <!-- Sample data would be added programmatically -->
+                              </items>
+                           </TableView>
+                        </children>
+                     </VBox>
+
+                     <!-- Quality Metrics -->
+                     <VBox prefHeight="300.0" prefWidth="477.0" spacing="5" style="-fx-background-color: #ffffff; -fx-background-radius: 10; -fx-padding: 15;">
+                        <children>
+                           <Label style="-fx-font-weight: bold;" text="Quality Metrics">
+                              <font>
+                                 <Font name="System Bold" size="16.0" />
+                              </font>
+                           </Label>
+                           <Separator prefWidth="447.0" />
+                           <TableView prefHeight="250.0" prefWidth="447.0">
+                              <columns>
+                                 <TableColumn prefWidth="223.0" text="Metric" />
+                                 <TableColumn prefWidth="224.0" text="Value" />
+                              </columns>
+                              <items>
+                                 <!-- Sample data would be added programmatically -->
+                              </items>
+                           </TableView>
+                        </children>
+                     </VBox>
+                  </children>
+               </HBox>
+            </VBox>
+         </content>
+      </ScrollPane>
    </children>
 </AnchorPane>

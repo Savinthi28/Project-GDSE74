@@ -4,13 +4,12 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import lk.ijse.desktop.myfx.myfinalproject.Dto.MilkCollectionDto;
 import lk.ijse.desktop.myfx.myfinalproject.Model.MilkCollectionModel;
 
@@ -19,10 +18,19 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class MilkCollectionController implements Initializable {
+
+    public AnchorPane getAncMilkCollection() {
+        return null;
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         loadTable();
     }
+
+    @FXML
+    private AnchorPane ancMilkCollection;
+    private String path;
 
     @FXML
     private TableColumn<MilkCollectionDto, String> colBuffaloId;
@@ -50,7 +58,25 @@ public class MilkCollectionController implements Initializable {
 
     @FXML
     private TextField txtQuantity;
+    @FXML
+    public void btnGoToMilkCollectionOnAction(ActionEvent actionEvent) {
+        navigateTo("/View/MilkCollectionView.fxml");
+    }
 
+        private <Sring> void navigateTo(Sring path){
+        try {
+            ancMilkCollection.getChildren().clear();
+            AnchorPane anchorPane = FXMLLoader.load(getClass().getResource((String) path));
+
+            anchorPane.prefWidthProperty().bind(ancMilkCollection.widthProperty());
+            anchorPane.prefHeightProperty().bind(ancMilkCollection.heightProperty());
+            ancMilkCollection.getChildren().add(anchorPane);
+        }catch (Exception e){
+            e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR, "Something went wrong", ButtonType.OK).show();
+
+        }
+    }
     @FXML
     void btnClearOnAction(ActionEvent event) {
         clearFields();
@@ -63,14 +89,14 @@ public class MilkCollectionController implements Initializable {
             boolean isDelete = new MilkCollectionModel().deleteMikCollection(new MilkCollectionDto(id));
             if (isDelete) {
                 clearFields();
-                loadTable(); 
-                new Alert(Alert.AlertType.INFORMATION,"MikCollection deleted successfully").show();
-            }else {
-                new Alert(Alert.AlertType.ERROR,"MikCollection deleted Faield").show();
+                loadTable();
+                new Alert(Alert.AlertType.INFORMATION, "MikCollection deleted successfully").show();
+            } else {
+                new Alert(Alert.AlertType.ERROR, "MikCollection deleted Faield").show();
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
-            new Alert(Alert.AlertType.ERROR,"MikCollection deleted Faield").show();
+            new Alert(Alert.AlertType.ERROR, "MikCollection deleted Faield").show();
         }
     }
 
@@ -78,7 +104,7 @@ public class MilkCollectionController implements Initializable {
     public void btnSaveOnAction(ActionEvent event) {
         int id = Integer.parseInt(txtId.getText());
         double quantity = Double.parseDouble(txtQuantity.getText());
-        MilkCollectionDto milkCollectionDto = new MilkCollectionDto(id,txtDate.getText(),quantity,txtBuffaloId.getText());
+        MilkCollectionDto milkCollectionDto = new MilkCollectionDto(id, txtDate.getText(), quantity, txtBuffaloId.getText());
 
         try {
             MilkCollectionModel milkCollectionModel = new MilkCollectionModel();
@@ -86,22 +112,24 @@ public class MilkCollectionController implements Initializable {
             if (isSave) {
                 clearFields();
                 new Alert(Alert.AlertType.INFORMATION, "Milk Collection has been saved successfully").show();
-            }else {
+            } else {
                 new Alert(Alert.AlertType.ERROR, "Milk Collection has not been saved").show();
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             Alert alert = new Alert(Alert.AlertType.ERROR, "Milk Collection has not been saved");
         }
     }
-    private void clearFields(){
+
+    private void clearFields() {
         loadTable();
         txtId.setText("");
         txtDate.setText("");
         txtQuantity.setText("");
         txtBuffaloId.setText("");
     }
-    private void loadTable(){
+
+    private void loadTable() {
         colId.setCellValueFactory(new PropertyValueFactory<>("id"));
         colDate.setCellValueFactory(new PropertyValueFactory<>("date"));
         colQuantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
@@ -113,10 +141,10 @@ public class MilkCollectionController implements Initializable {
             if (milkCollectionDtos != null) {
                 ObservableList<MilkCollectionDto> observableList = FXCollections.observableArrayList(milkCollectionDtos);
                 tblMilkCollection.setItems(observableList);
-            }else {
+            } else {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -125,17 +153,17 @@ public class MilkCollectionController implements Initializable {
     public void btnUpdateOnAction(ActionEvent event) {
         int id = Integer.parseInt(txtId.getText());
         double quantity = Double.parseDouble(txtQuantity.getText());
-        MilkCollectionDto milkCollectionDto = new MilkCollectionDto(id,txtDate.getText(),quantity,txtBuffaloId.getText());
+        MilkCollectionDto milkCollectionDto = new MilkCollectionDto(id, txtDate.getText(), quantity, txtBuffaloId.getText());
         try {
             boolean isSave = MilkCollectionModel.updateMilkCollection(milkCollectionDto);
             if (isSave) {
                 clearFields();
                 loadTable();
-                new Alert(Alert.AlertType.INFORMATION,"Milk Collection has been updated successfully").show();
-            }else {
-                new Alert(Alert.AlertType.ERROR,"Milk Collection has not been updated").show();
+                new Alert(Alert.AlertType.INFORMATION, "Milk Collection has been updated successfully").show();
+            } else {
+                new Alert(Alert.AlertType.ERROR, "Milk Collection has not been updated").show();
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             Alert alert = new Alert(Alert.AlertType.ERROR, "Milk Collection has not been update");
         }
@@ -150,4 +178,13 @@ public class MilkCollectionController implements Initializable {
             txtBuffaloId.setText(milkCollectionDto.getBuffaloId());
         }
     }
+
+    public void btnGoToMilkStorageOnAction(ActionEvent actionEvent) {
+        navigateTo("/View/MilkStorageView.fxml");
+    }
+
+    public void btnGoToQualityCheckOnAction(ActionEvent actionEvent) {
+        navigateTo("/View/QualityCheckView.fxml");
+    }
 }
+

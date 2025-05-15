@@ -4,13 +4,12 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import lk.ijse.desktop.myfx.myfinalproject.Dto.MilkStorageDto;
 import lk.ijse.desktop.myfx.myfinalproject.Model.MilkStorageModel;
 
@@ -20,11 +19,19 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class MilkStorageController implements Initializable {
+
+    public AnchorPane getAncMilkStorage(){
+        return null;
+    }
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         loadTable();
     }
 
+
+    @FXML
+    private AnchorPane ancMilkStorage;
+    private String path;
     @FXML
     private TableColumn<MilkStorageDto, Integer> colCollectionId;
 
@@ -162,5 +169,30 @@ private void loadTable() {
             txtDuration.setText(String.valueOf(milkStorageDto.getDuration()));
             txtTemperature.setText(String.valueOf(milkStorageDto.getTemperature()));
         }
+    }
+
+    public void btnGoToMilkCollectionOnAction(ActionEvent actionEvent) {
+        navigateTo("/View/MilkCollectionView.fxml");
+    }
+    private <Sring> void navigateTo(Sring path){
+        try {
+            ancMilkStorage.getChildren().clear();
+            AnchorPane anchorPane = FXMLLoader.load(getClass().getResource((String) path));
+
+            anchorPane.prefWidthProperty().bind(ancMilkStorage.widthProperty());
+            anchorPane.prefHeightProperty().bind(ancMilkStorage.heightProperty());
+            ancMilkStorage.getChildren().add(anchorPane);
+        }catch (Exception e){
+            e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR, "Something went wrong", ButtonType.OK).show();
+
+        }
+    }
+    public void btnGoToMilkStorageOnAction(ActionEvent actionEvent) {
+        navigateTo("/View/MilkStorageView.fxml");
+    }
+
+    public void btnGoToQualityCheckOnAction(ActionEvent actionEvent) {
+        navigateTo("/View/QualityCheckView.fxml");
     }
 }

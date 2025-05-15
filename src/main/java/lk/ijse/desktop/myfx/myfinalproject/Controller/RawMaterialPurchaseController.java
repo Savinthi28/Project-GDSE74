@@ -4,10 +4,12 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import lk.ijse.desktop.myfx.myfinalproject.Dto.RawMaterialPurchaseDto;
 import lk.ijse.desktop.myfx.myfinalproject.Model.RawMaterialPurchaseModel;
 
@@ -16,10 +18,17 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class RawMaterialPurchaseController implements Initializable {
+    public AnchorPane getAncRawMaterialPurchase() {
+        return null;
+    }
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         loadTable();
     }
+
+    @FXML
+    private AnchorPane ancRawMaterial;
+    private String path;
 
     @FXML
     private TableColumn<RawMaterialPurchaseDto, String> colDate;
@@ -168,5 +177,36 @@ public class RawMaterialPurchaseController implements Initializable {
             txtQuantity.setText(String.valueOf(rawMaterialPurchaseDto.getQuantity()));
             txtPrice.setText(String.valueOf(rawMaterialPurchaseDto.getUnitPrice()));
         }
+    }
+
+    public void btnGoToSupplierOnAction(ActionEvent actionEvent) {
+        navigateTo("/View/SupplierView.fxml");
+    }
+
+    private <Sring> void navigateTo(Sring path){
+        try {
+            ancRawMaterial.getChildren().clear();
+            AnchorPane anchorPane = FXMLLoader.load(getClass().getResource((String) path));
+
+            anchorPane.prefWidthProperty().bind(ancRawMaterial.widthProperty());
+            anchorPane.prefHeightProperty().bind(ancRawMaterial.heightProperty());
+            ancRawMaterial.getChildren().add(anchorPane);
+        }catch (Exception e){
+            e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR, "Something went wrong", ButtonType.OK).show();
+
+        }
+    }
+
+    public void btnGoToPotsInventoryOnAction(ActionEvent actionEvent) {
+        navigateTo("/View/PotsInventoryView.fxml");
+    }
+
+    public void btnGoToPotsPurchaseOnAction(ActionEvent actionEvent) {
+        navigateTo("/View/PotsPurchaseView.fxml");
+    }
+
+    public void btnGoToRawMaterialOnAction(ActionEvent actionEvent) {
+        navigateTo("/View/RawMaterialPurchaseView.fxml");
     }
 }

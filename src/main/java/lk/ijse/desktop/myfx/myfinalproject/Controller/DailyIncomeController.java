@@ -4,10 +4,12 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import lk.ijse.desktop.myfx.myfinalproject.Dto.DailyIncomeDto;
 import lk.ijse.desktop.myfx.myfinalproject.Model.DailyIncomeModel;
 import lombok.SneakyThrows;
@@ -17,6 +19,13 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class DailyIncomeController implements Initializable {
+    public AnchorPane getAncDailyIncome(){
+        return null;
+    }
+
+    @FXML
+    private AnchorPane ancDailyIncome;
+    private String path;
 
     @FXML
     private TableColumn<DailyIncomeDto, Double> colAmount;
@@ -157,5 +166,28 @@ public class DailyIncomeController implements Initializable {
             txtDescription.setText(dailyIncomeDto.getDescription());
             txtAmount.setText(String.valueOf(dailyIncomeDto.getAmount()));
         }
+    }
+
+    public void btnGoToIncomeOnAction(ActionEvent actionEvent) {
+        navigateTo("/View/DailyIncomeView.fxml");
+    }
+
+    private <Sring> void navigateTo(Sring path){
+        try {
+            ancDailyIncome.getChildren().clear();
+            AnchorPane anchorPane = FXMLLoader.load(getClass().getResource((String) path));
+
+            anchorPane.prefWidthProperty().bind(ancDailyIncome.widthProperty());
+            anchorPane.prefHeightProperty().bind(ancDailyIncome.heightProperty());
+            ancDailyIncome.getChildren().add(anchorPane);
+        }catch (Exception e){
+            e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR, "Something went wrong", ButtonType.OK).show();
+
+        }
+    }
+
+    public void btnGoToExpenseOnAction(ActionEvent actionEvent) {
+        navigateTo("/View/DailyExpenseView.fxml");
     }
 }

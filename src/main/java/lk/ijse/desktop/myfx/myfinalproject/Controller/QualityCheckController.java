@@ -4,13 +4,12 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import lk.ijse.desktop.myfx.myfinalproject.Dto.QualityCheckDto;
 import lk.ijse.desktop.myfx.myfinalproject.Model.QualityCheckModel;
 
@@ -20,10 +19,19 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class QualityCheckController implements Initializable {
+
+    public AnchorPane getAncQualityCheck(){
+        return null;
+    }
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         loadTable();
     }
+
+
+    @FXML
+    private AnchorPane ancQualityCheck;
+    private String path;
 
     @FXML
     private TableColumn<QualityCheckDto, String> colAppearance;
@@ -181,5 +189,31 @@ public class QualityCheckController implements Initializable {
             txtDate.setText(String.valueOf(qualityCheckDto.getDate()));
             txtNotes.setText(String.valueOf(qualityCheckDto.getNotes()));
         }
+    }
+
+    public void btnGoToMilkCollectionOnAction(ActionEvent actionEvent) {
+        navigateTo("/View/MilkCollectionView.fxml");
+    }
+
+    private <Sring> void navigateTo(Sring path){
+        try {
+            ancQualityCheck.getChildren().clear();
+            AnchorPane anchorPane = FXMLLoader.load(getClass().getResource((String) path));
+
+            anchorPane.prefWidthProperty().bind(ancQualityCheck.widthProperty());
+            anchorPane.prefHeightProperty().bind(ancQualityCheck.heightProperty());
+            ancQualityCheck.getChildren().add(anchorPane);
+        }catch (Exception e){
+            e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR, "Something went wrong", ButtonType.OK).show();
+
+        }
+    }
+    public void btnGoToMilkStorageOnAction(ActionEvent actionEvent) {
+        navigateTo("/View/MilkStorageView.fxml");
+    }
+
+    public void btnGoToQualityCheckOnAction(ActionEvent actionEvent) {
+        navigateTo("/View/QualityCheckView.fxml");
     }
 }

@@ -12,84 +12,101 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="750.0" prefWidth="1400.0" style="-fx-background-color: #f8f9fa;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.desktop.myfx.myfinalproject.Controller.CurdProductionController">
+<AnchorPane fx:id="ancCurdProduction" prefHeight="750.0" prefWidth="1400.0" style="-fx-background-color: #f8f9fa;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.desktop.myfx.myfinalproject.Controller.CurdProductionController">
     <children>
         <VBox spacing="15.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <padding>
                 <Insets bottom="20.0" left="25.0" right="25.0" top="20.0" />
             </padding>
+            <HBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="760.0" style="-fx-background-color: #3a6b7a;">
+                <children>
+               <Button mnemonicParsing="false" onAction="#btnGoToCurdProduOnAction" style="-fx-background-color: #68a197;" text="Curd Production" textFill="WHITE">
+                  <HBox.margin>
+                     <Insets left="200.0" right="100.0" />
+                  </HBox.margin>
+                  <font>
+                     <Font name="System Bold" size="24.0" />
+                  </font>
+               </Button>
+               <Button mnemonicParsing="false" onAction="#btnGoToStockOnAction" prefHeight="45.0" prefWidth="186.0" style="-fx-background-color: s;" text="Stock" textFill="WHITE">
+                  <font>
+                     <Font name="System Bold Italic" size="24.0" />
+                  </font>
+               </Button>
+                </children>
+                <VBox.margin>
+                    <Insets />
+                </VBox.margin>
+            <padding>
+               <Insets bottom="4.0" top="4.0" />
+            </padding>
+            </HBox>
 
-            <Label style="-fx-font-weight: bold; -fx-text-fill: #2c3e50;" text="Curd Production Management">
-                <font>
-                    <Font name="System Bold" size="24.0" />
-                </font>
-                <padding>
-                    <Insets bottom="15.0" />
-                </padding>
-            <VBox.margin>
-               <Insets left="300.0" />
-            </VBox.margin>
-            </Label>
-
-            <VBox spacing="10.0" style="-fx-background-color: white; -fx-background-radius: 5; -fx-padding: 15; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 1);">
-                <HBox alignment="CENTER_LEFT" spacing="15.0">
-                    <Label alignment="CENTER_RIGHT" minWidth="120.0" style="-fx-font-weight: bold;" text="Production ID">
+            <VBox prefHeight="60.0" prefWidth="760.0" spacing="4.0" style="-fx-background-color: white; -fx-background-radius: 5; -fx-padding: 15; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 1);">
+                <HBox alignment="CENTER_LEFT" prefHeight="21.0" prefWidth="1320.0" spacing="15.0">
+                    <Label alignment="CENTER" prefHeight="26.0" prefWidth="134.0" style="-fx-font-weight: bold;" text="Production ID" textAlignment="CENTER">
                         <font>
-                            <Font size="14.0" />
+                            <Font size="18.0" />
                         </font>
                     </Label>
-                    <TextField fx:id="txtId" style="-fx-background-radius: 3;" HBox.hgrow="ALWAYS" />
+                    <TextField fx:id="txtId" style="-fx-background-radius: 3;" HBox.hgrow="ALWAYS">
+                  <HBox.margin>
+                     <Insets />
+                  </HBox.margin></TextField>
+                </HBox>
+
+                <HBox alignment="CENTER_LEFT" prefHeight="20.0" prefWidth="1320.0" spacing="15.0">
+                    <Label alignment="CENTER" prefHeight="26.0" prefWidth="134.0" style="-fx-font-weight: bold;" text="Production Date">
+                        <font>
+                            <Font size="18.0" />
+                        </font>
+                    </Label>
+                    <TextField fx:id="txtProductionDate" style="-fx-background-radius: 3;" HBox.hgrow="ALWAYS">
+                  <HBox.margin>
+                     <Insets />
+                  </HBox.margin></TextField>
                 </HBox>
 
                 <HBox alignment="CENTER_LEFT" spacing="15.0">
-                    <Label alignment="CENTER_RIGHT" minWidth="120.0" style="-fx-font-weight: bold;" text="Production Date">
+                    <Label alignment="CENTER" prefHeight="26.0" prefWidth="134.0" style="-fx-font-weight: bold;" text="Expiry Date">
                         <font>
-                            <Font size="14.0" />
-                        </font>
-                    </Label>
-                    <TextField fx:id="txtProductionDate" style="-fx-background-radius: 3;" HBox.hgrow="ALWAYS" />
-                </HBox>
-
-                <HBox alignment="CENTER_LEFT" spacing="15.0">
-                    <Label alignment="CENTER_RIGHT" minWidth="120.0" style="-fx-font-weight: bold;" text="Expiry Date">
-                        <font>
-                            <Font size="14.0" />
+                            <Font size="18.0" />
                         </font>
                     </Label>
                     <TextField fx:id="txtExpiryDate" style="-fx-background-radius: 3;" HBox.hgrow="ALWAYS" />
                 </HBox>
 
                 <HBox alignment="CENTER_LEFT" spacing="15.0">
-                    <Label alignment="CENTER_RIGHT" minWidth="120.0" style="-fx-font-weight: bold;" text="Quantity">
+                    <Label alignment="CENTER" prefHeight="26.0" prefWidth="134.0" style="-fx-font-weight: bold;" text="Quantity">
                         <font>
-                            <Font size="14.0" />
+                            <Font size="18.0" />
                         </font>
                     </Label>
                     <TextField fx:id="txtQuantity" style="-fx-background-radius: 3;" HBox.hgrow="ALWAYS" />
                 </HBox>
 
                 <HBox alignment="CENTER_LEFT" spacing="15.0">
-                    <Label alignment="CENTER_RIGHT" minWidth="120.0" style="-fx-font-weight: bold;" text="Pots Size">
+                    <Label alignment="CENTER" prefHeight="26.0" prefWidth="134.0" style="-fx-font-weight: bold;" text="Pots Size">
                         <font>
-                            <Font size="14.0" />
+                            <Font size="18.0" />
                         </font>
                     </Label>
                     <TextField fx:id="txtPotsSize" style="-fx-background-radius: 3;" HBox.hgrow="ALWAYS" />
                 </HBox>
 
                 <HBox alignment="CENTER_LEFT" spacing="15.0">
-                    <Label alignment="CENTER_RIGHT" minWidth="120.0" style="-fx-font-weight: bold;" text="Ingredients">
+                    <Label alignment="CENTER" prefHeight="26.0" prefWidth="134.0" style="-fx-font-weight: bold;" text="Ingredients">
                         <font>
-                            <Font size="14.0" />
+                            <Font size="18.0" />
                         </font>
                     </Label>
                     <TextField fx:id="txtIngredients" style="-fx-background-radius: 3;" HBox.hgrow="ALWAYS" />
                 </HBox>
 
                 <HBox alignment="CENTER_LEFT" spacing="15.0">
-                    <Label alignment="CENTER_RIGHT" minWidth="120.0" style="-fx-font-weight: bold;" text="Storage ID">
+                    <Label alignment="CENTER" prefHeight="26.0" prefWidth="134.0" style="-fx-font-weight: bold;" text="Storage ID">
                         <font>
-                            <Font size="14.0" />
+                            <Font size="18.0" />
                         </font>
                     </Label>
                     <TextField fx:id="txtStorageId" style="-fx-background-radius: 3;" HBox.hgrow="ALWAYS" />

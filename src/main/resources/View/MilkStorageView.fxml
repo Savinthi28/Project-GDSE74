@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="750.0" prefWidth="1400.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.desktop.myfx.myfinalproject.Controller.MilkStorageController">
+<AnchorPane fx:id="ancMilkStorage" prefHeight="750.0" prefWidth="1400.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.desktop.myfx.myfinalproject.Controller.MilkStorageController">
    <children>
       <VBox alignment="TOP_CENTER" prefHeight="750.0" prefWidth="800.0" spacing="15" style="-fx-background-color: #f5f5f5;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <padding>
@@ -21,24 +21,34 @@
          <children>
             <HBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="760.0" style="-fx-background-color: #4a6b7a;">
                <children>
-                  <Label prefHeight="42.0" prefWidth="304.0" style="-fx-text-fill: white;" text="Milk Storage Management">
+                  <Button mnemonicParsing="false" onAction="#btnGoToMilkCollectionOnAction" style="-fx-background-color: s;" text="MilkCollection" textFill="WHITE">
+                     <HBox.margin>
+                        <Insets left="100.0" right="100.0" />
+                     </HBox.margin>
                      <font>
                         <Font name="System Bold" size="24.0" />
-                     </font>
+                     </font></Button>
+                  <Button mnemonicParsing="false" onAction="#btnGoToMilkStorageOnAction" style="-fx-background-color: #68a197;" text="Milk Storage" textFill="WHITE">
                      <HBox.margin>
-                        <Insets left="350.0" />
+                        <Insets right="100.0" />
                      </HBox.margin>
-                  </Label>
+                     <font>
+                        <Font name="System Bold Italic" size="24.0" />
+                     </font></Button>
+                  <Button mnemonicParsing="false" onAction="#btnGoToQualityCheckOnAction" style="-fx-background-color: s;" text="QualityCheck" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="24.0" />
+                     </font></Button>
                </children>
             </HBox>
 
-            <VBox alignment="CENTER_LEFT" prefWidth="760.0" spacing="8" style="-fx-background-color: white; -fx-background-radius: 5; -fx-padding: 15;">
+            <VBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="760.0" spacing="8" style="-fx-background-color: white; -fx-background-radius: 5; -fx-padding: 15;">
                <children>
                   <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="760.0" spacing="10">
                      <children>
-                        <Label alignment="CENTER_RIGHT" prefHeight="38.0" prefWidth="120.0" text="Storage ID:">
+                        <Label alignment="CENTER" prefHeight="38.0" prefWidth="120.0" text="Storage ID">
                            <font>
-                              <Font size="14.0" />
+                              <Font name="System Bold" size="18.0" />
                            </font>
                         </Label>
                         <TextField fx:id="txtStorageId" prefHeight="34.0" prefWidth="620.0" style="-fx-background-radius: 3;" HBox.hgrow="ALWAYS" />
@@ -47,9 +57,9 @@
 
                   <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="760.0" spacing="10">
                      <children>
-                        <Label alignment="CENTER_RIGHT" prefHeight="38.0" prefWidth="120.0" text="Collection ID:">
+                        <Label alignment="CENTER" prefHeight="38.0" prefWidth="120.0" text="Collection ID">
                            <font>
-                              <Font size="14.0" />
+                              <Font name="System Bold" size="18.0" />
                            </font>
                         </Label>
                         <TextField fx:id="txtCollectionId" prefHeight="34.0" prefWidth="620.0" style="-fx-background-radius: 3;" HBox.hgrow="ALWAYS" />
@@ -58,9 +68,9 @@
 
                   <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="760.0" spacing="10">
                      <children>
-                        <Label alignment="CENTER_RIGHT" prefHeight="38.0" prefWidth="120.0" text="Storage Date:">
+                        <Label alignment="CENTER" prefHeight="38.0" prefWidth="120.0" text="Storage Date">
                            <font>
-                              <Font size="14.0" />
+                              <Font name="System Bold Italic" size="18.0" />
                            </font>
                         </Label>
                         <TextField fx:id="txtDate" prefHeight="34.0" prefWidth="620.0" style="-fx-background-radius: 3;" HBox.hgrow="ALWAYS" />
@@ -69,9 +79,9 @@
 
                   <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="760.0" spacing="10">
                      <children>
-                        <Label alignment="CENTER_RIGHT" prefHeight="38.0" prefWidth="120.0" text="Duration (hrs):">
+                        <Label alignment="CENTER" prefHeight="38.0" prefWidth="120.0" text="Duration (hrs)">
                            <font>
-                              <Font size="14.0" />
+                              <Font name="System Bold" size="18.0" />
                            </font>
                         </Label>
                         <TextField fx:id="txtDuration" prefHeight="34.0" prefWidth="620.0" style="-fx-background-radius: 3;" HBox.hgrow="ALWAYS" />
@@ -80,9 +90,9 @@
 
                   <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="760.0" spacing="10">
                      <children>
-                        <Label alignment="CENTER_RIGHT" prefHeight="38.0" prefWidth="120.0" text="Temperature (°C):">
+                        <Label alignment="CENTER" prefHeight="38.0" prefWidth="120.0" text="Temperature ">
                            <font>
-                              <Font size="14.0" />
+                              <Font name="System Bold Italic" size="18.0" />
                            </font>
                         </Label>
                         <TextField fx:id="txtTemperature" prefHeight="34.0" prefWidth="620.0" style="-fx-background-radius: 3;" HBox.hgrow="ALWAYS" />

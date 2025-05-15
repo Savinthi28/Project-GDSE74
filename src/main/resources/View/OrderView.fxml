@@ -19,7 +19,7 @@
             <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
          </padding>
          <children>
-            <HBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="760.0" style="-fx-background-color: #5a6b7a;">
+            <HBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="760.0" style="-fx-background-color: #3a6b7a;">
                <children>
                   <Label prefHeight="53.0" prefWidth="262.0" style="-fx-text-fill: white;" text="Order Management">
                      <font>
@@ -32,71 +32,71 @@
                </children>
             </HBox>
 
-            <VBox alignment="CENTER_LEFT" prefWidth="760.0" spacing="8" style="-fx-background-color: white; -fx-background-radius: 5; -fx-padding: 15;">
+            <VBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="760.0" spacing="6.0" style="-fx-background-color: white; -fx-background-radius: 5; -fx-padding: 15;">
                <children>
                   <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="760.0" spacing="10">
                      <children>
-                        <Label alignment="CENTER_RIGHT" prefHeight="38.0" prefWidth="120.0" text="Order ID:">
+                        <Label alignment="CENTER" prefHeight="38.0" prefWidth="120.0" text="Order ID">
                            <font>
-                              <Font size="14.0" />
+                              <Font name="System Bold" size="18.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="txtOrderId" prefHeight="34.0" prefWidth="620.0" style="-fx-background-radius: 3;" HBox.hgrow="ALWAYS" />
+                        <TextField fx:id="txtOrderId" style="-fx-background-radius: 3;" HBox.hgrow="ALWAYS" />
                      </children>
                   </HBox>
 
                   <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="760.0" spacing="10">
                      <children>
-                        <Label alignment="CENTER_RIGHT" prefHeight="38.0" prefWidth="120.0" text="Customer ID:">
+                        <Label alignment="CENTER" prefHeight="38.0" prefWidth="120.0" text="Customer ID">
                            <font>
-                              <Font size="14.0" />
+                              <Font name="System Bold Italic" size="18.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="txtCustomerId" prefHeight="34.0" prefWidth="620.0" style="-fx-background-radius: 3;" HBox.hgrow="ALWAYS" />
+                        <TextField fx:id="txtCustomerId" style="-fx-background-radius: 3;" HBox.hgrow="ALWAYS" />
                      </children>
                   </HBox>
 
                   <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="760.0" spacing="10">
                      <children>
-                        <Label alignment="CENTER_RIGHT" prefHeight="38.0" prefWidth="120.0" text="Order Date:">
+                        <Label alignment="CENTER" prefHeight="38.0" prefWidth="120.0" text="Order Date">
                            <font>
-                              <Font size="14.0" />
+                              <Font name="System Bold" size="18.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="txtDate" prefHeight="34.0" prefWidth="620.0" style="-fx-background-radius: 3;" HBox.hgrow="ALWAYS" />
+                        <TextField fx:id="txtDate" style="-fx-background-radius: 3;" HBox.hgrow="ALWAYS" />
                      </children>
                   </HBox>
 
                   <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="760.0" spacing="10">
                      <children>
-                        <Label alignment="CENTER_RIGHT" prefHeight="38.0" prefWidth="120.0" text="Order Time:">
+                        <Label alignment="CENTER" prefHeight="38.0" prefWidth="120.0" text="Order Time">
                            <font>
-                              <Font size="14.0" />
+                              <Font name="System Bold Italic" size="18.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="txtTime" prefHeight="34.0" prefWidth="620.0" style="-fx-background-radius: 3;" HBox.hgrow="ALWAYS" />
+                        <TextField fx:id="txtTime" style="-fx-background-radius: 3;" HBox.hgrow="ALWAYS" />
                      </children>
                   </HBox>
 
                   <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="760.0" spacing="10">
                      <children>
-                        <Label alignment="CENTER_RIGHT" prefHeight="38.0" prefWidth="120.0" text="Pots Size:">
+                        <Label alignment="CENTER" prefHeight="38.0" prefWidth="120.0" text="Pots Size">
                            <font>
-                              <Font size="14.0" />
+                              <Font name="System Bold" size="18.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="txtPotsSize" prefHeight="34.0" prefWidth="620.0" style="-fx-background-radius: 3;" HBox.hgrow="ALWAYS" />
+                        <TextField fx:id="txtPotsSize" style="-fx-background-radius: 3;" HBox.hgrow="ALWAYS" />
                      </children>
                   </HBox>
 
                   <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="760.0" spacing="10">
                      <children>
-                        <Label alignment="CENTER_RIGHT" prefHeight="38.0" prefWidth="120.0" text="Quantity:">
+                        <Label alignment="CENTER" prefHeight="38.0" prefWidth="120.0" text="Quantity">
                            <font>
-                              <Font size="14.0" />
+                              <Font name="System Bold Italic" size="18.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="txtQuantity" prefHeight="34.0" prefWidth="620.0" style="-fx-background-radius: 3;" HBox.hgrow="ALWAYS" />
+                        <TextField fx:id="txtQuantity" style="-fx-background-radius: 3;" HBox.hgrow="ALWAYS" />
                      </children>
                   </HBox>
                </children>

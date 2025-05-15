@@ -4,13 +4,12 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import lk.ijse.desktop.myfx.myfinalproject.Dto.MilkCollectionDto;
 import lk.ijse.desktop.myfx.myfinalproject.Dto.PotsInventoryDto;
 import lk.ijse.desktop.myfx.myfinalproject.Model.PotsInventoryModel;
@@ -20,10 +19,18 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class PotsInventoryController implements Initializable {
+    public AnchorPane getAncPotsInventory(){
+        return null;
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         loadTable();
     }
+
+    @FXML
+    private AnchorPane ancPotsInventory;
+    private String path;
 
     @FXML
     private TableColumn<PotsInventoryDto, String> colCondition;
@@ -153,5 +160,36 @@ public class PotsInventoryController implements Initializable {
             txtPotsSize.setText(String.valueOf(potsInventoryDto.getPotsSize()));
             txtCondition.setText(String.valueOf(potsInventoryDto.getCondition()));
         }
+    }
+
+    public void btnGoToSupplierOnAction(ActionEvent actionEvent) {
+        navigateTo("/View/SupplierView.fxml");
+    }
+
+    private <Sring> void navigateTo(Sring path){
+        try {
+            ancPotsInventory.getChildren().clear();
+            AnchorPane anchorPane = FXMLLoader.load(getClass().getResource((String) path));
+
+            anchorPane.prefWidthProperty().bind(ancPotsInventory.widthProperty());
+            anchorPane.prefHeightProperty().bind(ancPotsInventory.heightProperty());
+            ancPotsInventory.getChildren().add(anchorPane);
+        }catch (Exception e){
+            e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR, "Something went wrong", ButtonType.OK).show();
+
+        }
+    }
+
+    public void btnGoToPotsInventoryOnAction(ActionEvent actionEvent) {
+        navigateTo("/View/PotsInventoryView.fxml");
+    }
+
+    public void btnGoToPotsPurchaseOnAction(ActionEvent actionEvent) {
+        navigateTo("/View/PotsPurchaseView.fxml");
+    }
+
+    public void btnGoToRawMaterialOnAction(ActionEvent actionEvent) {
+        navigateTo("/View/RawMaterialPurchaseView.fxml");
     }
 }

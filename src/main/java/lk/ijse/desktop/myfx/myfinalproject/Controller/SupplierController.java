@@ -4,13 +4,12 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import lk.ijse.desktop.myfx.myfinalproject.Dto.SupplierDto;
 import lk.ijse.desktop.myfx.myfinalproject.Model.SupplierModel;
 
@@ -20,7 +19,13 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class SupplierController implements Initializable {
+    public AnchorPane getAncSupplier(){
+        return null;
+    }
 
+    @FXML
+    private AnchorPane ancSupplier;
+    private String path;
     @FXML
     private TableColumn<SupplierDto, String> colAddress;
 
@@ -151,5 +156,36 @@ public class SupplierController implements Initializable {
             txtNumber.setText(supplierDto.getContactNumber());
             txtAddress.setText(supplierDto.getAddress());
         }
+    }
+
+    public void btnGoToSupplierOnAction(ActionEvent actionEvent) {
+        navigateTo("/View/SupplierView.fxml");
+    }
+
+    private <Sring> void navigateTo(Sring path){
+        try {
+            ancSupplier.getChildren().clear();
+            AnchorPane anchorPane = FXMLLoader.load(getClass().getResource((String) path));
+
+            anchorPane.prefWidthProperty().bind(ancSupplier.widthProperty());
+            anchorPane.prefHeightProperty().bind(ancSupplier.heightProperty());
+            ancSupplier.getChildren().add(anchorPane);
+        }catch (Exception e){
+            e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR, "Something went wrong", ButtonType.OK).show();
+
+        }
+    }
+
+    public void btnGoToPotsInventoryOnAction(ActionEvent actionEvent) {
+        navigateTo("/View/PotsInventoryView.fxml");
+    }
+
+    public void btnGoToPotsPurchaseOnAction(ActionEvent actionEvent) {
+        navigateTo("/View/PotsPurchaseView.fxml");
+    }
+
+    public void btnGoToRawMaterialOnAction(ActionEvent actionEvent) {
+        navigateTo("/View/RawMaterialPurchaseView.fxml");
     }
 }

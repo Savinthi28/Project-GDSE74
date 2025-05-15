@@ -21,7 +21,7 @@ public class DashboardController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         System.out.println("Dashboard load, I'm initializer");
-        //navigateTo("/View/DashboardView.fxml");
+        navigateTo("/View/DashboardOverView.fxml");
 
     }
 
@@ -36,7 +36,7 @@ public class DashboardController implements Initializable {
 
     @FXML
     void btnGoCurdProductionOnAction(ActionEvent event) {
-        navigateTo("/View/CurdProduction&StockView.fxml");
+        navigateTo("/View/CurdProductionView.fxml");
     }
 
     @FXML
@@ -46,12 +46,12 @@ public class DashboardController implements Initializable {
 
     @FXML
     void btnGoIMilkOnAction(ActionEvent event) {
-        navigateTo("/View/Collection,Storage&QualityCheckView.fxml");
+        navigateTo("/View/MilkCollectionView.fxml");
     }
 
     @FXML
     void btnGoIncomeOnAction(ActionEvent event) {
-        navigateTo("/View/Income&ExpenseView.fxml");
+        navigateTo("/View/DailyIncomeView.fxml");
     }
 
     @FXML
@@ -71,7 +71,7 @@ public class DashboardController implements Initializable {
 
     @FXML
     void btnGoSupplierOnAction(ActionEvent event) {
-        navigateTo("/View/Supplier,PotsIn,PotsPur,RawMaterialView.fxml");
+        navigateTo("/View/SupplierView.fxml");
     }
 
     @FXML
@@ -95,4 +95,7 @@ public class DashboardController implements Initializable {
 
     }
 
+    public void btnGoDashboardOnAction(ActionEvent actionEvent) {
+        navigateTo("/View/DashboardOverView.fxml");
+    }
 }

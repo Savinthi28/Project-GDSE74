@@ -4,13 +4,12 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import lk.ijse.desktop.myfx.myfinalproject.Dto.StockDto;
 import lk.ijse.desktop.myfx.myfinalproject.Model.StockModel;
 
@@ -19,10 +18,18 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class StockController implements Initializable {
+    public AnchorPane getAncStock(){
+        return null;
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         loadTable();
     }
+
+    @FXML
+    private AnchorPane ancStock;
+    private String path;
 
     @FXML
     private TableColumn<StockDto, String> colDate;
@@ -160,5 +167,28 @@ public class StockController implements Initializable {
             txtQuantity.setText(String.valueOf(stockDto.getQuantity()));
             txtStockType.setText(stockDto.getStockType());
         }
+    }
+
+    public void btnGoToCurdProduOnAction(ActionEvent actionEvent) {
+        navigateTo("/View/CurdProductionView.fxml");
+    }
+
+    private <Sring> void navigateTo(Sring path){
+        try {
+            ancStock.getChildren().clear();
+            AnchorPane anchorPane = FXMLLoader.load(getClass().getResource((String) path));
+
+            anchorPane.prefWidthProperty().bind(ancStock.widthProperty());
+            anchorPane.prefHeightProperty().bind(ancStock.heightProperty());
+            ancStock.getChildren().add(anchorPane);
+        }catch (Exception e){
+            e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR, "Something went wrong", ButtonType.OK).show();
+
+        }
+    }
+
+    public void btnGoToStockOnAction(ActionEvent actionEvent) {
+        navigateTo("/View/StockView.fxml");
     }
 }

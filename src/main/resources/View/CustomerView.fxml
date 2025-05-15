@@ -19,50 +19,57 @@
             <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
          </padding>
          <children>
-            <Label style="-fx-text-fill: #2c3e50;" text="Customer Management">
-               <font>
-                  <Font name="System Bold" size="28.0" />
-               </font>
-               <padding>
-                  <Insets bottom="10.0" />
-               </padding>
-            </Label>
-
-            <VBox alignment="CENTER_LEFT" spacing="8.0" style="-fx-background-color: white; -fx-background-radius: 5; -fx-padding: 15; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 0, 1);">
-               <HBox alignment="CENTER_LEFT" spacing="10.0">
-                  <Label minWidth="120.0" style="-fx-text-fill: #34495e;" text="Customer ID">
+            <HBox prefHeight="60.0" prefWidth="760.0" style="-fx-background-color: #3a6b7a;">
+               <children>
+                  <Label cache="true" style="-fx-text-fill: #f5f4f4;" text="Customer Management" textFill="#f5f4f4">
                      <font>
-                        <Font name="Segoe UI Semibold" size="14.0" />
+                        <Font name="System Bold" size="28.0" />
+                     </font>
+                     <padding>
+                        <Insets bottom="10.0" top="10.0" />
+                     </padding>
+                     <HBox.margin>
+                        <Insets left="350.0" />
+                     </HBox.margin>
+                  </Label>
+               </children>
+            </HBox>
+
+            <VBox alignment="CENTER_LEFT" spacing="2.0" style="-fx-background-color: white; -fx-background-radius: 5; -fx-padding: 15; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 0, 1);">
+               <HBox alignment="CENTER_LEFT" spacing="10.0">
+                  <Label alignment="CENTER" prefHeight="38.0" prefWidth="140.0" style="-fx-text-fill: #34495e;" text="Customer ID">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="txtCustId" prefHeight="35.0" prefWidth="500.0" style="-fx-background-radius: 3;" HBox.hgrow="ALWAYS" />
+                  <TextField fx:id="txtCustId" style="-fx-background-radius: 3;" HBox.hgrow="ALWAYS" />
                </HBox>
 
                <HBox alignment="CENTER_LEFT" spacing="10.0">
-                  <Label minWidth="120.0" style="-fx-text-fill: #34495e;" text="Customer Name">
+                  <Label alignment="CENTER" prefHeight="38.0" prefWidth="140.0" style="-fx-text-fill: #34495e;" text="Customer Name">
                      <font>
-                        <Font name="Segoe UI Semibold" size="14.0" />
+                        <Font name="System Bold Italic" size="18.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="txtName" prefHeight="35.0" prefWidth="500.0" style="-fx-background-radius: 3;" HBox.hgrow="ALWAYS" />
+                  <TextField fx:id="txtName" style="-fx-background-radius: 3;" HBox.hgrow="ALWAYS" />
                </HBox>
 
                <HBox alignment="CENTER_LEFT" spacing="10.0">
-                  <Label minWidth="120.0" style="-fx-text-fill: #34495e;" text="Address">
+                  <Label alignment="CENTER" prefHeight="38.0" prefWidth="140.0" style="-fx-text-fill: #34495e;" text="Address">
                      <font>
-                        <Font name="Segoe UI Semibold" size="14.0" />
+                        <Font name="System Bold" size="18.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="txtAddress" prefHeight="35.0" prefWidth="500.0" style="-fx-background-radius: 3;" HBox.hgrow="ALWAYS" />
+                  <TextField fx:id="txtAddress" style="-fx-background-radius: 3;" HBox.hgrow="ALWAYS" />
                </HBox>
 
                <HBox alignment="CENTER_LEFT" spacing="10.0">
-                  <Label minWidth="120.0" style="-fx-text-fill: #34495e;" text="Customer Number">
+                  <Label alignment="CENTER" prefHeight="38.0" prefWidth="140.0" style="-fx-text-fill: #34495e;" text="Customer Number">
                      <font>
-                        <Font name="Segoe UI Semibold" size="14.0" />
+                        <Font name="System Bold Italic" size="18.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="txtNumber" prefHeight="35.0" prefWidth="500.0" style="-fx-background-radius: 3;" HBox.hgrow="ALWAYS" />
+                  <TextField fx:id="txtNumber" style="-fx-background-radius: 3;" HBox.hgrow="ALWAYS" />
                </HBox>
             </VBox>
 
