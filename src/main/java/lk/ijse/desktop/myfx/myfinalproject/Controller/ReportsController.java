@@ -5,10 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import lk.ijse.desktop.myfx.myfinalproject.Dto.ReportsDto;
@@ -23,6 +20,11 @@ import java.util.ResourceBundle;
 public class ReportsController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        try {
+            loadNextId();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
         loadTable();
     }
 
@@ -51,7 +53,7 @@ public class ReportsController implements Initializable {
     private TextField txtGenerateBy;
 
     @FXML
-    private TextField txtReportId;
+    private Label lblId;
 
     @FXML
     private TextField txtType;
@@ -66,7 +68,7 @@ public class ReportsController implements Initializable {
 
     @FXML
     public void btnDeleteOnAction(ActionEvent event)  {
-        int reportId = Integer.parseInt(txtReportId.getText());
+        int reportId = Integer.parseInt(lblId.getText());
         try {
             boolean isDelete = new ReportsModel().deleteReports(new ReportsDto(reportId));
             if (isDelete) {
@@ -82,9 +84,15 @@ public class ReportsController implements Initializable {
         }
     }
 
+    private void loadNextId() throws SQLException {
+        ReportsModel reportsModel = new ReportsModel();
+        String id = reportsModel.getNextId();
+        lblId.setText(id);
+    }
+
     @FXML
     void btnSaveOnAction(ActionEvent event) {
-        int reportId = Integer.parseInt(txtReportId.getText());
+        int reportId = Integer.parseInt(lblId.getText());
         int userId = Integer.parseInt(txtUserId.getText());
         ReportsDto reportsDto = new ReportsDto(reportId,txtDate.getText(),userId,txtType.getText(),txtGenerateBy.getText());
 
@@ -104,7 +112,7 @@ public class ReportsController implements Initializable {
     }
     private void clearFields(){
         loadTable();
-        txtReportId.setText("");
+        lblId.setText("");
         txtDate.setText("");
         txtUserId.setText("");
         txtType.setText("");
@@ -133,7 +141,7 @@ public class ReportsController implements Initializable {
 
     @FXML
     public void btnUpdateOnAction(ActionEvent event) {
-        int reportId = Integer.parseInt(txtReportId.getText());
+        int reportId = Integer.parseInt(lblId.getText());
         int userId = Integer.parseInt(txtUserId.getText());
         ReportsDto reportsDto= new ReportsDto(reportId,txtDate.getText(),userId,txtType.getText(),txtGenerateBy.getText());
         try {
@@ -154,7 +162,7 @@ public class ReportsController implements Initializable {
     public void tableOnClick(MouseEvent mouseEvent) {
         ReportsDto reportsDto = (ReportsDto) tblReports.getSelectionModel().getSelectedItem();
         if (reportsDto != null) {
-            txtReportId.setText(String.valueOf(reportsDto.getReportId()));
+            lblId.setText(String.valueOf(reportsDto.getReportId()));
             txtDate.setText(String.valueOf(reportsDto.getDate()));
             txtUserId.setText(String.valueOf(reportsDto.getUserId()));
             txtType.setText(String.valueOf(reportsDto.getReportType()));

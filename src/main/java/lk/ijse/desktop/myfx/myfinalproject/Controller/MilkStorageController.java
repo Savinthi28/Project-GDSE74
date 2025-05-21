@@ -14,6 +14,7 @@ import lk.ijse.desktop.myfx.myfinalproject.Dto.MilkStorageDto;
 import lk.ijse.desktop.myfx.myfinalproject.Model.MilkStorageModel;
 
 import java.net.URL;
+import java.sql.SQLException;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -25,6 +26,11 @@ public class MilkStorageController implements Initializable {
     }
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        try {
+            loadNextId();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
         loadTable();
     }
 
@@ -60,7 +66,7 @@ public class MilkStorageController implements Initializable {
     private TextField txtDuration;
 
     @FXML
-    private TextField txtStorageId;
+    private Label lblId;
 
     @FXML
     private TextField txtTemperature;
@@ -72,7 +78,7 @@ public class MilkStorageController implements Initializable {
 
     @FXML
     public void btnDeleteOnAction(ActionEvent event) {
-        int id = Integer.parseInt(txtStorageId.getText());
+        int id = Integer.parseInt(lblId.getText());
         try {
             boolean isDelete = new MilkStorageModel().deleteMilkStorage(new MilkStorageDto(id));
             if (isDelete) {
@@ -88,9 +94,15 @@ public class MilkStorageController implements Initializable {
         }
     }
 
+    private void loadNextId() throws SQLException {
+        MilkStorageModel milkStorageModel = new MilkStorageModel();
+        String id  = milkStorageModel.getNextId();
+        lblId.setText(id);
+    }
+
     @FXML
     void btnSaveOnAction(ActionEvent event) {
-        int storageId = Integer.parseInt(txtStorageId.getText());
+        int storageId = Integer.parseInt(lblId.getText());
         int collectionId = Integer.parseInt(txtCollectionId.getText());
         Time duration = Time.valueOf(txtDuration.getText());
         double temperature = Double.parseDouble(txtTemperature.getText());
@@ -112,7 +124,7 @@ public class MilkStorageController implements Initializable {
     }
 private void clearField() {
         loadTable();
-        txtStorageId.setText("");
+    lblId.setText("");
         txtCollectionId.setText("");
         txtDate.setText("");
         txtDuration.setText("");
@@ -140,7 +152,7 @@ private void loadTable() {
 }
     @FXML
     void btnUpdateOnAction(ActionEvent event) {
-        int storageId = Integer.parseInt(txtStorageId.getText());
+        int storageId = Integer.parseInt(lblId.getText());
         int collectionId = Integer.parseInt(txtCollectionId.getText());
         Time duration = Time.valueOf(txtDuration.getText());
         double temperature = Double.parseDouble(txtTemperature.getText());
@@ -163,7 +175,7 @@ private void loadTable() {
     public void tableOnClick(MouseEvent mouseEvent) {
         MilkStorageDto milkStorageDto = (MilkStorageDto) tblMilkStorage.getSelectionModel().getSelectedItem();
         if (milkStorageDto != null) {
-            txtStorageId.setText(String.valueOf(milkStorageDto.getStorageId()));
+            lblId.setText(String.valueOf(milkStorageDto.getStorageId()));
             txtCollectionId.setText(String.valueOf(milkStorageDto.getCollectionId()));
             txtDate.setText(String.valueOf(milkStorageDto.getDate()));
             txtDuration.setText(String.valueOf(milkStorageDto.getDuration()));

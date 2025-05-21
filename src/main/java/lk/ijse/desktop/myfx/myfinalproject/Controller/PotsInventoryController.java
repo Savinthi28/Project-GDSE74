@@ -15,6 +15,7 @@ import lk.ijse.desktop.myfx.myfinalproject.Dto.PotsInventoryDto;
 import lk.ijse.desktop.myfx.myfinalproject.Model.PotsInventoryModel;
 
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
@@ -25,6 +26,11 @@ public class PotsInventoryController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        try {
+            loadNextId();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
         loadTable();
     }
 
@@ -51,7 +57,7 @@ public class PotsInventoryController implements Initializable {
     private TextField txtCondition;
 
     @FXML
-    private TextField txtId;
+    private Label lblId;
 
     @FXML
     private TextField txtPotsSize;
@@ -66,7 +72,7 @@ public class PotsInventoryController implements Initializable {
 
     @FXML
     public void btnDeleteOnAction(ActionEvent event) {
-        int id = Integer.parseInt(txtId.getText());
+        int id = Integer.parseInt(lblId.getText());
         try {
             boolean isDelete = new PotsInventoryModel().deletePotsInventory(new PotsInventoryDto(id));
             if (isDelete) {
@@ -82,9 +88,15 @@ public class PotsInventoryController implements Initializable {
         }
     }
 
+    private void loadNextId() throws SQLException {
+        PotsInventoryModel potsInventoryModel = new PotsInventoryModel();
+        String id = potsInventoryModel.getNextId();
+        lblId.setText(id);
+    }
+
     @FXML
     public void btnSaveOnAction(ActionEvent event) {
-        int id = Integer.parseInt(txtId.getText());
+        int id = Integer.parseInt(lblId.getText());
         int quantity = Integer.parseInt(txtQuantity.getText());
         int potsSize = Integer.parseInt(txtPotsSize.getText());
         PotsInventoryDto potsInventoryDto = new PotsInventoryDto(id,quantity,potsSize,txtCondition.getText());
@@ -105,7 +117,7 @@ public class PotsInventoryController implements Initializable {
     }
     private void clearFields() {
         loadTable();
-        txtId.setText("");
+        lblId.setText("");
         txtQuantity.setText("");
         txtPotsSize.setText("");
         txtCondition.setText("");
@@ -133,7 +145,7 @@ public class PotsInventoryController implements Initializable {
 
     @FXML
     public void btnUpdateOnAction(ActionEvent event) {
-        int id = Integer.parseInt(txtId.getText());
+        int id = Integer.parseInt(lblId.getText());
         int quantity = Integer.parseInt(txtQuantity.getText());
         int potsSize = Integer.parseInt(txtPotsSize.getText());
         PotsInventoryDto potsInventoryDto = new PotsInventoryDto(id,quantity,potsSize,txtCondition.getText());
@@ -155,7 +167,7 @@ public class PotsInventoryController implements Initializable {
     public void tableOnClick(MouseEvent mouseEvent) {
         PotsInventoryDto potsInventoryDto = (PotsInventoryDto) tblPotsInventory.getSelectionModel().getSelectedItem();
         if (potsInventoryDto != null) {
-            txtId.setText(String.valueOf(potsInventoryDto.getId()));
+            lblId.setText(String.valueOf(potsInventoryDto.getId()));
             txtQuantity.setText(String.valueOf(potsInventoryDto.getQuantity()));
             txtPotsSize.setText(String.valueOf(potsInventoryDto.getPotsSize()));
             txtCondition.setText(String.valueOf(potsInventoryDto.getCondition()));

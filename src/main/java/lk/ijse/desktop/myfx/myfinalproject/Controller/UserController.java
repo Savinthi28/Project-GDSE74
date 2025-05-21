@@ -5,10 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import lk.ijse.desktop.myfx.myfinalproject.Dto.UserDto;
@@ -34,7 +31,7 @@ public class UserController implements Initializable {
     private TableView<UserDto> tblUser;
 
     @FXML
-    private TextField txtId;
+    private Label lblId;
 
     @FXML
     private TextField txtName;
@@ -49,7 +46,7 @@ public class UserController implements Initializable {
 
     @FXML
     public void btnDeleteOnAction(ActionEvent event) {
-        int id = Integer.parseInt(txtId.getText());
+        int id = Integer.parseInt(lblId.getText());
         try {
             boolean isDelete = new UserModel().deleteUser(new UserDto(id));
             if (isDelete) {
@@ -65,9 +62,15 @@ public class UserController implements Initializable {
         }
     }
 
+    private void loadNextId() throws SQLException {
+        UserModel userModel = new UserModel();
+        String id = userModel.getNextId();
+        lblId.setText(id);
+    }
+
     @FXML
    public void btnSaveOnAction(ActionEvent event) throws ClassNotFoundException, SQLException {
-        int id = Integer.parseInt(txtId.getText());
+        int id = Integer.parseInt(lblId.getText());
         UserDto userDto = new UserDto(id, txtName.getText(), txtPassword.getText());
 
         try {
@@ -86,13 +89,18 @@ public class UserController implements Initializable {
     }
     private void clearFields() {
         loadTable();
-        txtId.setText("");
+        lblId.setText("");
         txtName.setText("");
         txtPassword.setText("");
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        try {
+            loadNextId();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
         loadTable();
     }
 
@@ -117,7 +125,7 @@ public class UserController implements Initializable {
 
     @FXML
     public void btnUpdateOnAction(ActionEvent event) {
-        int id = Integer.parseInt(txtId.getText());
+        int id = Integer.parseInt(lblId.getText());
         UserDto userDto = new UserDto(id, txtName.getText(), txtPassword.getText());
         try {
             boolean isSave = UserModel.updateUser(userDto);
@@ -137,7 +145,7 @@ public class UserController implements Initializable {
     public void tableOnClick(MouseEvent mouseEvent) {
         UserDto userDto = (UserDto) tblUser.getSelectionModel().getSelectedItem();
         if (userDto != null) {
-            txtId.setText(String.valueOf(userDto.getId()));
+            lblId.setText(String.valueOf(userDto.getId()));
             txtName.setText(userDto.getUserName());
             txtPassword.setText(userDto.getPassword());
         }

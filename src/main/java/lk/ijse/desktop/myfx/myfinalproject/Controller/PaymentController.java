@@ -5,16 +5,14 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import lk.ijse.desktop.myfx.myfinalproject.Dto.PaymentDto;
 import lk.ijse.desktop.myfx.myfinalproject.Model.PaymentModel;
 
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
@@ -54,7 +52,7 @@ public class PaymentController implements Initializable {
     private TextField txtOrderId;
 
     @FXML
-    private TextField txtPaymentId;
+    private Label lblId;
 
     @FXML
     private TextField txtPaymentMethod;
@@ -66,7 +64,7 @@ public class PaymentController implements Initializable {
 
     @FXML
     void btnDeleteOnAction(ActionEvent event) {
-        int id = Integer.parseInt(txtPaymentId.getText());
+        int id = Integer.parseInt(lblId.getText());
         try {
             boolean isDelete = new PaymentModel().deletePayment(new PaymentDto(id));
             if (isDelete) {
@@ -82,9 +80,15 @@ public class PaymentController implements Initializable {
         }
     }
 
+    private void loadNextId() throws SQLException {
+        PaymentModel paymentModel = new PaymentModel();
+        String id = paymentModel.getNextId();
+        lblId.setText(id);
+    }
+
     @FXML
     void btnSaveOnAction(ActionEvent event) {
-        int paymentId = Integer.parseInt(txtPaymentId.getText());
+        int paymentId = Integer.parseInt(lblId.getText());
         int orderId=Integer.parseInt(txtOrderId.getText());
         int customerId=Integer.parseInt(txtCustomerId.getText());
         double amount=Double.parseDouble(txtAmount.getText());
@@ -106,7 +110,7 @@ public class PaymentController implements Initializable {
     }
     private void clearFields(){
         loadTable();
-        txtPaymentId.setText("");
+        lblId.setText("");
         txtOrderId.setText("");
         txtCustomerId.setText("");
         txtDate.setText("");
@@ -137,12 +141,17 @@ public class PaymentController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        try {
+            loadNextId();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
         loadTable();
     }
 
     @FXML
     public void btnUpdateOnAction(ActionEvent event) {
-        int paymentId = Integer.parseInt(txtPaymentId.getText());
+        int paymentId = Integer.parseInt(lblId.getText());
         int orderId = Integer.parseInt(txtOrderId.getText());
         int customerId = Integer.parseInt(txtCustomerId.getText());
         double amount = Double.parseDouble(txtAmount.getText());
@@ -165,7 +174,7 @@ public class PaymentController implements Initializable {
     public void tableOnClick(MouseEvent mouseEvent) {
         PaymentDto paymentDto = (PaymentDto) tblPayment.getSelectionModel().getSelectedItem();
         if (paymentDto != null) {
-            txtPaymentId.setText(String.valueOf(paymentDto.getPaymentId()));
+            lblId.setText(String.valueOf(paymentDto.getPaymentId()));
             txtOrderId.setText(String.valueOf(paymentDto.getOrderId()));
             txtCustomerId.setText(String.valueOf(paymentDto.getCustomerId()));
             txtDate.setText(String.valueOf(paymentDto.getDate()));

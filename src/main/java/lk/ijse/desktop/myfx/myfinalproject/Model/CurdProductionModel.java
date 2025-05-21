@@ -22,6 +22,16 @@ public class CurdProductionModel {
         );
     }
 
+    public String getNextId() throws SQLException {
+        ResultSet resultSet = CrudUtil.execute("select Production_ID from Curd_Production order by Production_ID desc limit 1");
+        if (resultSet.next()) {
+            int lastId = resultSet.getInt(1);
+            int nextId = lastId + 1;
+            return String.valueOf(nextId);
+        }
+        return "1";
+    }
+
     public ArrayList<CurdProductionDto> viewAllCurdProduction() throws ClassNotFoundException, SQLException{
         ResultSet rs = CrudUtil.execute("SELECT * FROM Curd_Production");
         ArrayList<CurdProductionDto> viewCurdProduction = new ArrayList<>();

@@ -14,6 +14,7 @@ import lk.ijse.desktop.myfx.myfinalproject.Dto.StockDto;
 import lk.ijse.desktop.myfx.myfinalproject.Model.StockModel;
 
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
@@ -24,6 +25,11 @@ public class StockController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        try {
+            loadNextId();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
         loadTable();
     }
 
@@ -59,7 +65,7 @@ public class StockController implements Initializable {
     private TextField txtQuantity;
 
     @FXML
-    private TextField txtStockId;
+    private Label lblId;
 
     @FXML
     private TextField txtStockType;
@@ -71,7 +77,7 @@ public class StockController implements Initializable {
 
     @FXML
     public void btnDeleteOnAction(ActionEvent event) {
-        int id = Integer.parseInt(txtStockId.getText());
+        int id = Integer.parseInt(lblId.getText());
         try {
             boolean isDelete = new StockModel().deleteStock(new StockDto(id));
             if (isDelete) {
@@ -87,9 +93,15 @@ public class StockController implements Initializable {
         }
     }
 
+    private void loadNextId() throws SQLException {
+        StockModel stockModel = new StockModel();
+        String id = stockModel.getNextId();
+        lblId.setText(id);
+    }
+
     @FXML
     public void btnSaveOnAction(ActionEvent event) {
-        int stockId = Integer.parseInt(txtStockId.getText());
+        int stockId = Integer.parseInt(lblId.getText());
         int productionId = Integer.parseInt(txtProdctionId.getText());
         int quantity = Integer.parseInt(txtQuantity.getText());
         StockDto stockDto = new StockDto(stockId,productionId,txtDate.getText(),quantity,txtStockType.getText());
@@ -110,7 +122,7 @@ public class StockController implements Initializable {
     }
     private void clearFields(){
         loadTable();
-        txtStockId.setText("");
+        lblId.setText("");
         txtProdctionId.setText("");
         txtDate.setText("");
         txtQuantity.setText("");
@@ -139,7 +151,7 @@ public class StockController implements Initializable {
 
     @FXML
     public void btnUpdateOnAction(ActionEvent event) {
-        int stockId = Integer.parseInt(txtStockId.getText());
+        int stockId = Integer.parseInt(lblId.getText());
         int productionId = Integer.parseInt(txtProdctionId.getText());
         int quantity = Integer.parseInt(txtQuantity.getText());
         StockDto stockDto = new StockDto(stockId,productionId,txtDate.getText(),quantity,txtStockType.getText());
@@ -161,7 +173,7 @@ public class StockController implements Initializable {
     public void tableOnClick(MouseEvent mouseEvent) {
         StockDto stockDto = (StockDto) tblStock.getSelectionModel().getSelectedItem();
         if (stockDto != null) {
-            txtStockId.setText(String.valueOf(stockDto.getStockId()));
+            lblId.setText(String.valueOf(stockDto.getStockId()));
             txtProdctionId.setText(String.valueOf(stockDto.getProductionId()));
             txtDate.setText(stockDto.getDate());
             txtQuantity.setText(String.valueOf(stockDto.getQuantity()));

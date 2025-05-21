@@ -8,6 +8,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import lk.ijse.desktop.myfx.myfinalproject.Dto.CurdProductionDto;
@@ -57,7 +58,7 @@ public class CurdProductionController implements Initializable {
     private TextField txtExpiryDate;
 
     @FXML
-    private TextField txtId;
+    private Label lblId;
 
     @FXML
     private TextField txtIngredients;
@@ -74,6 +75,11 @@ public class CurdProductionController implements Initializable {
     @FXML
     private TextField txtStorageId;
 
+    private final String quantityPattern = "^\\d+(\\.\\d+)?$";
+    private final String potsSizePattern = "^\\d+(\\.\\d+)?$";
+    private final String ingredientsPattern = "^[A-Za-z '-]+$";
+    private final String storageIdPattern = "^\\d+$";
+
     @FXML
     void btnClearOnAction(ActionEvent event) {
         clearFields();
@@ -81,7 +87,7 @@ public class CurdProductionController implements Initializable {
 
     @FXML
     public void btnDeleteOnAction(ActionEvent event) {
-        int id = Integer.parseInt(txtId.getText());
+        int id = Integer.parseInt(lblId.getText());
         try {
             boolean isDelete = new CurdProductionModel().deleteCurdProduction(new CurdProductionDto(id));
             if (isDelete) {
@@ -97,32 +103,50 @@ public class CurdProductionController implements Initializable {
         }
     }
 
+    private void loadNextId () throws SQLException {
+        CurdProductionModel curdProductionModel = new CurdProductionModel();
+        String nextId = curdProductionModel.getNextId();
+        lblId.setText(nextId);
+    }
+
     @FXML
     public void btnSaveOnAction(ActionEvent event) throws ClassNotFoundException, SQLException {
-        int id = Integer.parseInt(txtId.getText());
+        int id = Integer.parseInt(lblId.getText());
         int quantity = Integer.parseInt(txtQuantity.getText());
         int potsSize = Integer.parseInt(txtPotsSize.getText());
         int storageID = Integer.parseInt(txtStorageId.getText());
-        CurdProductionDto curdProductionDto = new CurdProductionDto(id,txtProductionDate.getText(),txtExpiryDate.getText(),quantity,potsSize,txtIngredients.getText(),storageID);
+        CurdProductionDto curdProductionDto = new CurdProductionDto(id, txtProductionDate.getText(), txtExpiryDate.getText(), quantity, potsSize, txtIngredients.getText(), storageID);
 
-        try {
-            CurdProductionModel curdProductionModel = new CurdProductionModel();
-            boolean isSave = CurdProductionModel.saveCurdProduction(curdProductionDto);
-            if(isSave){
-                clearFields();
-                new Alert(Alert.AlertType.INFORMATION,"Curd Production has been saved successfully").show();
-            }else {
-                new Alert(Alert.AlertType.ERROR,"Error while saving Curd Production").show();
+        String quantityText = txtQuantity.getText();
+        String pots = txtPotsSize.getText();
+        String ingredients = txtIngredients.getText();
+        String storageId = txtStorageId.getText();
+
+        boolean isValidQuantity = quantityText.matches(quantityPattern);
+        boolean isValidPots = pots.matches(potsSizePattern);
+        boolean isValidIngredients = ingredients.matches(ingredientsPattern);
+        boolean isValidStorageId = storageId.matches(storageIdPattern);
+
+        if (isValidQuantity && isValidPots && isValidIngredients && isValidStorageId) {
+            try {
+                CurdProductionModel curdProductionModel = new CurdProductionModel();
+                boolean isSave = CurdProductionModel.saveCurdProduction(curdProductionDto);
+                if (isSave) {
+                    clearFields();
+                    new Alert(Alert.AlertType.INFORMATION, "Curd Production has been saved successfully").show();
+                } else {
+                    new Alert(Alert.AlertType.ERROR, "Error while saving Curd Production").show();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                new Alert(Alert.AlertType.ERROR, "Error while saving Curd Production").show();
             }
-        }catch (Exception e){
-            e.printStackTrace();
-            new Alert(Alert.AlertType.ERROR,"Error while saving Curd Production").show();
         }
     }
     private void clearFields() {
         loadTable();
         txtExpiryDate.setText("");
-        txtId.setText("");
+        lblId.setText("");
         txtIngredients.setText("");
         txtPotsSize.setText("");
         txtProductionDate.setText("");
@@ -131,6 +155,11 @@ public class CurdProductionController implements Initializable {
     }
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        try {
+            loadNextId();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
         loadTable();
     }
 
@@ -159,30 +188,42 @@ public class CurdProductionController implements Initializable {
 
     @FXML
     public void btnUpdateOnAction(ActionEvent event) {
-        int id = Integer.parseInt(txtId.getText());
+        int id = Integer.parseInt(lblId.getText());
         int quantity = Integer.parseInt(txtQuantity.getText());
         int potsSize = Integer.parseInt(txtPotsSize.getText());
         int storageID = Integer.parseInt(txtStorageId.getText());
-        CurdProductionDto curdProductionDto = new CurdProductionDto(id,txtProductionDate.getText(),txtExpiryDate.getText(),quantity,potsSize,txtIngredients.getText(),storageID);
-        try {
-            boolean isSave = CurdProductionModel.updateCurdProduction(curdProductionDto);
-            if(isSave){
-                clearFields();
-                loadTable();
-                new Alert(Alert.AlertType.INFORMATION,"Updated successfully").show();
-            }else {
-                new Alert(Alert.AlertType.ERROR,"Error while updating Curd Production").show();
+        CurdProductionDto curdProductionDto = new CurdProductionDto(id, txtProductionDate.getText(), txtExpiryDate.getText(), quantity, potsSize, txtIngredients.getText(), storageID);
+
+        String quantityText = txtQuantity.getText();
+        String pots = txtPotsSize.getText();
+        String ingredients = txtIngredients.getText();
+        String storageId = txtStorageId.getText();
+
+        boolean isValidQuantity = quantityText.matches(quantityPattern);
+        boolean isValidPots = pots.matches(potsSizePattern);
+        boolean isValidIngredients = ingredients.matches(ingredientsPattern);
+        boolean isValidStorageId = storageId.matches(storageIdPattern);
+
+        if (isValidQuantity && isValidPots && isValidIngredients && isValidStorageId) {
+            try {
+                boolean isSave = CurdProductionModel.updateCurdProduction(curdProductionDto);
+                if (isSave) {
+                    clearFields();
+                    loadTable();
+                    new Alert(Alert.AlertType.INFORMATION, "Updated successfully").show();
+                } else {
+                    new Alert(Alert.AlertType.ERROR, "Error while updating Curd Production").show();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                new Alert(Alert.AlertType.ERROR, "Error updating Curd Production").show();
             }
-        }catch (Exception e){
-            e.printStackTrace();
-            new Alert(Alert.AlertType.ERROR,"Error updating Curd Production").show();
         }
     }
-
     public void tableOnClick(MouseEvent mouseEvent) {
         CurdProductionDto curdProductionDto = (CurdProductionDto) tblCurdProduction.getSelectionModel().getSelectedItem();
         if(curdProductionDto != null){
-            txtId.setText(String.valueOf(curdProductionDto.getProductionId()));
+            lblId.setText(String.valueOf(curdProductionDto.getProductionId()));
             txtProductionDate.setText(String.valueOf(curdProductionDto.getProductionDate()));
             txtExpiryDate.setText(String.valueOf(curdProductionDto.getExpiryDate()));
             txtQuantity.setText(String.valueOf(curdProductionDto.getQuantity()));
@@ -213,5 +254,45 @@ public class CurdProductionController implements Initializable {
 
     public void btnGoToStockOnAction(ActionEvent actionEvent) {
         navigateTo("/View/StockView.fxml");
+    }
+
+    public void txtQuantityChange(KeyEvent keyEvent) {
+        String qty = txtQuantity.getText();
+        boolean isValid = qty.matches(quantityPattern);
+        if (!isValid) {
+            txtQuantity.setStyle(txtQuantity.getStyle()  + ";-fx-border-color: red");
+        }else {
+            txtQuantity.setStyle(txtQuantity.getStyle()  + ";-fx-border-color: blue");
+        }
+    }
+
+    public void txtPotsSizeChange(KeyEvent keyEvent) {
+        String potsSize = txtPotsSize.getText();
+        boolean isValid = potsSize.matches(potsSizePattern);
+        if (!isValid) {
+            txtPotsSize.setStyle(txtPotsSize.getStyle()  + ";-fx-border-color: red");
+        }else {
+            txtPotsSize.setStyle(txtPotsSize.getStyle()  + ";-fx-border-color: blue");
+        }
+    }
+
+    public void txtIngredientsChange(KeyEvent keyEvent) {
+        String ingredients = txtIngredients.getText();
+        boolean isValid = ingredients.matches(ingredientsPattern);
+        if (!isValid) {
+            txtIngredients.setStyle(txtIngredients.getStyle() + ";-fx-border-color: red");
+        }else {
+            txtIngredients.setStyle(txtIngredients.getStyle() + ";-fx-border-color: blue");
+        }
+    }
+
+    public void txtStorageIdChange(KeyEvent keyEvent) {
+        String storageId = txtStorageId.getText();
+        boolean isValid = storageId.matches(storageIdPattern);
+        if (!isValid) {
+            txtStorageId.setStyle(txtStorageId.getStyle() + ";-fx-border-color: red");
+        }else {
+            txtStorageId.setStyle(txtStorageId.getStyle() + ";-fx-border-color: blue");
+        }
     }
 }

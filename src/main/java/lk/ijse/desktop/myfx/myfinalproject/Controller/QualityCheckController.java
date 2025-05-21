@@ -25,6 +25,11 @@ public class QualityCheckController implements Initializable {
     }
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        try {
+            loadNextId();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
         loadTable();
     }
 
@@ -61,7 +66,7 @@ public class QualityCheckController implements Initializable {
     private TextField txtAppearance;
 
     @FXML
-    private TextField txtCheckId;
+    private Label lblId;
 
     @FXML
     private TextField txtCollectionId;
@@ -85,7 +90,7 @@ public class QualityCheckController implements Initializable {
 
     @FXML
     public void btnDeleteOnAction(ActionEvent event) {
-        int id = Integer.parseInt(txtCheckId.getText());
+        int id = Integer.parseInt(lblId.getText());
         try {
             boolean isDelete = new QualityCheckModel().deleteQualityCheck(new QualityCheckDto(id));
             if (isDelete) {
@@ -101,9 +106,15 @@ public class QualityCheckController implements Initializable {
         }
     }
 
+    private void loadNextId() throws SQLException {
+        QualityCheckModel qualityCheckModel = new QualityCheckModel();
+        String id = qualityCheckModel.getNextId();
+        lblId.setText(id);
+    }
+
     @FXML
     public void btnSaveOnAction(ActionEvent event) throws ClassNotFoundException, SQLException {
-        int checkId = Integer.parseInt(txtCheckId.getText());
+        int checkId = Integer.parseInt(lblId.getText());
         int collectionId = Integer.parseInt(txtCollectionId.getText());
         double fatContent = Double.parseDouble(txtFatContent.getText());
         double temperature = Double.parseDouble(txtTemperature.getText());
@@ -125,7 +136,7 @@ public class QualityCheckController implements Initializable {
     }
     private void clearFields() {
         loadTable();
-        txtCheckId.setText("");
+        lblId.setText("");
         txtCollectionId.setText("");
         txtAppearance.setText("");
         txtFatContent.setText("");
@@ -158,7 +169,7 @@ public class QualityCheckController implements Initializable {
 
     @FXML
     public void btnUpdateOnAction(ActionEvent event) {
-        int checkId = Integer.parseInt(txtCheckId.getText());
+        int checkId = Integer.parseInt(lblId.getText());
         int collectionId = Integer.parseInt(txtCollectionId.getText());
         double fatContent = Double.parseDouble(txtFatContent.getText());
         double temperature = Double.parseDouble(txtTemperature.getText());
@@ -181,7 +192,7 @@ public class QualityCheckController implements Initializable {
     public void tableOnClick(MouseEvent mouseEvent) {
         QualityCheckDto qualityCheckDto = (QualityCheckDto) tblQualityCheck.getSelectionModel().getSelectedItem();
         if (qualityCheckDto != null) {
-            txtCheckId.setText(String.valueOf(qualityCheckDto.getCheckId()));
+            lblId.setText(String.valueOf(qualityCheckDto.getCheckId()));
             txtCollectionId.setText(String.valueOf(qualityCheckDto.getCollectionId()));
             txtAppearance.setText(qualityCheckDto.getAppearance());
             txtFatContent.setText(String.valueOf(qualityCheckDto.getFatContent()));

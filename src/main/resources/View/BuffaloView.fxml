@@ -42,7 +42,11 @@
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="txtBuffaloID" style="-fx-background-radius: 3;" HBox.hgrow="ALWAYS" />
+                  <Label fx:id="lblId" layoutX="10.0" layoutY="10.0" text="1" HBox.hgrow="ALWAYS">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                  </Label>
                </HBox>
 
                <HBox alignment="CENTER_LEFT" spacing="10.0">
@@ -51,7 +55,7 @@
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="txtMilkProduction" style="-fx-background-radius: 3;" HBox.hgrow="ALWAYS" />
+                  <TextField fx:id="txtMilkProduction" onKeyReleased="#txtMilkChange" style="-fx-background-radius: 3;" HBox.hgrow="ALWAYS" />
                </HBox>
 
                <HBox alignment="CENTER_LEFT" spacing="10.0">
@@ -60,7 +64,7 @@
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="txtGender" style="-fx-background-radius: 3;" HBox.hgrow="ALWAYS" />
+                  <TextField fx:id="txtGender" onKeyReleased="#txtGenderChange" style="-fx-background-radius: 3;" HBox.hgrow="ALWAYS" />
                </HBox>
 
                <HBox alignment="CENTER_LEFT" spacing="10.0">
@@ -69,7 +73,7 @@
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="txtAge" style="-fx-background-radius: 3;" HBox.hgrow="ALWAYS" />
+                  <TextField fx:id="txtAge" onKeyReleased="#txtAgeChange" style="-fx-background-radius: 3;" HBox.hgrow="ALWAYS" />
                </HBox>
 
                <HBox alignment="CENTER_LEFT" spacing="10.0">
@@ -78,7 +82,7 @@
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="txtHealth" style="-fx-background-radius: 3;" HBox.hgrow="ALWAYS" />
+                  <TextField fx:id="txtHealth" onKeyReleased="#txtHealthChange" style="-fx-background-radius: 3;" HBox.hgrow="ALWAYS" />
                </HBox>
             </VBox>
 

@@ -42,7 +42,11 @@
                         <Font name="System Bold" size="18.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="txtCustId" style="-fx-background-radius: 3;" HBox.hgrow="ALWAYS" />
+                  <Label fx:id="lblId" layoutX="10.0" layoutY="10.0" text="1" HBox.hgrow="ALWAYS">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                  </Label>
                </HBox>
 
                <HBox alignment="CENTER_LEFT" spacing="10.0">
@@ -51,7 +55,7 @@
                         <Font name="System Bold Italic" size="18.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="txtName" style="-fx-background-radius: 3;" HBox.hgrow="ALWAYS" />
+                  <TextField fx:id="txtName" onKeyReleased="#txtNameChange" style="-fx-background-radius: 3;" HBox.hgrow="ALWAYS" />
                </HBox>
 
                <HBox alignment="CENTER_LEFT" spacing="10.0">
@@ -69,16 +73,16 @@
                         <Font name="System Bold Italic" size="18.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="txtNumber" style="-fx-background-radius: 3;" HBox.hgrow="ALWAYS" />
+                  <TextField fx:id="txtNumber" onKeyReleased="#txtNumberChange" style="-fx-background-radius: 3;" HBox.hgrow="ALWAYS" />
                </HBox>
             </VBox>
 
             <ButtonBar buttonMinWidth="90.0" prefHeight="40.0" prefWidth="600.0" style="-fx-background-color: transparent;">
                <buttons>
-                  <Button mnemonicParsing="false" onAction="#btnSaveOnAction" style="-fx-background-color: #27ae60; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 3;" text="Save" />
-                  <Button mnemonicParsing="false" onAction="#btnUpdateOnAction" style="-fx-background-color: #2980b9; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 3;" text="Update" />
-                  <Button mnemonicParsing="false" onAction="#btnClearOnAction" style="-fx-background-color: #f39c12; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 3;" text="Clear" />
-                  <Button mnemonicParsing="false" onAction="#btnDeleteOnAction" style="-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 3;" text="Delete" />
+                  <Button fx:id="btnSave" mnemonicParsing="false" onAction="#btnSaveOnAction" style="-fx-background-color: #27ae60; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 3;" text="Save" />
+                  <Button fx:id="btnUpdate" mnemonicParsing="false" onAction="#btnUpdateOnAction" style="-fx-background-color: #2980b9; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 3;" text="Update" />
+                  <Button fx:id="btnClear" mnemonicParsing="false" onAction="#btnClearOnAction" style="-fx-background-color: #f39c12; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 3;" text="Clear" />
+                  <Button fx:id="btnDelete" mnemonicParsing="false" onAction="#btnDeleteOnAction" style="-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 3;" text="Delete" />
                </buttons>
             </ButtonBar>
 

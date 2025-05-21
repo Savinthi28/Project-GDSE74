@@ -5,16 +5,14 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import lk.ijse.desktop.myfx.myfinalproject.Dto.OrderDto;
 import lk.ijse.desktop.myfx.myfinalproject.Model.OrderModel;
 
 import java.net.URL;
+import java.sql.SQLException;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -22,6 +20,11 @@ import java.util.ResourceBundle;
 public class OrderController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        try {
+            loadNextId();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
         loadTable();
     }
 
@@ -53,7 +56,7 @@ public class OrderController implements Initializable {
     private TextField txtDate;
 
     @FXML
-    private TextField txtOrderId;
+    private Label lblId;
 
     @FXML
     private TextField txtPotsSize;
@@ -71,7 +74,7 @@ public class OrderController implements Initializable {
 
     @FXML
     void btnDeleteOnAction(ActionEvent event) {
-        int id = Integer.parseInt(txtOrderId.getText());
+        int id = Integer.parseInt(lblId.getText());
         try {
             boolean isDelete = new OrderModel().deleteOrder(new OrderDto(id));
             if (isDelete) {
@@ -87,9 +90,15 @@ public class OrderController implements Initializable {
         }
     }
 
+    private void loadNextId () throws SQLException {
+        OrderModel orderModel = new OrderModel();
+        String id = orderModel.getNextId();
+        lblId.setText(id);
+    }
+
     @FXML
     void btnSaveOnAction(ActionEvent event) {
-        int orderId = Integer.parseInt(txtOrderId.getText());
+        int orderId = Integer.parseInt(lblId.getText());
         int customerId=Integer.parseInt(txtCustomerId.getText());
         Time time = Time.valueOf(txtTime.getText());
         int potsSize = Integer.parseInt(txtPotsSize.getText());
@@ -112,7 +121,7 @@ public class OrderController implements Initializable {
     }
     private void clearFields(){
         loadTable();
-        txtOrderId.setText("");
+        lblId.setText("");
         txtCustomerId.setText("");
         txtDate.setText("");
         txtTime.setText("");
@@ -143,7 +152,7 @@ public class OrderController implements Initializable {
 
     @FXML
     public void btnUpdateOnAction(ActionEvent event) {
-        int orderId = Integer.parseInt(txtOrderId.getText());
+        int orderId = Integer.parseInt(lblId.getText());
         int customerId = Integer.parseInt(txtCustomerId.getText());
         Time time = Time.valueOf(txtTime.getText());
         int potsSize = Integer.parseInt(txtPotsSize.getText());
@@ -167,7 +176,7 @@ public class OrderController implements Initializable {
     public void tableOnClick(MouseEvent mouseEvent) {
         OrderDto orderDto = (OrderDto) tblOrder.getSelectionModel().getSelectedItem();
         if(orderDto != null){
-            txtOrderId.setText(String.valueOf(orderDto.getOrderId()));
+            lblId.setText(String.valueOf(orderDto.getOrderId()));
             txtCustomerId.setText(String.valueOf(orderDto.getCustomerId()));
             txtDate.setText(String.valueOf(orderDto.getDate()));
             txtTime.setText(String.valueOf(orderDto.getTime()));

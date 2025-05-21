@@ -21,6 +21,16 @@ public class OrderModel {
         );
     }
 
+    public String getNextId() throws SQLException {
+        ResultSet resultSet = CrudUtil.execute("select Order_ID from Orders order by Order_ID desc limit 1");
+        if (resultSet.next()) {
+            int lastId = resultSet.getInt(1);
+            int nextId = lastId + 1;
+            return String.valueOf(nextId);
+        }
+        return "1";
+    }
+
     public ArrayList<OrderDto> viewAllOrder() throws SQLException {
         ResultSet rs = CrudUtil.execute("SELECT * FROM Orders");
         ArrayList<OrderDto> orders = new ArrayList<>();

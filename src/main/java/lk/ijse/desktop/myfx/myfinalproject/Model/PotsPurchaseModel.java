@@ -20,6 +20,16 @@ public class PotsPurchaseModel {
         );
     }
 
+    public String getNextId() throws SQLException {
+        ResultSet resultSet = CrudUtil.execute("select Purchase_ID from Pots_Purchase_ID order by Purchase_ID desc limit 1");
+        if (resultSet.next()) {
+            int lastId = resultSet.getInt(1);
+            int nextId = lastId + 1;
+            return String.valueOf(nextId);
+        }
+        return "1";
+    }
+
     public ArrayList<PotsPurchaseDto> viewAllPotsPurchase() throws SQLException {
         ResultSet rs = CrudUtil.execute("SELECT * FROM Pots_Purchase_ID");
         ArrayList<PotsPurchaseDto> potsPurchase = new ArrayList<>();

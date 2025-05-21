@@ -5,11 +5,9 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import lk.ijse.desktop.myfx.myfinalproject.Dto.CustomerDto;
 import lk.ijse.desktop.myfx.myfinalproject.Model.CustomerModel;
@@ -40,7 +38,7 @@ public class CustomerController implements Initializable {
     private TextField txtAddress;
 
     @FXML
-    private TextField txtCustId;
+    private Label lblId;
 
     @FXML
     private TextField txtName;
@@ -49,13 +47,30 @@ public class CustomerController implements Initializable {
     private TextField txtNumber;
 
     @FXML
+    private Button btnClear;
+
+    @FXML
+    private Button btnDelete;
+
+    @FXML
+    private Button btnSave;
+
+    @FXML
+    private Button btnUpdate;
+
+
+    private final String namePattern = "^[A-Za-z ]+$";
+    private final String numberPattern = "^(\\d+)||((\\d+\\.)(\\d){2})$";
+
+
+    @FXML
     void btnClearOnAction(ActionEvent event) {
         clearFields();
     }
 
     @FXML
     void btnDeleteOnAction(ActionEvent event) {
-        int id = Integer.parseInt(txtCustId.getText());
+        int id = Integer.parseInt(lblId.getText());
         try {
             boolean isDelete = new CustomerModel().deleteCustomer(new CustomerDto(id));
             if (isDelete) {
@@ -71,11 +86,24 @@ public class CustomerController implements Initializable {
         }
     }
 
+    private void loadNextId() throws SQLException{
+        CustomerModel customerModel = new CustomerModel();
+        String nextId = customerModel.getNextId();
+        lblId.setText(nextId);
+    }
+
     @FXML
     public void btnSaveOnAction(ActionEvent event) throws ClassNotFoundException, SQLException {
-        int id = Integer.parseInt(txtCustId.getText());
+        int id = Integer.parseInt(lblId.getText());
         CustomerDto customerDto = new CustomerDto(id, txtName.getText(), txtAddress.getText(), txtNumber.getText());
 
+        String name = txtName.getText();
+        String number = txtNumber.getText();
+
+        boolean isValidName = name.matches(namePattern);
+        boolean isValidNumber = number.matches(numberPattern);
+
+        if (isValidName && isValidNumber) {
         try {
             CustomerModel customerModel = new CustomerModel();
             boolean isSave = customerModel.saveCustomer(customerDto);
@@ -88,17 +116,24 @@ public class CustomerController implements Initializable {
         }catch (Exception e){
             e.printStackTrace();
             new Alert(Alert.AlertType.ERROR, "Customer Not Saved").show();
+
+        }
         }
     }
     private void clearFields(){
         loadTable();
-        txtCustId.setText("");
+        lblId.setText("");
         txtName.setText("");
         txtAddress.setText("");
         txtNumber.setText("");
     }
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        try {
+            loadNextId();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
         loadTable();
     }
     
@@ -124,30 +159,58 @@ public class CustomerController implements Initializable {
 
     @FXML
     void btnUpdateOnAction(ActionEvent event) {
-        int id = Integer.parseInt(txtCustId.getText());
+        int id = Integer.parseInt(lblId.getText());
         CustomerDto customerDto = new CustomerDto(id, txtName.getText(), txtAddress.getText(), txtNumber.getText());
-        try {
-            boolean isSave = CustomerModel.updateCustomer(customerDto);
-            if (isSave) {
-                clearFields();
-                loadTable();
-                new Alert(Alert.AlertType.INFORMATION, "Customer Updated").show();
-            }else {
-                new Alert(Alert.AlertType.ERROR, "Customer Not Updated").show();
+
+        String name = txtName.getText();
+        String number = txtNumber.getText();
+
+        boolean isValidName = name.matches(namePattern);
+        boolean isValidNumber = number.matches(numberPattern);
+        if (isValidName && isValidNumber) {
+            try {
+                boolean isSave = CustomerModel.updateCustomer(customerDto);
+                if (isSave) {
+                    clearFields();
+                    loadTable();
+                    new Alert(Alert.AlertType.INFORMATION, "Customer Updated").show();
+                } else {
+                    new Alert(Alert.AlertType.ERROR, "Customer Not Updated").show();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                new Alert(Alert.AlertType.ERROR, "Customer Not Update").show();
             }
-        }catch (Exception e){
-            e.printStackTrace();
-            new Alert(Alert.AlertType.ERROR, "Customer Not Update").show();
         }
     }
 
     public void tableOnClick(MouseEvent mouseEvent) {
         CustomerDto customerDto = (CustomerDto) tblCustomer.getSelectionModel().getSelectedItem();
         if (customerDto != null) {
-            txtCustId.setText(String.valueOf(customerDto.getCustomerId()));
+            lblId.setText(String.valueOf(customerDto.getCustomerId()));
             txtName.setText(customerDto.getCustomerName());
             txtAddress.setText(customerDto.getAddress());
             txtNumber.setText(customerDto.getCustomerNumber());
+        }
+    }
+
+    public void txtNameChange(KeyEvent keyEvent) {
+       String name = txtName.getText();
+       boolean isValidName = name.matches(namePattern);
+       if (!isValidName) {
+           txtName.setStyle(txtName.getStyle() + ";-fx-border-color: red");
+       }else {
+           txtName.setStyle(txtName.getStyle() + ";-fx-border-color: blue");
+       }
+    }
+
+    public void txtNumberChange(KeyEvent keyEvent) {
+        String number = txtNumber.getText();
+        boolean isValidNumber = number.matches(numberPattern);
+        if (!isValidNumber) {
+            txtNumber.setStyle(txtNumber.getStyle() + ";-fx-border-color: red");
+        }else {
+            txtNumber.setStyle(txtNumber.getStyle() + ";-fx-border-color: blue");
         }
     }
 }

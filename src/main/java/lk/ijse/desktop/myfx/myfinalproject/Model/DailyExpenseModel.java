@@ -20,6 +20,16 @@ public class DailyExpenseModel {
         );
     }
 
+    public String getNextId() throws SQLException {
+        ResultSet resultSet = CrudUtil.execute("select Expense_ID from Expense order by Expense_ID desc limit 1");
+        if (resultSet.next()) {
+            int lastId = resultSet.getInt(1);
+            int nextId = lastId + 1;
+            return String.valueOf(nextId);
+        }
+        return "1";
+    }
+
     public ArrayList<DailyExpenseDto> viewAllDailyExpense() throws SQLException {
         ResultSet rs = CrudUtil.execute("SELECT * FROM Expense");
         ArrayList<DailyExpenseDto> dailyExpenseDto = new ArrayList<>();

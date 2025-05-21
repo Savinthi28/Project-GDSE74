@@ -14,6 +14,7 @@ import lk.ijse.desktop.myfx.myfinalproject.Dto.PotsPurchaseDto;
 import lk.ijse.desktop.myfx.myfinalproject.Model.PotsPurchaseModel;
 
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
@@ -24,6 +25,11 @@ public class PotsPurchaseController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        try {
+            loadNextId();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
         loadTable();
     }
 
@@ -54,7 +60,7 @@ public class PotsPurchaseController implements Initializable {
     private TextField txtDate;
 
     @FXML
-    private TextField txtId;
+    private Label lblId;
 
     @FXML
     private TextField txtPotsSize;
@@ -72,7 +78,7 @@ public class PotsPurchaseController implements Initializable {
 
     @FXML
     public void btnDeleteOnAction(ActionEvent event) {
-        int id = Integer.parseInt(txtId.getText());
+        int id = Integer.parseInt(lblId.getText());
         try {
             boolean isDelete = new PotsPurchaseModel().deletePotsPurchase(new PotsPurchaseDto(id));
             if (isDelete) {
@@ -88,9 +94,15 @@ public class PotsPurchaseController implements Initializable {
         }
     }
 
+    private void loadNextId () throws SQLException {
+        PotsPurchaseModel potsPurchaseModel = new PotsPurchaseModel();
+        String id = potsPurchaseModel.getNextId();
+        lblId.setText(id);
+    }
+
     @FXML
     public void btnSaveOnAction(ActionEvent event) {
-        int id = Integer.parseInt(txtId.getText());
+        int id = Integer.parseInt(lblId.getText());
         int potsSize = Integer.parseInt(txtPotsSize.getText());
         int quantity = Integer.parseInt(txtQuantity.getText());
         double unitPrice = Double.parseDouble(txtUnitPrice.getText());
@@ -112,7 +124,7 @@ public class PotsPurchaseController implements Initializable {
     }
     private void clearFields(){
         loadTable();
-        txtId.setText("");
+        lblId.setText("");
         txtPotsSize.setText("");
         txtDate.setText("");
         txtQuantity.setText("");
@@ -141,7 +153,7 @@ public class PotsPurchaseController implements Initializable {
 
     @FXML
     public void btnUpdateOnAction(ActionEvent event) {
-        int id = Integer.parseInt(txtId.getText());
+        int id = Integer.parseInt(lblId.getText());
         int potsSize = Integer.parseInt(txtPotsSize.getText());
         int quantity = Integer.parseInt(txtQuantity.getText());
         double unitPrice = Double.parseDouble(txtUnitPrice.getText());
@@ -164,7 +176,7 @@ public class PotsPurchaseController implements Initializable {
     public void tableOnClick(MouseEvent mouseEvent) {
         PotsPurchaseDto potsPurchaseDto = (PotsPurchaseDto) tblPotsPurchase.getSelectionModel().getSelectedItem();
         if (potsPurchaseDto != null) {
-            txtId.setText(String.valueOf(potsPurchaseDto.getPurchaseId()));
+            lblId.setText(String.valueOf(potsPurchaseDto.getPurchaseId()));
             txtPotsSize.setText(String.valueOf(potsPurchaseDto.getPotsSize()));
             txtDate.setText(potsPurchaseDto.getDate());
             txtQuantity.setText(String.valueOf(potsPurchaseDto.getQuantity()));

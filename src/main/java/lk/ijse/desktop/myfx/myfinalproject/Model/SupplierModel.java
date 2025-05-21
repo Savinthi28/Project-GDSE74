@@ -19,6 +19,16 @@ public class SupplierModel {
         );
     }
 
+    public String getNextId() throws SQLException {
+        ResultSet resultSet = CrudUtil.execute("select Supplier_ID from Supplier order by Supplier_ID desc limit 1");
+        if (resultSet.next()) {
+            int lastId = resultSet.getInt(1);
+            int nextId = lastId + 1;
+            return String.valueOf(nextId);
+        }
+        return "1";
+    }
+
     public ArrayList<SupplierDto> viewAllSupplier() throws ClassNotFoundException, SQLException {
         ResultSet rs = CrudUtil.execute("SELECT * FROM Supplier");
         ArrayList<SupplierDto> viewSupplier = new ArrayList<>();

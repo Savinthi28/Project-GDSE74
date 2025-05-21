@@ -15,6 +15,7 @@ import lk.ijse.desktop.myfx.myfinalproject.Model.DailyIncomeModel;
 import lombok.SneakyThrows;
 
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
@@ -55,7 +56,7 @@ public class DailyIncomeController implements Initializable {
     private TextField txtDescription;
 
     @FXML
-    private TextField txtId;
+    private Label lblId;
 
     @FXML
     private TextField txtName;
@@ -67,7 +68,7 @@ public class DailyIncomeController implements Initializable {
 
     @FXML
     void btnDeleteOnAction(ActionEvent event) {
-        int id = Integer.parseInt(txtId.getText());
+        int id = Integer.parseInt(lblId.getText());
         try {
             boolean isDelete = new DailyIncomeModel().deleteDailyIncome(new DailyIncomeDto(id));
             if (isDelete) {
@@ -83,9 +84,15 @@ public class DailyIncomeController implements Initializable {
         }
     }
 
+    private void loadNextId () throws SQLException {
+        DailyIncomeModel dailyIncomeModel = new DailyIncomeModel();
+        String id = dailyIncomeModel.getNextId();
+        lblId.setText(id);
+    }
+
     @FXML
     void btnSaveOnAction(ActionEvent event) {
-        int id = Integer.parseInt(txtId.getText());
+        int id = Integer.parseInt(lblId.getText());
         double amount = Double.parseDouble(txtAmount.getText());
         DailyIncomeDto dailyIncomeDto = new DailyIncomeDto(id,txtName.getText(),txtDate.getText(),txtDescription.getText(),amount);
 
@@ -105,7 +112,7 @@ public class DailyIncomeController implements Initializable {
     }
     private void clearFilds(){
         loadTable();
-        txtId.setText("");
+        lblId.setText("");
         txtName.setText("");
         txtDate.setText("");
         txtDescription.setText("");
@@ -134,12 +141,17 @@ public class DailyIncomeController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-       loadTable();
+        try {
+            loadNextId();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        loadTable();
     }
 
     @FXML
     void btnUpdateOnAction(ActionEvent event) {
-        int id = Integer.parseInt(txtId.getText());
+        int id = Integer.parseInt(lblId.getText());
         double amount = Double.parseDouble(txtAmount.getText());
         DailyIncomeDto dailyIncomeDto = new DailyIncomeDto(id,txtName.getText(),txtDate.getText(),txtDescription.getText(),amount);
         try {
@@ -160,7 +172,7 @@ public class DailyIncomeController implements Initializable {
     public void tableOnClick(MouseEvent mouseEvent) {
         DailyIncomeDto dailyIncomeDto = (DailyIncomeDto) tblIncome.getSelectionModel().getSelectedItem();
         if (dailyIncomeDto != null) {
-            txtId.setText(String.valueOf(dailyIncomeDto.getId()));
+            lblId.setText(String.valueOf(dailyIncomeDto.getId()));
             txtName.setText(dailyIncomeDto.getCustomerName());
             txtDate.setText(dailyIncomeDto.getDate());
             txtDescription.setText(dailyIncomeDto.getDescription());

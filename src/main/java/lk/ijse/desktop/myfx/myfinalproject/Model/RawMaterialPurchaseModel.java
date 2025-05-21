@@ -21,6 +21,16 @@ public class RawMaterialPurchaseModel {
         );
     }
 
+    public String getNextId() throws SQLException {
+        ResultSet resultSet = CrudUtil.execute("select Purchase_ID from Raw_Material_Purchase order by Purchase_ID desc limit 1");
+        if (resultSet.next()) {
+            int lastId = resultSet.getInt(1);
+            int nextId = lastId + 1;
+            return String.valueOf(nextId);
+        }
+        return "1";
+    }
+
     public ArrayList<RawMaterialPurchaseDto> viewAllRawMaterialPurchase()throws SQLException, ClassNotFoundException {
         ResultSet rs = CrudUtil.execute("SELECT * FROM Raw_Material_Purchase");
         ArrayList<RawMaterialPurchaseDto> rawMaterialPurchase = new ArrayList<>();

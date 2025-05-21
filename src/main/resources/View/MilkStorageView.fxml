@@ -51,7 +51,11 @@
                               <Font name="System Bold" size="18.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="txtStorageId" prefHeight="34.0" prefWidth="620.0" style="-fx-background-radius: 3;" HBox.hgrow="ALWAYS" />
+                        <Label fx:id="lblId" text="1">
+                           <font>
+                              <Font name="System Bold" size="18.0" />
+                           </font>
+                        </Label>
                      </children>
                   </HBox>
 

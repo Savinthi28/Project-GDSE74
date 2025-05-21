@@ -18,6 +18,16 @@ public class UserModel {
         );
     }
 
+    public String getNextId() throws SQLException {
+        ResultSet resultSet = CrudUtil.execute("select User_ID from User order by User_ID desc limit 1");
+        if (resultSet.next()) {
+            int lastId = resultSet.getInt(1);
+            int nextId = lastId + 1;
+            return String.valueOf(nextId);
+        }
+        return "1";
+    }
+
     public ArrayList<UserDto> viewAllUser() throws ClassNotFoundException, SQLException {
        ResultSet rs = CrudUtil.execute("SELECT * FROM User");
         ArrayList<UserDto> user = new ArrayList<>();

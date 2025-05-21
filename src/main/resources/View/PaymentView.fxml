@@ -39,7 +39,11 @@
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="txtPaymentId" style="-fx-background-radius: 3;" HBox.hgrow="ALWAYS" />
+                  <Label fx:id="lblId" text="1">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                  </Label>
                </HBox>
 
                <HBox alignment="CENTER_LEFT" prefHeight="40.0" spacing="10">

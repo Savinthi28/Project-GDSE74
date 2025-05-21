@@ -20,6 +20,16 @@ public class DailyIncomeModel {
         );
     }
 
+    public String getNextId() throws SQLException {
+        ResultSet resultSet = CrudUtil.execute("select Income_ID from Daily_Income order by Income_ID desc limit 1");
+        if (resultSet.next()) {
+            int lastId = resultSet.getInt(1);
+            int nextId = lastId + 1;
+            return String.valueOf(nextId);
+        }
+        return "1";
+    }
+
     public ArrayList<DailyIncomeDto> viewDailyIncome()throws SQLException, ClassNotFoundException {
         ResultSet rs = CrudUtil.execute("SELECT * FROM Daily_Income");
         ArrayList<DailyIncomeDto> dailyIncome = new ArrayList<>();

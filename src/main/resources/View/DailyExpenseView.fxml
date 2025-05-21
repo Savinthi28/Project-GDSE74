@@ -47,10 +47,11 @@
                         <Font name="System Bold" size="18.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="txtId" style="-fx-background-radius: 3; -fx-border-color: #e0e0e0; -fx-border-radius: 3;" HBox.hgrow="ALWAYS">
-                     <HBox.margin>
-                        <Insets />
-                     </HBox.margin></TextField>
+                  <Label fx:id="lblId" text="1">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                  </Label>
                </HBox>
 
                <HBox alignment="CENTER_LEFT" prefHeight="40.0" spacing="15.0">

@@ -20,6 +20,16 @@ public class ReportsModel {
         );
     }
 
+    public String getNextId() throws SQLException {
+        ResultSet resultSet = CrudUtil.execute("select Report_ID from Reports order by Report_ID desc limit 1");
+        if (resultSet.next()) {
+            int lastId = resultSet.getInt(1);
+            int nextId = lastId + 1;
+            return String.valueOf(nextId);
+        }
+        return "1";
+    }
+
     public ArrayList<ReportsDto> viewAllReports() throws SQLException , ClassNotFoundException {
         ResultSet rs = CrudUtil.execute("SELECT * FROM Reports");
         ArrayList<ReportsDto> reports = new ArrayList<>();

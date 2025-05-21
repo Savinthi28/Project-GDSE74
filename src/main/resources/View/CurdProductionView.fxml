@@ -49,10 +49,11 @@
                             <Font size="18.0" />
                         </font>
                     </Label>
-                    <TextField fx:id="txtId" style="-fx-background-radius: 3;" HBox.hgrow="ALWAYS">
-                  <HBox.margin>
-                     <Insets />
-                  </HBox.margin></TextField>
+               <Label fx:id="lblId" text="1">
+                  <font>
+                     <Font name="System Bold" size="18.0" />
+                  </font>
+               </Label>
                 </HBox>
 
                 <HBox alignment="CENTER_LEFT" prefHeight="20.0" prefWidth="1320.0" spacing="15.0">
@@ -82,7 +83,7 @@
                             <Font size="18.0" />
                         </font>
                     </Label>
-                    <TextField fx:id="txtQuantity" style="-fx-background-radius: 3;" HBox.hgrow="ALWAYS" />
+                    <TextField fx:id="txtQuantity" onKeyReleased="#txtQuantityChange" style="-fx-background-radius: 3;" HBox.hgrow="ALWAYS" />
                 </HBox>
 
                 <HBox alignment="CENTER_LEFT" spacing="15.0">
@@ -91,7 +92,7 @@
                             <Font size="18.0" />
                         </font>
                     </Label>
-                    <TextField fx:id="txtPotsSize" style="-fx-background-radius: 3;" HBox.hgrow="ALWAYS" />
+                    <TextField fx:id="txtPotsSize" onKeyReleased="#txtPotsSizeChange" style="-fx-background-radius: 3;" HBox.hgrow="ALWAYS" />
                 </HBox>
 
                 <HBox alignment="CENTER_LEFT" spacing="15.0">
@@ -100,7 +101,7 @@
                             <Font size="18.0" />
                         </font>
                     </Label>
-                    <TextField fx:id="txtIngredients" style="-fx-background-radius: 3;" HBox.hgrow="ALWAYS" />
+                    <TextField fx:id="txtIngredients" onKeyReleased="#txtIngredientsChange" style="-fx-background-radius: 3;" HBox.hgrow="ALWAYS" />
                 </HBox>
 
                 <HBox alignment="CENTER_LEFT" spacing="15.0">
@@ -109,7 +110,7 @@
                             <Font size="18.0" />
                         </font>
                     </Label>
-                    <TextField fx:id="txtStorageId" style="-fx-background-radius: 3;" HBox.hgrow="ALWAYS" />
+                    <TextField fx:id="txtStorageId" onKeyReleased="#txtStorageIdChange" style="-fx-background-radius: 3;" HBox.hgrow="ALWAYS" />
                 </HBox>
             </VBox>
 

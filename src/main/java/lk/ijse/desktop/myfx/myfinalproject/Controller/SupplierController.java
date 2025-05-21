@@ -45,7 +45,7 @@ public class SupplierController implements Initializable {
     private TextField txtAddress;
 
     @FXML
-    private TextField txtId;
+    private Label lblId;
 
     @FXML
     private TextField txtName;
@@ -60,7 +60,7 @@ public class SupplierController implements Initializable {
 
     @FXML
     void btnDeleteOnAction(ActionEvent event) {
-        int id = Integer.parseInt(txtId.getText());
+        int id = Integer.parseInt(lblId.getText());
         try {
             boolean isDelete = new SupplierModel().deleteSupplier(new SupplierDto(id));
             if (isDelete) {
@@ -76,9 +76,15 @@ public class SupplierController implements Initializable {
         }
     }
 
+    private void loadNextId() throws SQLException {
+        SupplierModel supplierModel = new SupplierModel();
+        String id = supplierModel.getNextId();
+        lblId.setText(id);
+    }
+
     @FXML
     public void btnSaveOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
-        int id = Integer.parseInt(txtId.getText());
+        int id = Integer.parseInt(lblId.getText());
         SupplierDto supplierDto = new SupplierDto(id, txtName.getText(), txtNumber.getText(), txtAddress.getText());
 
         try {
@@ -99,13 +105,18 @@ public class SupplierController implements Initializable {
     private void clearFields() {
         loadTable();
         txtAddress.setText("");
-        txtId.setText("");
+        lblId.setText("");
         txtName.setText("");
         txtNumber.setText("");
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        try {
+            loadNextId();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
         loadTable();
     }
 
@@ -131,7 +142,7 @@ public class SupplierController implements Initializable {
 
     @FXML
     public void btnUpdateOnAction(ActionEvent event) {
-        int id = Integer.parseInt(txtId.getText());
+        int id = Integer.parseInt(lblId.getText());
         SupplierDto supplierDto = new SupplierDto(id, txtName.getText(), txtNumber.getText(), txtAddress.getText());
         try {
             boolean isSave = SupplierModel.updateSupplier(supplierDto);
@@ -151,7 +162,7 @@ public class SupplierController implements Initializable {
     public void tableOnClick(MouseEvent mouseEvent) {
         SupplierDto supplierDto = (SupplierDto) tblSupplier.getSelectionModel().getSelectedItem();
         if (supplierDto != null) {
-            txtId.setText(String.valueOf(supplierDto.getSupplierId()));
+            lblId.setText(String.valueOf(supplierDto.getSupplierId()));
             txtName.setText(supplierDto.getSupplierName());
             txtNumber.setText(supplierDto.getContactNumber());
             txtAddress.setText(supplierDto.getAddress());
