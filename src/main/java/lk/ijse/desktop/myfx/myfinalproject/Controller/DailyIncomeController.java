@@ -53,7 +53,7 @@ public class DailyIncomeController implements Initializable {
     private TextField txtDate;
 
     @FXML
-    private TextField txtDescription;
+    private ComboBox<String> comDescription;
 
     @FXML
     private Label lblId;
@@ -94,7 +94,7 @@ public class DailyIncomeController implements Initializable {
     void btnSaveOnAction(ActionEvent event) {
         int id = Integer.parseInt(lblId.getText());
         double amount = Double.parseDouble(txtAmount.getText());
-        DailyIncomeDto dailyIncomeDto = new DailyIncomeDto(id,txtName.getText(),txtDate.getText(),txtDescription.getText(),amount);
+        DailyIncomeDto dailyIncomeDto = new DailyIncomeDto(id,txtName.getText(),txtDate.getText(),comDescription.getValue(),amount);
 
         try {
             DailyIncomeModel dailyIncomeModel = new DailyIncomeModel();
@@ -115,7 +115,7 @@ public class DailyIncomeController implements Initializable {
         lblId.setText("");
         txtName.setText("");
         txtDate.setText("");
-        txtDescription.setText("");
+        comDescription.setValue("");
         txtAmount.setText("");
     }
     private void loadTable() {
@@ -143,17 +143,25 @@ public class DailyIncomeController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
             loadNextId();
+            loadIncomeDescription();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         loadTable();
     }
 
+    private void loadIncomeDescription() throws SQLException {
+        ArrayList<String> incomeDescription = DailyIncomeModel.getAllIncomeDescription();
+        ObservableList<String> data = FXCollections.observableArrayList(incomeDescription);
+        data.addAll(incomeDescription);
+        comDescription.setItems(data);
+    }
+
     @FXML
     void btnUpdateOnAction(ActionEvent event) {
         int id = Integer.parseInt(lblId.getText());
         double amount = Double.parseDouble(txtAmount.getText());
-        DailyIncomeDto dailyIncomeDto = new DailyIncomeDto(id,txtName.getText(),txtDate.getText(),txtDescription.getText(),amount);
+        DailyIncomeDto dailyIncomeDto = new DailyIncomeDto(id,txtName.getText(),txtDate.getText(),comDescription.getValue(),amount);
         try {
             boolean isSave = DailyIncomeModel.updateDailyIncome(dailyIncomeDto);
             if (isSave) {
@@ -175,7 +183,7 @@ public class DailyIncomeController implements Initializable {
             lblId.setText(String.valueOf(dailyIncomeDto.getId()));
             txtName.setText(dailyIncomeDto.getCustomerName());
             txtDate.setText(dailyIncomeDto.getDate());
-            txtDescription.setText(dailyIncomeDto.getDescription());
+            comDescription.setValue(dailyIncomeDto.getDescription());
             txtAmount.setText(String.valueOf(dailyIncomeDto.getAmount()));
         }
     }
@@ -201,5 +209,10 @@ public class DailyIncomeController implements Initializable {
 
     public void btnGoToExpenseOnAction(ActionEvent actionEvent) {
         navigateTo("/View/DailyExpenseView.fxml");
+    }
+
+    public void comDescriptionOnAction(ActionEvent actionEvent) {
+        String selectedDescription = (String)comDescription.getSelectionModel().getSelectedItem();
+        System.out.println(selectedDescription);
     }
 }

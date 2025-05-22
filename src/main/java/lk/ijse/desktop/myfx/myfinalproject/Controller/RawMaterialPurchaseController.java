@@ -26,10 +26,18 @@ public class RawMaterialPurchaseController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
             loadNextId();
+            loadSupplierId();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         loadTable();
+    }
+
+    private void loadSupplierId() throws SQLException {
+        ArrayList<Integer> supplierIds = RawMaterialPurchaseModel.getAllSupplierId();
+        ObservableList<Integer> observableList = FXCollections.observableArrayList(supplierIds);
+        observableList.addAll(supplierIds);
+        comSupplierId.setItems(observableList);
     }
 
     @FXML
@@ -73,7 +81,7 @@ public class RawMaterialPurchaseController implements Initializable {
     private TextField txtQuantity;
 
     @FXML
-    private TextField txtSupplierId;
+    private ComboBox<Integer> comSupplierId;
 
     @FXML
     void btnClearOnAction(ActionEvent event) {
@@ -107,7 +115,7 @@ public class RawMaterialPurchaseController implements Initializable {
     @FXML
     void btnSaveOnAction(ActionEvent event) {
         int purchaseId=Integer.parseInt(lblId.getText());
-        int supplierId=Integer.parseInt(txtSupplierId.getText());
+        int supplierId=Integer.parseInt(String.valueOf(comSupplierId.getValue()));
         int quantity=Integer.parseInt(txtQuantity.getText());
         double price=Double.parseDouble(txtPrice.getText());
         RawMaterialPurchaseDto rawMaterialPurchaseDto = new RawMaterialPurchaseDto(purchaseId,supplierId,txtMaterialName.getText(),txtDate.getText(),quantity,price);
@@ -129,7 +137,7 @@ public class RawMaterialPurchaseController implements Initializable {
     private void clearFields(){
         loadTable();
         lblId.setText("");
-        txtSupplierId.setText("");
+        comSupplierId.setValue(Integer.valueOf(""));
         txtMaterialName.setText("");
         txtDate.setText("");
         txtQuantity.setText("");
@@ -160,7 +168,7 @@ public class RawMaterialPurchaseController implements Initializable {
     @FXML
     public void btnUpdateOnAction(ActionEvent event) {
         int purchaseId=Integer.parseInt(lblId.getText());
-        int supplierId=Integer.parseInt(txtSupplierId.getText());
+        int supplierId=Integer.parseInt(String.valueOf(comSupplierId.getValue()));
         int quantity=Integer.parseInt(txtQuantity.getText());
         double price=Double.parseDouble(txtPrice.getText());
         RawMaterialPurchaseDto rawMaterialPurchaseDto = new RawMaterialPurchaseDto(purchaseId,supplierId,txtMaterialName.getText(),txtDate.getText(),quantity,price);
@@ -183,7 +191,7 @@ public class RawMaterialPurchaseController implements Initializable {
         RawMaterialPurchaseDto rawMaterialPurchaseDto = (RawMaterialPurchaseDto) tblRawMaterialPurchase.getSelectionModel().getSelectedItem();
         if(rawMaterialPurchaseDto!=null){
             lblId.setText(String.valueOf(rawMaterialPurchaseDto.getPurchaseId()));
-            txtSupplierId.setText(String.valueOf(rawMaterialPurchaseDto.getSupplierId()));
+            comSupplierId.setValue(Integer.valueOf(String.valueOf(rawMaterialPurchaseDto.getSupplierId())));
             txtMaterialName.setText(rawMaterialPurchaseDto.getMaterialName());
             txtDate.setText(String.valueOf(rawMaterialPurchaseDto.getDate()));
             txtQuantity.setText(String.valueOf(rawMaterialPurchaseDto.getQuantity()));
@@ -220,5 +228,10 @@ public class RawMaterialPurchaseController implements Initializable {
 
     public void btnGoToRawMaterialOnAction(ActionEvent actionEvent) {
         navigateTo("/View/RawMaterialPurchaseView.fxml");
+    }
+
+    public void comSupplierIdOnAction(ActionEvent actionEvent) {
+        Integer selectedSupplierId = (Integer) comSupplierId.getSelectionModel().getSelectedItem();
+        System.out.println(selectedSupplierId);
     }
 }

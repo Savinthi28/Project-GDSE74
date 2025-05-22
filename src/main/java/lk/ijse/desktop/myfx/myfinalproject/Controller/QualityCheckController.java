@@ -27,10 +27,18 @@ public class QualityCheckController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
             loadNextId();
+            loadQualityCollectionId();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         loadTable();
+    }
+
+    private void loadQualityCollectionId() throws SQLException {
+        ArrayList<Integer> collectionId = QualityCheckModel.getAllQualityCollectionId();
+        ObservableList<Integer> observableList = FXCollections.observableArrayList(collectionId);
+        observableList.addAll(collectionId);
+        comCollectionId.setItems(observableList);
     }
 
 
@@ -69,7 +77,7 @@ public class QualityCheckController implements Initializable {
     private Label lblId;
 
     @FXML
-    private TextField txtCollectionId;
+    private ComboBox<Integer> comCollectionId;
 
     @FXML
     private TextField txtDate;
@@ -115,7 +123,7 @@ public class QualityCheckController implements Initializable {
     @FXML
     public void btnSaveOnAction(ActionEvent event) throws ClassNotFoundException, SQLException {
         int checkId = Integer.parseInt(lblId.getText());
-        int collectionId = Integer.parseInt(txtCollectionId.getText());
+        int collectionId = Integer.parseInt(String.valueOf(comCollectionId.getValue()));
         double fatContent = Double.parseDouble(txtFatContent.getText());
         double temperature = Double.parseDouble(txtTemperature.getText());
         QualityCheckDto qualityCheckDto = new QualityCheckDto(checkId,collectionId,txtAppearance.getText(),fatContent,temperature,txtDate.getText(),txtNotes.getText());
@@ -137,7 +145,7 @@ public class QualityCheckController implements Initializable {
     private void clearFields() {
         loadTable();
         lblId.setText("");
-        txtCollectionId.setText("");
+        comCollectionId.setValue(Integer.valueOf(""));
         txtAppearance.setText("");
         txtFatContent.setText("");
         txtTemperature.setText("");
@@ -170,7 +178,7 @@ public class QualityCheckController implements Initializable {
     @FXML
     public void btnUpdateOnAction(ActionEvent event) {
         int checkId = Integer.parseInt(lblId.getText());
-        int collectionId = Integer.parseInt(txtCollectionId.getText());
+        int collectionId = Integer.parseInt(String.valueOf(comCollectionId.getValue()));
         double fatContent = Double.parseDouble(txtFatContent.getText());
         double temperature = Double.parseDouble(txtTemperature.getText());
         QualityCheckDto qualityCheckDto = new QualityCheckDto(checkId,collectionId,txtAppearance.getText(),fatContent,temperature,txtDate.getText(),txtNotes.getText());
@@ -193,7 +201,7 @@ public class QualityCheckController implements Initializable {
         QualityCheckDto qualityCheckDto = (QualityCheckDto) tblQualityCheck.getSelectionModel().getSelectedItem();
         if (qualityCheckDto != null) {
             lblId.setText(String.valueOf(qualityCheckDto.getCheckId()));
-            txtCollectionId.setText(String.valueOf(qualityCheckDto.getCollectionId()));
+            comCollectionId.setValue(qualityCheckDto.getCollectionId());
             txtAppearance.setText(qualityCheckDto.getAppearance());
             txtFatContent.setText(String.valueOf(qualityCheckDto.getFatContent()));
             txtTemperature.setText(String.valueOf(qualityCheckDto.getTemperature()));
@@ -226,5 +234,10 @@ public class QualityCheckController implements Initializable {
 
     public void btnGoToQualityCheckOnAction(ActionEvent actionEvent) {
         navigateTo("/View/QualityCheckView.fxml");
+    }
+
+    public void comCollectionIdOnAction(ActionEvent actionEvent) {
+        Integer selectedCollectionId = (Integer) comCollectionId.getSelectionModel().getSelectedItem();
+        System.out.println(selectedCollectionId);
     }
 }

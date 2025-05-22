@@ -6,6 +6,7 @@ import lk.ijse.desktop.myfx.myfinalproject.Util.CrudUtil;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 public class CurdProductionModel {
 
@@ -20,6 +21,26 @@ public class CurdProductionModel {
                 curdProductionDto.getStorageId(),
                 curdProductionDto.getProductionId()
         );
+    }
+
+    public static ArrayList<Integer> getAllPotsSize() throws SQLException {
+        ResultSet rst = CrudUtil.execute("SELECT Pots_Size FROM Pots_Inventory");
+        HashSet<Integer> uniquePotsSize = new HashSet<>();
+        while (rst.next()) {
+            Integer pots = rst.getInt(1);
+            uniquePotsSize.add(pots);
+        }
+        return new ArrayList<>(uniquePotsSize);
+    }
+
+    public static ArrayList<Integer> getAllStorageId() throws SQLException {
+        ResultSet rst = CrudUtil.execute("SELECT Storage_ID FROM Milk_Storage");
+        HashSet<Integer> storageId = new HashSet<>();
+        while (rst.next()) {
+            Integer storage = rst.getInt(1);
+            storageId.add(storage);
+        }
+        return new ArrayList<>(storageId);
     }
 
     public String getNextId() throws SQLException {

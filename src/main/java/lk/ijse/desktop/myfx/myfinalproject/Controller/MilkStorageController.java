@@ -28,10 +28,18 @@ public class MilkStorageController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
             loadNextId();
+            loadMilkStorage();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         loadTable();
+    }
+
+    private void loadMilkStorage() throws SQLException {
+        ArrayList<Integer> milkStorage = MilkStorageModel.getAllMilkStorage();
+        ObservableList<Integer> observableList = FXCollections.observableArrayList(milkStorage);
+        observableList.addAll(milkStorage);
+        comMilkStorage.setItems(observableList);
     }
 
 
@@ -57,7 +65,7 @@ public class MilkStorageController implements Initializable {
     private TableView<MilkStorageDto> tblMilkStorage;
 
     @FXML
-    private TextField txtCollectionId;
+    private ComboBox<Integer> comMilkStorage;
 
     @FXML
     private TextField txtDate;
@@ -103,7 +111,7 @@ public class MilkStorageController implements Initializable {
     @FXML
     void btnSaveOnAction(ActionEvent event) {
         int storageId = Integer.parseInt(lblId.getText());
-        int collectionId = Integer.parseInt(txtCollectionId.getText());
+        int collectionId = Integer.parseInt(String.valueOf(comMilkStorage.getValue()));
         Time duration = Time.valueOf(txtDuration.getText());
         double temperature = Double.parseDouble(txtTemperature.getText());
         MilkStorageDto milkStorageDto = new MilkStorageDto(storageId,collectionId,txtDate.getText(),duration,temperature);
@@ -124,8 +132,8 @@ public class MilkStorageController implements Initializable {
     }
 private void clearField() {
         loadTable();
-    lblId.setText("");
-        txtCollectionId.setText("");
+        lblId.setText("");
+        comMilkStorage.setValue(Integer.valueOf(""));
         txtDate.setText("");
         txtDuration.setText("");
         txtTemperature.setText("");
@@ -153,7 +161,7 @@ private void loadTable() {
     @FXML
     void btnUpdateOnAction(ActionEvent event) {
         int storageId = Integer.parseInt(lblId.getText());
-        int collectionId = Integer.parseInt(txtCollectionId.getText());
+        int collectionId = Integer.parseInt(String.valueOf(comMilkStorage.getValue()));
         Time duration = Time.valueOf(txtDuration.getText());
         double temperature = Double.parseDouble(txtTemperature.getText());
         MilkStorageDto milkStorageDto = new MilkStorageDto(storageId,collectionId,txtDate.getText(),duration,temperature);
@@ -176,7 +184,7 @@ private void loadTable() {
         MilkStorageDto milkStorageDto = (MilkStorageDto) tblMilkStorage.getSelectionModel().getSelectedItem();
         if (milkStorageDto != null) {
             lblId.setText(String.valueOf(milkStorageDto.getStorageId()));
-            txtCollectionId.setText(String.valueOf(milkStorageDto.getCollectionId()));
+            comMilkStorage.setValue(Integer.valueOf(String.valueOf(milkStorageDto.getCollectionId())));
             txtDate.setText(String.valueOf(milkStorageDto.getDate()));
             txtDuration.setText(String.valueOf(milkStorageDto.getDuration()));
             txtTemperature.setText(String.valueOf(milkStorageDto.getTemperature()));
@@ -206,5 +214,10 @@ private void loadTable() {
 
     public void btnGoToQualityCheckOnAction(ActionEvent actionEvent) {
         navigateTo("/View/QualityCheckView.fxml");
+    }
+
+    public void comMilkStorageOnAction(ActionEvent actionEvent) {
+        Integer selectedMilkStorage = (Integer) comMilkStorage.getSelectionModel().getSelectedItem();
+        System.out.println(selectedMilkStorage);
     }
 }

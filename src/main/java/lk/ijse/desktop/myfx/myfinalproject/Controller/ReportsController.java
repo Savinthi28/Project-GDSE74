@@ -22,10 +22,18 @@ public class ReportsController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
             loadNextId();
+            loadUserId();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         loadTable();
+    }
+
+    private void loadUserId() throws SQLException {
+        ArrayList<Integer> userIds = ReportsModel.getAllUserId();
+        ObservableList<Integer> users = FXCollections.observableArrayList(userIds);
+        users.addAll(userIds);
+        comUserId.setItems(users);
     }
 
     @FXML
@@ -59,7 +67,7 @@ public class ReportsController implements Initializable {
     private TextField txtType;
 
     @FXML
-    private TextField txtUserId;
+    private ComboBox<Integer> comUserId;
 
     @FXML
     void btnClearOnAction(ActionEvent event) {
@@ -93,7 +101,7 @@ public class ReportsController implements Initializable {
     @FXML
     void btnSaveOnAction(ActionEvent event) {
         int reportId = Integer.parseInt(lblId.getText());
-        int userId = Integer.parseInt(txtUserId.getText());
+        int userId = Integer.parseInt(String.valueOf(comUserId.getValue()));
         ReportsDto reportsDto = new ReportsDto(reportId,txtDate.getText(),userId,txtType.getText(),txtGenerateBy.getText());
 
         try {
@@ -114,7 +122,7 @@ public class ReportsController implements Initializable {
         loadTable();
         lblId.setText("");
         txtDate.setText("");
-        txtUserId.setText("");
+        comUserId.setValue(Integer.valueOf(""));
         txtType.setText("");
         txtGenerateBy.setText("");
     }
@@ -142,7 +150,7 @@ public class ReportsController implements Initializable {
     @FXML
     public void btnUpdateOnAction(ActionEvent event) {
         int reportId = Integer.parseInt(lblId.getText());
-        int userId = Integer.parseInt(txtUserId.getText());
+        int userId = Integer.parseInt(String.valueOf(comUserId.getValue()));
         ReportsDto reportsDto= new ReportsDto(reportId,txtDate.getText(),userId,txtType.getText(),txtGenerateBy.getText());
         try {
             boolean isSave = ReportsModel.updateReports(reportsDto);
@@ -164,9 +172,14 @@ public class ReportsController implements Initializable {
         if (reportsDto != null) {
             lblId.setText(String.valueOf(reportsDto.getReportId()));
             txtDate.setText(String.valueOf(reportsDto.getDate()));
-            txtUserId.setText(String.valueOf(reportsDto.getUserId()));
+            comUserId.setValue(Integer.valueOf(String.valueOf(reportsDto.getUserId())));
             txtType.setText(String.valueOf(reportsDto.getReportType()));
             txtGenerateBy.setText(String.valueOf(reportsDto.getGenerateBy()));
         }
+    }
+
+    public void comUserIdOnAction(ActionEvent actionEvent) {
+        Integer selectedUserId = (Integer) comUserId.getSelectionModel().getSelectedItem();
+        System.out.println(selectedUserId);
     }
 }

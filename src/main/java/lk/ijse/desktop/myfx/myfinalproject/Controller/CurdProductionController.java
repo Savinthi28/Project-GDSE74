@@ -64,16 +64,16 @@ public class CurdProductionController implements Initializable {
     private TextField txtIngredients;
 
     @FXML
-    private TextField txtPotsSize;
+    private ComboBox<Integer> comPotsSize;
+
+    @FXML
+    private ComboBox<Integer> comStorageId;
 
     @FXML
     private TextField txtProductionDate;
 
     @FXML
     private TextField txtQuantity;
-
-    @FXML
-    private TextField txtStorageId;
 
     private final String quantityPattern = "^\\d+(\\.\\d+)?$";
     private final String potsSizePattern = "^\\d+(\\.\\d+)?$";
@@ -113,21 +113,17 @@ public class CurdProductionController implements Initializable {
     public void btnSaveOnAction(ActionEvent event) throws ClassNotFoundException, SQLException {
         int id = Integer.parseInt(lblId.getText());
         int quantity = Integer.parseInt(txtQuantity.getText());
-        int potsSize = Integer.parseInt(txtPotsSize.getText());
-        int storageID = Integer.parseInt(txtStorageId.getText());
+        int potsSize = Integer.parseInt(String.valueOf(comPotsSize.getValue()));
+        int storageID = Integer.parseInt(String.valueOf(comStorageId.getValue()));
         CurdProductionDto curdProductionDto = new CurdProductionDto(id, txtProductionDate.getText(), txtExpiryDate.getText(), quantity, potsSize, txtIngredients.getText(), storageID);
 
         String quantityText = txtQuantity.getText();
-        String pots = txtPotsSize.getText();
         String ingredients = txtIngredients.getText();
-        String storageId = txtStorageId.getText();
 
         boolean isValidQuantity = quantityText.matches(quantityPattern);
-        boolean isValidPots = pots.matches(potsSizePattern);
         boolean isValidIngredients = ingredients.matches(ingredientsPattern);
-        boolean isValidStorageId = storageId.matches(storageIdPattern);
 
-        if (isValidQuantity && isValidPots && isValidIngredients && isValidStorageId) {
+        if (isValidQuantity && isValidIngredients) {
             try {
                 CurdProductionModel curdProductionModel = new CurdProductionModel();
                 boolean isSave = CurdProductionModel.saveCurdProduction(curdProductionDto);
@@ -148,19 +144,35 @@ public class CurdProductionController implements Initializable {
         txtExpiryDate.setText("");
         lblId.setText("");
         txtIngredients.setText("");
-        txtPotsSize.setText("");
+        comPotsSize.setValue(0);
         txtProductionDate.setText("");
         txtQuantity.setText("");
-        txtStorageId.setText("");
+        comStorageId.setValue(0);
     }
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
             loadNextId();
+            loadPotsSize();
+            loadStorageId();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         loadTable();
+    }
+
+    private void loadStorageId() throws SQLException {
+        ArrayList<Integer> storageList = CurdProductionModel.getAllStorageId();
+        ObservableList<Integer> observableList = FXCollections.observableArrayList(storageList);
+        observableList.addAll(storageList);
+        comStorageId.setItems(observableList);
+    }
+
+    private void loadPotsSize() throws SQLException {
+        ArrayList<Integer> potsSizeList = CurdProductionModel.getAllPotsSize();
+        ObservableList<Integer> observableList = FXCollections.observableArrayList(potsSizeList);
+        observableList.addAll(potsSizeList);
+        comPotsSize.setItems(observableList);
     }
 
     private void loadTable() {
@@ -190,21 +202,17 @@ public class CurdProductionController implements Initializable {
     public void btnUpdateOnAction(ActionEvent event) {
         int id = Integer.parseInt(lblId.getText());
         int quantity = Integer.parseInt(txtQuantity.getText());
-        int potsSize = Integer.parseInt(txtPotsSize.getText());
-        int storageID = Integer.parseInt(txtStorageId.getText());
+        int potsSize = Integer.parseInt(String.valueOf(comPotsSize.getValue()));
+        int storageID = Integer.parseInt(String.valueOf(comStorageId.getValue()));
         CurdProductionDto curdProductionDto = new CurdProductionDto(id, txtProductionDate.getText(), txtExpiryDate.getText(), quantity, potsSize, txtIngredients.getText(), storageID);
 
         String quantityText = txtQuantity.getText();
-        String pots = txtPotsSize.getText();
         String ingredients = txtIngredients.getText();
-        String storageId = txtStorageId.getText();
 
         boolean isValidQuantity = quantityText.matches(quantityPattern);
-        boolean isValidPots = pots.matches(potsSizePattern);
         boolean isValidIngredients = ingredients.matches(ingredientsPattern);
-        boolean isValidStorageId = storageId.matches(storageIdPattern);
 
-        if (isValidQuantity && isValidPots && isValidIngredients && isValidStorageId) {
+        if (isValidQuantity && isValidIngredients ) {
             try {
                 boolean isSave = CurdProductionModel.updateCurdProduction(curdProductionDto);
                 if (isSave) {
@@ -227,9 +235,9 @@ public class CurdProductionController implements Initializable {
             txtProductionDate.setText(String.valueOf(curdProductionDto.getProductionDate()));
             txtExpiryDate.setText(String.valueOf(curdProductionDto.getExpiryDate()));
             txtQuantity.setText(String.valueOf(curdProductionDto.getQuantity()));
-            txtPotsSize.setText(String.valueOf(curdProductionDto.getPotsSize()));
+            comPotsSize.setValue(Integer.valueOf(String.valueOf(curdProductionDto.getPotsSize())));
             txtIngredients.setText(String.valueOf(curdProductionDto.getIngredients()));
-            txtStorageId.setText(String.valueOf(curdProductionDto.getStorageId()));
+            comStorageId.setValue(Integer.valueOf(String.valueOf(curdProductionDto.getStorageId())));
         }
     }
 
@@ -266,16 +274,6 @@ public class CurdProductionController implements Initializable {
         }
     }
 
-    public void txtPotsSizeChange(KeyEvent keyEvent) {
-        String potsSize = txtPotsSize.getText();
-        boolean isValid = potsSize.matches(potsSizePattern);
-        if (!isValid) {
-            txtPotsSize.setStyle(txtPotsSize.getStyle()  + ";-fx-border-color: red");
-        }else {
-            txtPotsSize.setStyle(txtPotsSize.getStyle()  + ";-fx-border-color: blue");
-        }
-    }
-
     public void txtIngredientsChange(KeyEvent keyEvent) {
         String ingredients = txtIngredients.getText();
         boolean isValid = ingredients.matches(ingredientsPattern);
@@ -286,13 +284,13 @@ public class CurdProductionController implements Initializable {
         }
     }
 
-    public void txtStorageIdChange(KeyEvent keyEvent) {
-        String storageId = txtStorageId.getText();
-        boolean isValid = storageId.matches(storageIdPattern);
-        if (!isValid) {
-            txtStorageId.setStyle(txtStorageId.getStyle() + ";-fx-border-color: red");
-        }else {
-            txtStorageId.setStyle(txtStorageId.getStyle() + ";-fx-border-color: blue");
-        }
+    public void comPotsSizeOnAction(ActionEvent actionEvent) {
+        Integer selectedPotSize = (Integer) comPotsSize.getSelectionModel().getSelectedItem();
+        System.out.println( selectedPotSize);
+    }
+
+    public void comStorageIdOnAction(ActionEvent actionEvent) {
+        Integer selectedStorageId = (Integer) comStorageId.getSelectionModel().getSelectedItem();
+        System.out.println(selectedStorageId);
     }
 }

@@ -11,6 +11,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import lk.ijse.desktop.myfx.myfinalproject.Dto.BuffaloDto;
 import lk.ijse.desktop.myfx.myfinalproject.Model.BuffaloModel;
+import lombok.Getter;
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -46,7 +47,7 @@ public class BuffaloController implements Initializable {
     private Label lblId;
 
     @FXML
-    private TextField txtGender;
+    private ComboBox<String> comGender;
 
     @FXML
     private TextField txtHealth;
@@ -55,7 +56,6 @@ public class BuffaloController implements Initializable {
     private TextField txtMilkProduction;
 
     private final String milkPattern = "^\\d+(\\.\\d+)?$";
-    private final String genderPattern = "^[A-Za-z]+$";
     private final String agePattern = "^\\d+$";
     private final String healthPattern = "^[A-Za-z ]+$";
 
@@ -92,19 +92,17 @@ public class BuffaloController implements Initializable {
    public void btnSaveOnAction(ActionEvent event) throws ClassNotFoundException, SQLException {
         int age = Integer.parseInt(txtAge.getText());
         double milkProduction = Double.parseDouble(txtMilkProduction.getText());
-        BuffaloDto buffaloDto = new BuffaloDto(lblId.getText(), milkProduction, txtGender.getText(), age, txtHealth.getText());
+        BuffaloDto buffaloDto = new BuffaloDto(lblId.getText(), milkProduction, comGender.getValue(), age, txtHealth.getText());
 
         String milk = txtMilkProduction.getText();
-        String gender = txtGender.getText();
         String ageString = txtAge.getText();
         String health = txtHealth.getText();
 
         boolean isValidMilk = milk.matches(milkPattern);
-        boolean isValidGender = gender.matches(genderPattern);
         boolean isValidAge = ageString.matches(agePattern);
         boolean isValidHealth = health.matches(healthPattern);
 
-        if (isValidMilk && isValidGender && isValidAge && isValidHealth) {
+        if (isValidMilk &&  isValidAge && isValidHealth) {
             try {
                 BuffaloModel buffaloModel = new BuffaloModel();
                 boolean isSave = buffaloModel.saveBuffalo(buffaloDto);
@@ -124,7 +122,7 @@ public class BuffaloController implements Initializable {
         loadTable();
         txtAge.setText("");
         txtMilkProduction.setText("");
-        txtGender.setText("");
+        comGender.setValue("");
         lblId.setText("");
         txtHealth.setText("");
     }
@@ -132,13 +130,19 @@ public class BuffaloController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
             loadNextId();
+            loadBuffaloGender();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         loadTable();
-
     }
-private void loadTable() {
+    private void loadBuffaloGender() throws SQLException {
+        ArrayList<String> genderList = BuffaloModel.getAllBuffaloGender();
+        ObservableList<String> genderObservableList = FXCollections.observableArrayList(genderList);
+        genderObservableList.addAll(genderList);
+        comGender.setItems(genderObservableList);
+    }
+    private void loadTable() {
         colID.setCellValueFactory(new PropertyValueFactory<>("buffaloID"));
         colMilk.setCellValueFactory(new PropertyValueFactory<>("milkProduction"));
     colGender.setCellValueFactory(new PropertyValueFactory<>("gender"));
@@ -163,18 +167,16 @@ private void loadTable() {
     public void btnUpdateOnAction(ActionEvent event) {
         double milkProduction = Double.parseDouble(txtMilkProduction.getText());
         int age = Integer.parseInt(txtAge.getText());
-        BuffaloDto buffaloDto = new BuffaloDto(lblId.getText(), milkProduction, txtGender.getText(), age, txtHealth.getText());
+        BuffaloDto buffaloDto = new BuffaloDto(lblId.getText(), milkProduction, comGender.getValue(), age, txtHealth.getText());
 
         String milk = txtMilkProduction.getText();
-        String gender = txtGender.getText();
         String ageString = txtAge.getText();
         String health = txtHealth.getText();
 
         boolean isValidMilk = milk.matches(milkPattern);
-        boolean isValidGender = gender.matches(genderPattern);
         boolean isValidAge = ageString.matches(agePattern);
         boolean isValidHealth = health.matches(healthPattern);
-        if (isValidMilk && isValidGender && isValidAge && isValidHealth) {
+        if (isValidMilk && isValidAge && isValidHealth) {
             try {
                 boolean isSave = BuffaloModel.updateFarmer(buffaloDto);
                 if (isSave) {
@@ -196,7 +198,7 @@ private void loadTable() {
         if (buffaloDto != null) {
             lblId.setText(buffaloDto.getBuffaloID());
             txtMilkProduction.setText(String.valueOf(buffaloDto.getMilkProduction()));
-            txtGender.setText(buffaloDto.getGender());
+            comGender.setValue(buffaloDto.getGender());
             txtAge.setText(String.valueOf(buffaloDto.getAge()));
             txtHealth.setText(String.valueOf(buffaloDto.getHealthStatus()));
         }
@@ -211,17 +213,7 @@ private void loadTable() {
             txtMilkProduction.setStyle(txtMilkProduction.getStyle()+ ";-fx-border-color: red");
         }
     }
-
-    public void txtGenderChange(KeyEvent keyEvent) {
-        String gender = txtGender.getText();
-        boolean isValidGender = gender.matches(genderPattern);
-        if (isValidGender) {
-            txtGender.setStyle(txtGender.getStyle()+ ";-fx-border-color: blue");
-        }else {
-            txtGender.setStyle(txtGender.getStyle()+ ";-fx-border-color: red");
-        }
-    }
-
+    
     public void txtAgeChange(KeyEvent keyEvent) {
         String age = txtAge.getText();
         boolean isValidAge = age.matches(agePattern);
@@ -240,5 +232,10 @@ private void loadTable() {
         }else {
             txtHealth.setStyle(txtHealth.getStyle()+ ";-fx-border-color: red");
         }
+    }
+
+    public void comGenderOnAction(ActionEvent actionEvent) {
+        String selectedGender = (String) comGender.getSelectionModel().getSelectedItem();
+        System.out.println(selectedGender);
     }
 }

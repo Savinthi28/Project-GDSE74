@@ -20,6 +20,16 @@ public class BuffaloModel {
         );
     }
 
+    public static ArrayList<String> getAllBuffaloGender() throws SQLException {
+        ResultSet rst = CrudUtil.execute("SELECT DISTINCT Gender FROM Buffalo");
+        ArrayList<String> list = new ArrayList<>();
+        while (rst.next()) {
+            String gender = rst.getString(1);
+            list.add(gender);
+        }
+        return list;
+    }
+
     public String getNextId() throws SQLException {
             ResultSet resultSet = CrudUtil.execute("select buffalo_id from buffalo order by buffalo_id desc limit 1");
             String prefix = "BUF";

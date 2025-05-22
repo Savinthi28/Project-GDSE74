@@ -22,10 +22,26 @@ public class OrderController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
             loadNextId();
+            loadCustomerId();
+            loadPotsSize();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         loadTable();
+    }
+
+    private void loadPotsSize() throws SQLException {
+        ArrayList<Integer> potsSize = OrderModel.getAllPotsSize();
+        ObservableList<Integer> observableList = FXCollections.observableArrayList(potsSize);
+        observableList.addAll(potsSize);
+        comPotsSize.setItems(observableList);
+    }
+
+    private void loadCustomerId() throws SQLException {
+        ArrayList<Integer> customerId = OrderModel.getAllCustomerId();
+        ObservableList<Integer> observableList = FXCollections.observableArrayList(customerId);
+        observableList.addAll(customerId);
+        comCustomerId.setItems(observableList);
     }
 
     @FXML
@@ -50,16 +66,16 @@ public class OrderController implements Initializable {
     private TableView<OrderDto> tblOrder;
 
     @FXML
-    private TextField txtCustomerId;
+    private ComboBox<Integer> comCustomerId;
+
+    @FXML
+    private ComboBox<Integer> comPotsSize;
 
     @FXML
     private TextField txtDate;
 
     @FXML
     private Label lblId;
-
-    @FXML
-    private TextField txtPotsSize;
 
     @FXML
     private TextField txtQuantity;
@@ -99,9 +115,9 @@ public class OrderController implements Initializable {
     @FXML
     void btnSaveOnAction(ActionEvent event) {
         int orderId = Integer.parseInt(lblId.getText());
-        int customerId=Integer.parseInt(txtCustomerId.getText());
+        int customerId=Integer.parseInt(String.valueOf(comCustomerId.getValue()));
         Time time = Time.valueOf(txtTime.getText());
-        int potsSize = Integer.parseInt(txtPotsSize.getText());
+        int potsSize = Integer.parseInt(String.valueOf(comPotsSize.getValue()));
         int quantity = Integer.parseInt(txtQuantity.getText());
         OrderDto orderDto = new OrderDto(orderId,customerId,txtDate.getText(),time,potsSize,quantity);
 
@@ -122,10 +138,10 @@ public class OrderController implements Initializable {
     private void clearFields(){
         loadTable();
         lblId.setText("");
-        txtCustomerId.setText("");
+        comCustomerId.setValue(Integer.valueOf(""));
         txtDate.setText("");
         txtTime.setText("");
-        txtPotsSize.setText("");
+        comPotsSize.setValue(Integer.valueOf(""));
         txtQuantity.setText("");
     }
     private void loadTable(){
@@ -153,9 +169,9 @@ public class OrderController implements Initializable {
     @FXML
     public void btnUpdateOnAction(ActionEvent event) {
         int orderId = Integer.parseInt(lblId.getText());
-        int customerId = Integer.parseInt(txtCustomerId.getText());
+        int customerId = Integer.parseInt(String.valueOf(comCustomerId.getValue()));
         Time time = Time.valueOf(txtTime.getText());
-        int potsSize = Integer.parseInt(txtPotsSize.getText());
+        int potsSize = Integer.parseInt(String.valueOf(comPotsSize.getValue()));
         int quantity = Integer.parseInt(txtQuantity.getText());
         OrderDto orderDto = new OrderDto(orderId,customerId,txtDate.getText(),time,potsSize,quantity);
         try {
@@ -177,11 +193,21 @@ public class OrderController implements Initializable {
         OrderDto orderDto = (OrderDto) tblOrder.getSelectionModel().getSelectedItem();
         if(orderDto != null){
             lblId.setText(String.valueOf(orderDto.getOrderId()));
-            txtCustomerId.setText(String.valueOf(orderDto.getCustomerId()));
+            comCustomerId.setValue(Integer.valueOf(String.valueOf(orderDto.getCustomerId())));
             txtDate.setText(String.valueOf(orderDto.getDate()));
             txtTime.setText(String.valueOf(orderDto.getTime()));
-            txtPotsSize.setText(String.valueOf(orderDto.getPotsSize()));
+            comPotsSize.setValue(Integer.valueOf(String.valueOf(orderDto.getPotsSize())));
             txtQuantity.setText(String.valueOf(orderDto.getQuantity()));
         }
+    }
+
+    public void comCustomerIdOnAction(ActionEvent actionEvent) {
+        Integer selectedCustomerId = (Integer) comCustomerId.getSelectionModel().getSelectedItem();
+        System.out.println(selectedCustomerId);
+    }
+
+    public void comPotsSizeOnAction(ActionEvent actionEvent) {
+        Integer selectedPotsSize = (Integer) comPotsSize.getSelectionModel().getSelectedItem();
+        System.out.println(selectedPotsSize);
     }
 }

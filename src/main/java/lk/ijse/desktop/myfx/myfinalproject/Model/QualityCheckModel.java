@@ -22,6 +22,16 @@ public class QualityCheckModel {
         );
     }
 
+    public static ArrayList<Integer> getAllQualityCollectionId() throws SQLException {
+        ResultSet rst = CrudUtil.execute("SELECT DISTINCT Collection_ID FROM Milk_Collection");
+        ArrayList<Integer> qualityCollectionIds = new ArrayList<>();
+        while (rst.next()) {
+            Integer collectionId = rst.getInt(1);
+            qualityCollectionIds.add(collectionId);
+        }
+        return qualityCollectionIds;
+    }
+
     public String getNextId() throws SQLException {
         ResultSet resultSet = CrudUtil.execute("select Check_ID from Quality_Check order by Check_ID desc limit 1");
         if (resultSet.next()) {

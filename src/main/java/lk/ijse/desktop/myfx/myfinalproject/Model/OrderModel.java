@@ -21,6 +21,26 @@ public class OrderModel {
         );
     }
 
+    public static ArrayList<Integer> getAllCustomerId() throws SQLException {
+        ResultSet rst = CrudUtil.execute("SELECT DISTINCT Customer_ID FROM Orders");
+        ArrayList<Integer> customerIds = new ArrayList<>();
+        while (rst.next()) {
+            Integer customerId = rst.getInt(1);
+            customerIds.add(customerId);
+        }
+        return customerIds;
+    }
+
+    public static ArrayList<Integer> getAllPotsSize() throws SQLException {
+        ResultSet rst = CrudUtil.execute("SELECT DISTINCT Pots_Size FROM Pots_Inventory");
+        ArrayList<Integer> potsSize = new ArrayList<>();
+        while (rst.next()) {
+            Integer pots = rst.getInt(1);
+            potsSize.add(pots);
+        }
+        return potsSize;
+    }
+
     public String getNextId() throws SQLException {
         ResultSet resultSet = CrudUtil.execute("select Order_ID from Orders order by Order_ID desc limit 1");
         if (resultSet.next()) {

@@ -21,6 +21,36 @@ public class PaymentModel {
         );
     }
 
+    public static ArrayList<Integer> getAllCustomerId() throws SQLException {
+        ResultSet rst = CrudUtil.execute("SELECT DISTINCT Customer_ID FROM Customer");
+        ArrayList<Integer> customerIds = new ArrayList<>();
+        while (rst.next()) {
+            Integer customerId = rst.getInt(1);
+            customerIds.add(customerId);
+        }
+        return customerIds;
+    }
+
+    public static ArrayList<Integer> getAllOrderId() throws SQLException {
+        ResultSet rst = CrudUtil.execute("SELECT DISTINCT Order_ID FROM Payment");
+        ArrayList<Integer> orderIds = new ArrayList<>();
+        while (rst.next()) {
+            Integer orderId = rst.getInt(1);
+            orderIds.add(orderId);
+        }
+        return orderIds;
+    }
+
+    public static ArrayList<String> getAllPaymentMethod() throws SQLException {
+        ResultSet rst = CrudUtil.execute("SELECT DISTINCT Payment_Method FROM Payment");
+        ArrayList<String> paymentMethods = new ArrayList<>();
+        while (rst.next()) {
+            String paymentMethod = rst.getString(1);
+            paymentMethods.add(paymentMethod);
+        }
+        return paymentMethods;
+    }
+
     public String getNextId() throws SQLException {
         ResultSet resultSet = CrudUtil.execute("select Payment_ID from Payment order by Payment_ID desc limit 1");
         if (resultSet.next()) {

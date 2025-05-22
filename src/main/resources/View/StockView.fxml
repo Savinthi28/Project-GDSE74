@@ -3,6 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
@@ -60,7 +61,7 @@
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="txtProdctionId" style="-fx-background-radius: 4; -fx-border-color: #e2e8f0; -fx-border-radius: 4; -fx-border-width: 1;" HBox.hgrow="ALWAYS" />
+                  <ComboBox fx:id="comProductionId" onAction="#comProductionIdOnAction" prefWidth="150.0" />
                </HBox>
 
                <HBox alignment="CENTER_LEFT" prefHeight="40.0" spacing="15">

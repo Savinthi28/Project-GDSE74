@@ -3,6 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
@@ -52,7 +53,7 @@
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="txtOrderId" style="-fx-background-radius: 3;" HBox.hgrow="ALWAYS" />
+                  <ComboBox fx:id="comOrderId" onAction="#comOrderIdOnAction" prefWidth="150.0" />
                </HBox>
 
                <HBox alignment="CENTER_LEFT" prefHeight="40.0" spacing="10">
@@ -61,7 +62,7 @@
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="txtCustomerId" style="-fx-background-radius: 3;" HBox.hgrow="ALWAYS" />
+                  <ComboBox fx:id="comCustomerId" onAction="#comCustomerIdOnAction" prefWidth="150.0" />
                </HBox>
 
                <HBox alignment="CENTER_LEFT" prefHeight="40.0" spacing="10">
@@ -79,7 +80,7 @@
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="txtPaymentMethod" style="-fx-background-radius: 3;" HBox.hgrow="ALWAYS" />
+                  <ComboBox fx:id="comPaymentMethod" onAction="#comPaymentMethodOnAction" prefWidth="150.0" />
                </HBox>
 
                <HBox alignment="CENTER_LEFT" prefHeight="40.0" spacing="10">

@@ -55,7 +55,7 @@ public class DailyExpenseController implements Initializable {
     private TextField txtDescription;
 
     @FXML
-    private TextField txtExpense;
+    private ComboBox<Boolean> comExpense;
 
     @FXML
     private Label lblId;
@@ -93,7 +93,7 @@ public class DailyExpenseController implements Initializable {
     public void btnSaveOnAction(ActionEvent event) {
         int id = Integer.parseInt(lblId.getText());
         double amount = Double.parseDouble(txtAmount.getText());
-        boolean expense = Boolean.parseBoolean(txtExpense.getText());
+        boolean expense = Boolean.parseBoolean(String.valueOf(comExpense.getValue()));
         DailyExpenseDto dailyExpenseDto = new DailyExpenseDto(id,txtDate.getText(),txtDescription.getText(),amount,expense);
 
         try {
@@ -116,7 +116,7 @@ public class DailyExpenseController implements Initializable {
         txtDate.setText("");
         txtDescription.setText("");
         txtAmount.setText("");
-        txtExpense.setText("");
+        comExpense.setValue(Boolean.valueOf(""));
     }
     private void loadTable(){
         colId.setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -142,17 +142,25 @@ public class DailyExpenseController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
             loadNextId();
+            loadExpense();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         loadTable();
     }
 
+    private void loadExpense() throws SQLException {
+        ArrayList<Boolean> expense = DailyExpenseModel.getAllExpense();
+        ObservableList<Boolean> observableList = FXCollections.observableArrayList(expense);
+        observableList.addAll(expense);
+        comExpense.setItems(observableList);
+    }
+
     @FXML
     void btnUpdateOnAction(ActionEvent event) {
         int id = Integer.parseInt(lblId.getText());
         double amount = Double.parseDouble(txtAmount.getText());
-        boolean expense = Boolean.parseBoolean(txtExpense.getText());
+        boolean expense = Boolean.parseBoolean(String.valueOf(comExpense.getValue()));
         DailyExpenseDto dailyExpenseDto = new DailyExpenseDto(id,txtDate.getText(),txtDescription.getText(),amount,expense);
         try {
             boolean isSave = DailyExpenseModel.updateDailyExpense(dailyExpenseDto);
@@ -176,7 +184,7 @@ public class DailyExpenseController implements Initializable {
             txtDate.setText(String.valueOf(dailyExpenseDto.getDate()));
             txtDescription.setText(String.valueOf(dailyExpenseDto.getDescription()));
             txtAmount.setText(String.valueOf(dailyExpenseDto.getAmount()));
-            txtExpense.setText(String.valueOf(dailyExpenseDto.isDailyExpense()));
+            comExpense.setValue(Boolean.valueOf(String.valueOf(dailyExpenseDto.isDailyExpense())));
         }
     }
 
@@ -201,5 +209,10 @@ public class DailyExpenseController implements Initializable {
 
     public void btnGoToExpenseOnAction(ActionEvent actionEvent) {
         navigateTo("/View/DailyExpenseView.fxml");
+    }
+
+    public void comExpenseOnAction(ActionEvent actionEvent) {
+        Boolean selectedExpense = (Boolean) comExpense.getSelectionModel().getSelectedItem();
+        System.out.println(selectedExpense);
     }
 }

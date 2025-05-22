@@ -20,6 +20,16 @@ public class DailyIncomeModel {
         );
     }
 
+    public static ArrayList<String> getAllIncomeDescription() throws SQLException {
+        ResultSet rst = CrudUtil.execute("SELECT DISTINCT Description FROM Daily_Income");
+        ArrayList<String> list = new ArrayList<>();
+        while (rst.next()) {
+            String description = rst.getString(1);
+            list.add(description);
+        }
+        return list;
+    }
+
     public String getNextId() throws SQLException {
         ResultSet resultSet = CrudUtil.execute("select Income_ID from Daily_Income order by Income_ID desc limit 1");
         if (resultSet.next()) {

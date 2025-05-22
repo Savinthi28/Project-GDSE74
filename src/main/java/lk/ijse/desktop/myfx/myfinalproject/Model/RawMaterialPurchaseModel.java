@@ -21,6 +21,16 @@ public class RawMaterialPurchaseModel {
         );
     }
 
+    public static ArrayList<Integer> getAllSupplierId() throws SQLException {
+        ResultSet rs = CrudUtil.execute("select Supplier_ID from Supplier");
+        ArrayList<Integer> supplierIds = new ArrayList<>();
+        while (rs.next()) {
+            Integer supplierId = rs.getInt(1);
+            supplierIds.add(supplierId);
+        }
+        return supplierIds;
+    }
+
     public String getNextId() throws SQLException {
         ResultSet resultSet = CrudUtil.execute("select Purchase_ID from Raw_Material_Purchase order by Purchase_ID desc limit 1");
         if (resultSet.next()) {

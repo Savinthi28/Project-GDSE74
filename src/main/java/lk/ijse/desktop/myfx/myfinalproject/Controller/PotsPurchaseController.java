@@ -27,10 +27,18 @@ public class PotsPurchaseController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
             loadNextId();
+            loadPotsSize();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         loadTable();
+    }
+
+    private void loadPotsSize() throws SQLException {
+        ArrayList<Integer> potsSize = PotsPurchaseModel.getAllPotsSize();
+        ObservableList<Integer> observableList = FXCollections.observableArrayList(potsSize);
+        observableList.addAll(potsSize);
+        comPotsSize.setItems(observableList);
     }
 
 
@@ -63,7 +71,7 @@ public class PotsPurchaseController implements Initializable {
     private Label lblId;
 
     @FXML
-    private TextField txtPotsSize;
+    private ComboBox<Integer> comPotsSize;
 
     @FXML
     private TextField txtQuantity;
@@ -103,7 +111,7 @@ public class PotsPurchaseController implements Initializable {
     @FXML
     public void btnSaveOnAction(ActionEvent event) {
         int id = Integer.parseInt(lblId.getText());
-        int potsSize = Integer.parseInt(txtPotsSize.getText());
+        int potsSize = Integer.parseInt(String.valueOf(comPotsSize.getValue()));
         int quantity = Integer.parseInt(txtQuantity.getText());
         double unitPrice = Double.parseDouble(txtUnitPrice.getText());
         PotsPurchaseDto potsPurchaseDto = new PotsPurchaseDto(id,potsSize,txtDate.getText(),quantity,unitPrice);
@@ -125,7 +133,7 @@ public class PotsPurchaseController implements Initializable {
     private void clearFields(){
         loadTable();
         lblId.setText("");
-        txtPotsSize.setText("");
+        comPotsSize.setValue(Integer.valueOf(""));
         txtDate.setText("");
         txtQuantity.setText("");
         txtUnitPrice.setText("");
@@ -154,7 +162,7 @@ public class PotsPurchaseController implements Initializable {
     @FXML
     public void btnUpdateOnAction(ActionEvent event) {
         int id = Integer.parseInt(lblId.getText());
-        int potsSize = Integer.parseInt(txtPotsSize.getText());
+        int potsSize = Integer.parseInt(String.valueOf(comPotsSize.getValue()));
         int quantity = Integer.parseInt(txtQuantity.getText());
         double unitPrice = Double.parseDouble(txtUnitPrice.getText());
         PotsPurchaseDto potsPurchaseDto = new PotsPurchaseDto(id,potsSize,txtDate.getText(),quantity,unitPrice);
@@ -177,7 +185,7 @@ public class PotsPurchaseController implements Initializable {
         PotsPurchaseDto potsPurchaseDto = (PotsPurchaseDto) tblPotsPurchase.getSelectionModel().getSelectedItem();
         if (potsPurchaseDto != null) {
             lblId.setText(String.valueOf(potsPurchaseDto.getPurchaseId()));
-            txtPotsSize.setText(String.valueOf(potsPurchaseDto.getPotsSize()));
+            comPotsSize.setValue(Integer.valueOf(String.valueOf(potsPurchaseDto.getPotsSize())));
             txtDate.setText(potsPurchaseDto.getDate());
             txtQuantity.setText(String.valueOf(potsPurchaseDto.getQuantity()));
             txtUnitPrice.setText(String.valueOf(potsPurchaseDto.getPrice()));
@@ -213,5 +221,10 @@ public class PotsPurchaseController implements Initializable {
 
     public void btnGoToRawMaterialOnAction(ActionEvent actionEvent) {
         navigateTo("/View/RawMaterialPurchaseView.fxml");
+    }
+
+    public void comPotsSizeOnAction(ActionEvent actionEvent) {
+        Integer selectedPotsSize = (Integer) comPotsSize.getSelectionModel().getSelectedItem();
+        System.out.println(selectedPotsSize);
     }
 }

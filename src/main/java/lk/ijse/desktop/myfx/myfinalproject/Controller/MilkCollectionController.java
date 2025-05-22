@@ -28,10 +28,18 @@ public class MilkCollectionController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
             loadNextId();
+            loadMilkCollectionBuffaloId();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         loadTable();
+    }
+
+    private void loadMilkCollectionBuffaloId() throws SQLException {
+        ArrayList<String> milkCollectionBuffaloIds = MilkCollectionModel.getAllMilkCollectionBuffaloId();
+        ObservableList<String> observableList = FXCollections.observableArrayList(milkCollectionBuffaloIds);
+        observableList.addAll(milkCollectionBuffaloIds);
+        comMilkCollection.setItems(observableList);
     }
 
     @FXML
@@ -54,7 +62,7 @@ public class MilkCollectionController implements Initializable {
     private TableView<MilkCollectionDto> tblMilkCollection;
 
     @FXML
-    private TextField txtBuffaloId;
+    private ComboBox<String> comMilkCollection;
 
     @FXML
     private TextField txtDate;
@@ -116,7 +124,7 @@ public class MilkCollectionController implements Initializable {
     public void btnSaveOnAction(ActionEvent event) {
         int id = Integer.parseInt(lblId.getText());
         double quantity = Double.parseDouble(txtQuantity.getText());
-        MilkCollectionDto milkCollectionDto = new MilkCollectionDto(id, txtDate.getText(), quantity, txtBuffaloId.getText());
+        MilkCollectionDto milkCollectionDto = new MilkCollectionDto(id, txtDate.getText(), quantity, comMilkCollection.getValue());
 
         try {
             MilkCollectionModel milkCollectionModel = new MilkCollectionModel();
@@ -138,7 +146,7 @@ public class MilkCollectionController implements Initializable {
         lblId.setText("");
         txtDate.setText("");
         txtQuantity.setText("");
-        txtBuffaloId.setText("");
+        comMilkCollection.setValue("");
     }
 
     private void loadTable() {
@@ -165,7 +173,7 @@ public class MilkCollectionController implements Initializable {
     public void btnUpdateOnAction(ActionEvent event) {
         int id = Integer.parseInt(lblId.getText());
         double quantity = Double.parseDouble(txtQuantity.getText());
-        MilkCollectionDto milkCollectionDto = new MilkCollectionDto(id, txtDate.getText(), quantity, txtBuffaloId.getText());
+        MilkCollectionDto milkCollectionDto = new MilkCollectionDto(id, txtDate.getText(), quantity, comMilkCollection.getValue());
         try {
             boolean isSave = MilkCollectionModel.updateMilkCollection(milkCollectionDto);
             if (isSave) {
@@ -187,7 +195,7 @@ public class MilkCollectionController implements Initializable {
             lblId.setText(String.valueOf(milkCollectionDto.getId()));
             txtDate.setText(milkCollectionDto.getDate());
             txtQuantity.setText(String.valueOf(milkCollectionDto.getQuantity()));
-            txtBuffaloId.setText(milkCollectionDto.getBuffaloId());
+            comMilkCollection.setValue(milkCollectionDto.getBuffaloId());
         }
     }
 
@@ -197,6 +205,11 @@ public class MilkCollectionController implements Initializable {
 
     public void btnGoToQualityCheckOnAction(ActionEvent actionEvent) {
         navigateTo("/View/QualityCheckView.fxml");
+    }
+
+    public void comMilkCollectionOnAction(ActionEvent actionEvent) {
+        String selectedMilkCollection = (String) comMilkCollection.getSelectionModel().getSelectedItem();
+        System.out.println(selectedMilkCollection);
     }
 }
 

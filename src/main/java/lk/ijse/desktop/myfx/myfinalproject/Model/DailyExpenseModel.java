@@ -20,6 +20,16 @@ public class DailyExpenseModel {
         );
     }
 
+    public static ArrayList<Boolean> getAllExpense() throws SQLException {
+        ResultSet rst = CrudUtil.execute("SELECT DISTINCT Daily_Expense FROM Expense");
+        ArrayList<Boolean> list = new ArrayList<>();
+        while (rst.next()) {
+            Boolean expense = rst.getBoolean(1);
+            list.add(expense);
+        }
+        return list;
+    }
+
     public String getNextId() throws SQLException {
         ResultSet resultSet = CrudUtil.execute("select Expense_ID from Expense order by Expense_ID desc limit 1");
         if (resultSet.next()) {

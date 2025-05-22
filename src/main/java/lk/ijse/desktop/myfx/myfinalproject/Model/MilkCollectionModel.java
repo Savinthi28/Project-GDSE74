@@ -19,6 +19,16 @@ public class MilkCollectionModel {
         );
     }
 
+    public static ArrayList<String> getAllMilkCollectionBuffaloId() throws SQLException {
+        ResultSet rst = CrudUtil.execute("SELECT Buffalo_ID FROM Buffalo");
+        ArrayList<String> list = new ArrayList<>();
+        while (rst.next()) {
+            String buffaloId = rst.getString(1);
+            list.add(buffaloId);
+        }
+        return list;
+    }
+
     public String getNextId() throws SQLException {
         ResultSet resultSet = CrudUtil.execute("select Collection_ID from Milk_Collection order by Collection_ID desc limit 1");
         if (resultSet.next()) {

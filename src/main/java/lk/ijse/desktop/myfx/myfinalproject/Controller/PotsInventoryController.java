@@ -28,10 +28,18 @@ public class PotsInventoryController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
             loadNextId();
+            loadPotsSize();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         loadTable();
+    }
+
+    private void loadPotsSize() throws SQLException {
+        ArrayList<Integer> potsSize = PotsInventoryModel.getAllPotsSize();
+        ObservableList<Integer> observableList = FXCollections.observableArrayList(potsSize);
+        observableList.addAll(potsSize);
+        comPotsSize.setItems(observableList);
     }
 
     @FXML
@@ -60,7 +68,7 @@ public class PotsInventoryController implements Initializable {
     private Label lblId;
 
     @FXML
-    private TextField txtPotsSize;
+    private ComboBox<Integer> comPotsSize;
 
     @FXML
     private TextField txtQuantity;
@@ -98,7 +106,7 @@ public class PotsInventoryController implements Initializable {
     public void btnSaveOnAction(ActionEvent event) {
         int id = Integer.parseInt(lblId.getText());
         int quantity = Integer.parseInt(txtQuantity.getText());
-        int potsSize = Integer.parseInt(txtPotsSize.getText());
+        int potsSize = Integer.parseInt(String.valueOf(comPotsSize.getValue()));
         PotsInventoryDto potsInventoryDto = new PotsInventoryDto(id,quantity,potsSize,txtCondition.getText());
 
         try {
@@ -119,7 +127,7 @@ public class PotsInventoryController implements Initializable {
         loadTable();
         lblId.setText("");
         txtQuantity.setText("");
-        txtPotsSize.setText("");
+        comPotsSize.setValue(Integer.valueOf(""));
         txtCondition.setText("");
     }
     private void loadTable() {
@@ -147,7 +155,7 @@ public class PotsInventoryController implements Initializable {
     public void btnUpdateOnAction(ActionEvent event) {
         int id = Integer.parseInt(lblId.getText());
         int quantity = Integer.parseInt(txtQuantity.getText());
-        int potsSize = Integer.parseInt(txtPotsSize.getText());
+        int potsSize = Integer.parseInt(String.valueOf(comPotsSize.getValue()));
         PotsInventoryDto potsInventoryDto = new PotsInventoryDto(id,quantity,potsSize,txtCondition.getText());
         try {
             boolean isSave = PotsInventoryModel.updatePotsInventory(potsInventoryDto);
@@ -169,7 +177,7 @@ public class PotsInventoryController implements Initializable {
         if (potsInventoryDto != null) {
             lblId.setText(String.valueOf(potsInventoryDto.getId()));
             txtQuantity.setText(String.valueOf(potsInventoryDto.getQuantity()));
-            txtPotsSize.setText(String.valueOf(potsInventoryDto.getPotsSize()));
+            comPotsSize.setValue(Integer.valueOf(String.valueOf(potsInventoryDto.getPotsSize())));
             txtCondition.setText(String.valueOf(potsInventoryDto.getCondition()));
         }
     }
@@ -203,5 +211,10 @@ public class PotsInventoryController implements Initializable {
 
     public void btnGoToRawMaterialOnAction(ActionEvent actionEvent) {
         navigateTo("/View/RawMaterialPurchaseView.fxml");
+    }
+
+    public void comPotsSizeOnAction(ActionEvent actionEvent) {
+        Integer selectedPotsSize = (Integer) comPotsSize.getSelectionModel().getSelectedItem();
+        System.out.println(selectedPotsSize);
     }
 }

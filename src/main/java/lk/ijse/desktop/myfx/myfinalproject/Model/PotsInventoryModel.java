@@ -19,6 +19,16 @@ public class PotsInventoryModel {
         );
     }
 
+    public static ArrayList<Integer> getAllPotsSize() throws SQLException {
+        ResultSet rs = CrudUtil.execute("select DISTINCT Pots_Size from Pots_Inventory");
+        ArrayList<Integer> potsSize = new ArrayList<>();
+        while (rs.next()) {
+            Integer potsSizeInt = rs.getInt(1);
+            potsSize.add(potsSizeInt);
+        }
+        return potsSize;
+    }
+
     public String getNextId() throws SQLException {
         ResultSet resultSet = CrudUtil.execute("select Inventory_ID from Pots_Inventory order by Inventory_ID desc limit 1");
         if (resultSet.next()) {

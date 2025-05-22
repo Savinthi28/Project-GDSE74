@@ -20,6 +20,16 @@ public class StockModel {
         );
     }
 
+    public static ArrayList<Integer> getAllProductionId() throws SQLException {
+        ResultSet rs = CrudUtil.execute("select Production_ID from Curd_Production");
+        ArrayList<Integer> list = new ArrayList<>();
+        while (rs.next()) {
+            Integer productionId = rs.getInt(1);
+            list.add(productionId);
+        }
+        return list;
+    }
+
     public String getNextId() throws SQLException {
         ResultSet resultSet = CrudUtil.execute("select Stock_ID from Stock order by Stock_ID desc limit 1");
         if (resultSet.next()) {

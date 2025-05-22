@@ -43,19 +43,19 @@ public class PaymentController implements Initializable {
     private TextField txtAmount;
 
     @FXML
-    private TextField txtCustomerId;
+    private ComboBox<Integer> comCustomerId;
+
+    @FXML
+    private ComboBox<Integer> comOrderId;
+
+    @FXML
+    private ComboBox<String> comPaymentMethod;
 
     @FXML
     private TextField txtDate;
 
     @FXML
-    private TextField txtOrderId;
-
-    @FXML
     private Label lblId;
-
-    @FXML
-    private TextField txtPaymentMethod;
 
     @FXML
     void btnClearOnAction(ActionEvent event) {
@@ -89,10 +89,10 @@ public class PaymentController implements Initializable {
     @FXML
     void btnSaveOnAction(ActionEvent event) {
         int paymentId = Integer.parseInt(lblId.getText());
-        int orderId=Integer.parseInt(txtOrderId.getText());
-        int customerId=Integer.parseInt(txtCustomerId.getText());
+        int orderId=Integer.parseInt(String.valueOf(comOrderId.getValue()));
+        int customerId=Integer.parseInt(String.valueOf(comCustomerId.getValue()));
         double amount=Double.parseDouble(txtAmount.getText());
-        PaymentDto paymentDto = new PaymentDto(paymentId,orderId,customerId,txtDate.getText(),txtPaymentMethod.getText(),amount);
+        PaymentDto paymentDto = new PaymentDto(paymentId,orderId,customerId,txtDate.getText(),comPaymentMethod.getValue(),amount);
 
         try {
             PaymentModel paymentModel = new PaymentModel();
@@ -111,10 +111,10 @@ public class PaymentController implements Initializable {
     private void clearFields(){
         loadTable();
         lblId.setText("");
-        txtOrderId.setText("");
-        txtCustomerId.setText("");
+        comOrderId.setValue(Integer.valueOf(""));
+        comCustomerId.setValue(Integer.valueOf(""));
         txtDate.setText("");
-        txtPaymentMethod.setText("");
+        comPaymentMethod.setValue("");
         txtAmount.setText("");
     }
     private void loadTable(){
@@ -143,19 +143,43 @@ public class PaymentController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
             loadNextId();
+            loadOrderId();
+            loadCustomerId();
+            loadPaymentMethod();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         loadTable();
     }
 
+    private void loadCustomerId() throws SQLException {
+        ArrayList<Integer> customerIds = PaymentModel.getAllCustomerId();
+        ObservableList<Integer> customers = FXCollections.observableArrayList(customerIds);
+        customers.addAll(customerIds);
+        comCustomerId.setItems(customers);
+    }
+
+    private void loadOrderId() throws SQLException {
+        ArrayList<Integer> orderId = PaymentModel.getAllOrderId();
+        ObservableList<Integer> orders = FXCollections.observableArrayList(orderId);
+        orders.addAll(orderId);
+        comOrderId.setItems(orders);
+    }
+
+    private void loadPaymentMethod() throws SQLException {
+        ArrayList<String> paymentMethods = PaymentModel.getAllPaymentMethod();
+        ObservableList<String> payments = FXCollections.observableArrayList(paymentMethods);
+        payments.addAll(paymentMethods);
+        comPaymentMethod.setItems(payments);
+    }
+
     @FXML
     public void btnUpdateOnAction(ActionEvent event) {
         int paymentId = Integer.parseInt(lblId.getText());
-        int orderId = Integer.parseInt(txtOrderId.getText());
-        int customerId = Integer.parseInt(txtCustomerId.getText());
+        int orderId = Integer.parseInt(String.valueOf(comOrderId.getValue()));
+        int customerId = Integer.parseInt(String.valueOf(comCustomerId.getValue()));
         double amount = Double.parseDouble(txtAmount.getText());
-        PaymentDto paymentDto = new PaymentDto(paymentId,orderId,customerId,txtDate.getText(),txtPaymentMethod.getText(),amount);
+        PaymentDto paymentDto = new PaymentDto(paymentId,orderId,customerId,txtDate.getText(),comPaymentMethod.getValue(),amount);
         try {
             boolean isSave = PaymentModel.updatePayment(paymentDto);
             if (isSave) {
@@ -175,11 +199,26 @@ public class PaymentController implements Initializable {
         PaymentDto paymentDto = (PaymentDto) tblPayment.getSelectionModel().getSelectedItem();
         if (paymentDto != null) {
             lblId.setText(String.valueOf(paymentDto.getPaymentId()));
-            txtOrderId.setText(String.valueOf(paymentDto.getOrderId()));
-            txtCustomerId.setText(String.valueOf(paymentDto.getCustomerId()));
+            comOrderId.setValue(Integer.valueOf(String.valueOf(paymentDto.getOrderId())));
+            comCustomerId.setValue(Integer.valueOf(String.valueOf(paymentDto.getCustomerId())));
             txtDate.setText(String.valueOf(paymentDto.getDate()));
-            txtPaymentMethod.setText(String.valueOf(paymentDto.getPaymentMethod()));
+            comPaymentMethod.setValue(String.valueOf(paymentDto.getPaymentMethod()));
             txtAmount.setText(String.valueOf(paymentDto.getAmount()));
         }
+    }
+
+    public void comOrderIdOnAction(ActionEvent actionEvent) {
+        Integer selectedOrderId = (Integer) comOrderId.getSelectionModel().getSelectedItem();
+        System.out.println(selectedOrderId);
+    }
+
+    public void comCustomerIdOnAction(ActionEvent actionEvent) {
+        Integer selectedCustomerId = (Integer) comCustomerId.getSelectionModel().getSelectedItem();
+        System.out.println(selectedCustomerId);
+    }
+
+    public void comPaymentMethodOnAction(ActionEvent actionEvent) {
+        String selectedPaymentMethod = (String) comPaymentMethod.getSelectionModel().getSelectedItem();
+        System.out.println(selectedPaymentMethod);
     }
 }

@@ -20,6 +20,16 @@ public class ReportsModel {
         );
     }
 
+    public static ArrayList<Integer> getAllUserId() throws SQLException {
+        ResultSet rs = CrudUtil.execute("select DISTINCT User_ID from User");
+        ArrayList<Integer> userIds = new ArrayList<>();
+        while (rs.next()) {
+            Integer userId = rs.getInt(1);
+            userIds.add(userId);
+        }
+        return userIds;
+    }
+
     public String getNextId() throws SQLException {
         ResultSet resultSet = CrudUtil.execute("select Report_ID from Reports order by Report_ID desc limit 1");
         if (resultSet.next()) {
