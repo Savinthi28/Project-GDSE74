@@ -33,24 +33,47 @@ public class CurdProductionModel {
         return new ArrayList<>(uniquePotsSize);
     }
 
-    public static ArrayList<Integer> getAllStorageId() throws SQLException {
+    public static ArrayList<String> getAllStorageId() throws SQLException {
         ResultSet rst = CrudUtil.execute("SELECT Storage_ID FROM Milk_Storage");
-        HashSet<Integer> storageId = new HashSet<>();
+        HashSet<String> storageId = new HashSet<>();
         while (rst.next()) {
-            Integer storage = rst.getInt(1);
-            storageId.add(storage);
+            String id = rst.getString(1);
+            storageId.add(id);
         }
         return new ArrayList<>(storageId);
     }
 
+    public static int findpotById(String selectedProductionId) throws SQLException {
+        ResultSet rst = CrudUtil.execute("select Pots_Size from Curd_Production where Production_ID =?",selectedProductionId);
+        if(rst.next()) {
+            return rst.getInt("Pots_Size");
+        }else {
+            return -1;
+        }
+    }
+
+    public static ArrayList<String> getAllProductionIds() throws SQLException {
+        ResultSet rst = CrudUtil.execute("select Production_ID from Curd_Production");
+        ArrayList<String> list = new ArrayList<>();
+        while (rst.next()) {
+            String productionId = rst.getString(1);
+            list.add(productionId);
+        }
+        return list;
+    }
+
     public String getNextId() throws SQLException {
         ResultSet resultSet = CrudUtil.execute("select Production_ID from Curd_Production order by Production_ID desc limit 1");
+        String prefix = "CP";
         if (resultSet.next()) {
-            int lastId = resultSet.getInt(1);
-            int nextId = lastId + 1;
-            return String.valueOf(nextId);
+            String lastId = resultSet.getString(1);
+            String lastIdNumberString = lastId.substring(prefix.length());
+            int lastIdNumber = Integer.parseInt(lastIdNumberString);
+            int nextIdNumber = lastIdNumber + 1;
+            String nextIdString = String.format(prefix + "%03d", nextIdNumber);
+            return nextIdString;
         }
-        return "1";
+        return prefix + "001";
     }
 
     public ArrayList<CurdProductionDto> viewAllCurdProduction() throws ClassNotFoundException, SQLException{
@@ -58,28 +81,28 @@ public class CurdProductionModel {
         ArrayList<CurdProductionDto> viewCurdProduction = new ArrayList<>();
         while(rs.next()){
             CurdProductionDto curdProductionDto = new CurdProductionDto(
-                    rs.getInt("Production_ID"),
+                    rs.getString("Production_ID"),
                     rs.getString("Production_Date"),
                     rs.getString("Expiry_Date"),
                     rs.getInt("Quantity"),
                     rs.getInt("Pots_Size"),
                     rs.getString("Ingredients"),
-                    rs.getInt("Storage_ID")
-                    );
+                    rs.getString("Storage_ID")
+            );
             viewCurdProduction.add(curdProductionDto);
         }
         return viewCurdProduction;
     }
     public static boolean saveCurdProduction(CurdProductionDto curdProductionDto) throws ClassNotFoundException, SQLException{
         return CrudUtil.execute(
-          "insert into Curd_Production values (?,?,?,?,?,?,?)",
-          curdProductionDto.getProductionId(),
-          curdProductionDto.getProductionDate(),
-          curdProductionDto.getExpiryDate(),
-          curdProductionDto.getQuantity(),
-          curdProductionDto.getPotsSize(),
-          curdProductionDto.getIngredients(),
-          curdProductionDto.getStorageId()
+                "insert into Curd_Production values (?,?,?,?,?,?,?)",
+                curdProductionDto.getProductionId(),
+                curdProductionDto.getProductionDate(),
+                curdProductionDto.getExpiryDate(),
+                curdProductionDto.getQuantity(),
+                curdProductionDto.getPotsSize(),
+                curdProductionDto.getIngredients(),
+                curdProductionDto.getStorageId()
         );
     }
 

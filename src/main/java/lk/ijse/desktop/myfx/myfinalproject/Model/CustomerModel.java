@@ -19,14 +19,30 @@ public class CustomerModel {
         );
     }
 
-    public String getNextId() throws SQLException {
-        ResultSet resultSet = CrudUtil.execute("select customer_id from customer order by customer_id desc limit 1");
-        if (resultSet.next()) {
-            int lastId = resultSet.getInt(1);
-            int nextId = lastId + 1;
-            return String.valueOf(nextId);
+    public static String findNameById(String selectedCustomerId) throws SQLException {
+        ResultSet rst = CrudUtil.execute("select Customer_Name from Customer where Customer_ID =?",
+                selectedCustomerId);
+        if (rst.next()) {
+            return rst.getString("Customer_Name");
+        }else {
+            return null;
         }
-        return "1";
+    }
+
+
+
+    public String getNextId() throws SQLException {
+        ResultSet resultSet = CrudUtil.execute("select Customer_ID from Customer order by Customer_ID desc limit 1");
+        char tableChar = 'C';
+        if (resultSet.next()) {
+            String lastId = resultSet.getString(1);
+            String lastIdNUmberString = lastId.substring(1);
+            int lastIdNumber = Integer.parseInt(lastIdNUmberString);
+            int nextIdNumber = lastIdNumber + 1;
+            String nextIdString = String.format(tableChar + "%03d", nextIdNumber);
+            return nextIdString;
+        }
+        return tableChar + "001";
     }
 
     public ArrayList<CustomerDto> viewAllCustomer() throws SQLException {
@@ -34,7 +50,7 @@ public class CustomerModel {
         ArrayList<CustomerDto> customers = new ArrayList<>();
         while (ts.next()) {
             CustomerDto customerDto = new CustomerDto(
-                    ts.getInt("Customer_ID"),
+                    ts.getString("Customer_ID"),
                     ts.getString("Customer_Name"),
                     ts.getString("Address"),
                     ts.getString("Customer_Number")

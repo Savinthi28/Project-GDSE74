@@ -34,7 +34,7 @@ public class CurdProductionController implements Initializable {
     private TableColumn<CurdProductionDto, String> colExpiryDate;
 
     @FXML
-    private TableColumn<CurdProductionDto, Integer> colId;
+    private TableColumn<CurdProductionDto, String> colId;
 
     @FXML
     private TableColumn<CurdProductionDto, String> colIngredients;
@@ -49,7 +49,7 @@ public class CurdProductionController implements Initializable {
     private TableColumn<CurdProductionDto, Integer> colQuantity;
 
     @FXML
-    private TableColumn<CurdProductionDto, Integer> colStorageID;
+    private TableColumn<CurdProductionDto, String> colStorageID;
 
     @FXML
     private TableView<CurdProductionDto> tblCurdProduction;
@@ -67,7 +67,7 @@ public class CurdProductionController implements Initializable {
     private ComboBox<Integer> comPotsSize;
 
     @FXML
-    private ComboBox<Integer> comStorageId;
+    private ComboBox<String> comStorageId;
 
     @FXML
     private TextField txtProductionDate;
@@ -76,9 +76,7 @@ public class CurdProductionController implements Initializable {
     private TextField txtQuantity;
 
     private final String quantityPattern = "^\\d+(\\.\\d+)?$";
-    private final String potsSizePattern = "^\\d+(\\.\\d+)?$";
     private final String ingredientsPattern = "^[A-Za-z '-]+$";
-    private final String storageIdPattern = "^\\d+$";
 
     @FXML
     void btnClearOnAction(ActionEvent event) {
@@ -87,9 +85,11 @@ public class CurdProductionController implements Initializable {
 
     @FXML
     public void btnDeleteOnAction(ActionEvent event) {
-        int id = Integer.parseInt(lblId.getText());
+        String id = txtProductionDate.getText();
+        int quantity = Integer.parseInt(txtQuantity.getText());
+        int potsSize = Integer.parseInt(String.valueOf(comPotsSize.getValue()));
         try {
-            boolean isDelete = new CurdProductionModel().deleteCurdProduction(new CurdProductionDto(id));
+            boolean isDelete = new CurdProductionModel().deleteCurdProduction(new CurdProductionDto(lblId.getText(), txtProductionDate.getText(), txtExpiryDate.getText(), quantity, potsSize, txtIngredients.getText(), id));
             if (isDelete) {
                 clearFields();
                 loadTable();
@@ -111,11 +111,9 @@ public class CurdProductionController implements Initializable {
 
     @FXML
     public void btnSaveOnAction(ActionEvent event) throws ClassNotFoundException, SQLException {
-        int id = Integer.parseInt(lblId.getText());
         int quantity = Integer.parseInt(txtQuantity.getText());
         int potsSize = Integer.parseInt(String.valueOf(comPotsSize.getValue()));
-        int storageID = Integer.parseInt(String.valueOf(comStorageId.getValue()));
-        CurdProductionDto curdProductionDto = new CurdProductionDto(id, txtProductionDate.getText(), txtExpiryDate.getText(), quantity, potsSize, txtIngredients.getText(), storageID);
+        CurdProductionDto curdProductionDto = new CurdProductionDto(lblId.getText(), txtProductionDate.getText(), txtExpiryDate.getText(), quantity, potsSize, txtIngredients.getText(),comStorageId.getValue());
 
         String quantityText = txtQuantity.getText();
         String ingredients = txtIngredients.getText();
@@ -147,7 +145,7 @@ public class CurdProductionController implements Initializable {
         comPotsSize.setValue(0);
         txtProductionDate.setText("");
         txtQuantity.setText("");
-        comStorageId.setValue(0);
+        comStorageId.setValue("");
     }
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -162,8 +160,8 @@ public class CurdProductionController implements Initializable {
     }
 
     private void loadStorageId() throws SQLException {
-        ArrayList<Integer> storageList = CurdProductionModel.getAllStorageId();
-        ObservableList<Integer> observableList = FXCollections.observableArrayList(storageList);
+        ArrayList<String> storageList = CurdProductionModel.getAllStorageId();
+        ObservableList<String> observableList = FXCollections.observableArrayList(storageList);
         observableList.addAll(storageList);
         comStorageId.setItems(observableList);
     }
@@ -200,44 +198,63 @@ public class CurdProductionController implements Initializable {
 
     @FXML
     public void btnUpdateOnAction(ActionEvent event) {
-        int id = Integer.parseInt(lblId.getText());
-        int quantity = Integer.parseInt(txtQuantity.getText());
-        int potsSize = Integer.parseInt(String.valueOf(comPotsSize.getValue()));
-        int storageID = Integer.parseInt(String.valueOf(comStorageId.getValue()));
-        CurdProductionDto curdProductionDto = new CurdProductionDto(id, txtProductionDate.getText(), txtExpiryDate.getText(), quantity, potsSize, txtIngredients.getText(), storageID);
-
-        String quantityText = txtQuantity.getText();
-        String ingredients = txtIngredients.getText();
-
-        boolean isValidQuantity = quantityText.matches(quantityPattern);
-        boolean isValidIngredients = ingredients.matches(ingredientsPattern);
-
-        if (isValidQuantity && isValidIngredients ) {
-            try {
-                boolean isSave = CurdProductionModel.updateCurdProduction(curdProductionDto);
-                if (isSave) {
-                    clearFields();
-                    loadTable();
-                    new Alert(Alert.AlertType.INFORMATION, "Updated successfully").show();
-                } else {
-                    new Alert(Alert.AlertType.ERROR, "Error while updating Curd Production").show();
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-                new Alert(Alert.AlertType.ERROR, "Error updating Curd Production").show();
+        try {
+            if (txtQuantity.getText().isEmpty() || comPotsSize.getValue() == null) {
+                new Alert(Alert.AlertType.ERROR, "Quantity and Pot Size must be filled!").show();
+                return;
             }
+            int quantity;
+            int potsSize;
+            try {
+                quantity = Integer.parseInt(txtQuantity.getText());
+                potsSize = Integer.parseInt(String.valueOf(comPotsSize.getValue()));
+            } catch (NumberFormatException e) {
+                new Alert(Alert.AlertType.ERROR, "Quantity and Pot Size must be numbers!").show();
+                return;
+            }
+            String quantityText = txtQuantity.getText();
+            String ingredients = txtIngredients.getText();
+
+            boolean isValidQuantity = quantityText.matches(quantityPattern);
+            boolean isValidIngredients = ingredients.matches(ingredientsPattern);
+
+            if (!isValidQuantity && !isValidIngredients) {
+                new Alert(Alert.AlertType.ERROR, "Invalid input format!").show();
+                return;
+            }
+
+            CurdProductionDto curdProductionDto = new CurdProductionDto(
+                    lblId.getText(),
+                    txtProductionDate.getText(),
+                    txtExpiryDate.getText(),
+                    quantity,
+                    potsSize,
+                    txtIngredients.getText(),
+                    comStorageId.getValue()
+            );
+            boolean isUpdated = CurdProductionModel.updateCurdProduction(curdProductionDto);
+            if (isUpdated) {
+                clearFields();
+                loadTable();
+                new Alert(Alert.AlertType.INFORMATION, "Updated successfully!").show();
+            } else {
+                new Alert(Alert.AlertType.ERROR, "Update failed!").show();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR, "An error occurred: " + e.getMessage()).show();
         }
     }
     public void tableOnClick(MouseEvent mouseEvent) {
         CurdProductionDto curdProductionDto = (CurdProductionDto) tblCurdProduction.getSelectionModel().getSelectedItem();
         if(curdProductionDto != null){
-            lblId.setText(String.valueOf(curdProductionDto.getProductionId()));
+            lblId.setText(curdProductionDto.getProductionId());
             txtProductionDate.setText(String.valueOf(curdProductionDto.getProductionDate()));
             txtExpiryDate.setText(String.valueOf(curdProductionDto.getExpiryDate()));
             txtQuantity.setText(String.valueOf(curdProductionDto.getQuantity()));
             comPotsSize.setValue(Integer.valueOf(String.valueOf(curdProductionDto.getPotsSize())));
             txtIngredients.setText(String.valueOf(curdProductionDto.getIngredients()));
-            comStorageId.setValue(Integer.valueOf(String.valueOf(curdProductionDto.getStorageId())));
+            comStorageId.setValue(curdProductionDto.getStorageId());
         }
     }
 
@@ -290,7 +307,7 @@ public class CurdProductionController implements Initializable {
     }
 
     public void comStorageIdOnAction(ActionEvent actionEvent) {
-        Integer selectedStorageId = (Integer) comStorageId.getSelectionModel().getSelectedItem();
+        String selectedStorageId = (String) comStorageId.getSelectionModel().getSelectedItem();
         System.out.println(selectedStorageId);
     }
 }

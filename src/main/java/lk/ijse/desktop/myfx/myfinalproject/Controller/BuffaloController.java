@@ -89,7 +89,7 @@ public class BuffaloController implements Initializable {
     }
 
     @FXML
-   public void btnSaveOnAction(ActionEvent event) throws ClassNotFoundException, SQLException {
+    public void btnSaveOnAction(ActionEvent event) throws ClassNotFoundException, SQLException {
         int age = Integer.parseInt(txtAge.getText());
         double milkProduction = Double.parseDouble(txtMilkProduction.getText());
         BuffaloDto buffaloDto = new BuffaloDto(lblId.getText(), milkProduction, comGender.getValue(), age, txtHealth.getText());
@@ -145,12 +145,12 @@ public class BuffaloController implements Initializable {
     private void loadTable() {
         colID.setCellValueFactory(new PropertyValueFactory<>("buffaloID"));
         colMilk.setCellValueFactory(new PropertyValueFactory<>("milkProduction"));
-    colGender.setCellValueFactory(new PropertyValueFactory<>("gender"));
-    colAge.setCellValueFactory(new PropertyValueFactory<>("age"));
-    colHealth.setCellValueFactory(new PropertyValueFactory<>("healthStatus"));
+        colGender.setCellValueFactory(new PropertyValueFactory<>("gender"));
+        colAge.setCellValueFactory(new PropertyValueFactory<>("age"));
+        colHealth.setCellValueFactory(new PropertyValueFactory<>("healthStatus"));
 
 
-    try {
+        try {
             BuffaloModel buffaloModel = new BuffaloModel();
             ArrayList<BuffaloDto> buffaloDtos = buffaloModel.viewAllBuffalo();
             if (buffaloDtos != null) {
@@ -162,7 +162,7 @@ public class BuffaloController implements Initializable {
         }catch (Exception e){
             e.printStackTrace();
         }
-}
+    }
     @FXML
     public void btnUpdateOnAction(ActionEvent event) {
         double milkProduction = Double.parseDouble(txtMilkProduction.getText());
@@ -213,7 +213,7 @@ public class BuffaloController implements Initializable {
             txtMilkProduction.setStyle(txtMilkProduction.getStyle()+ ";-fx-border-color: red");
         }
     }
-    
+
     public void txtAgeChange(KeyEvent keyEvent) {
         String age = txtAge.getText();
         boolean isValidAge = age.matches(agePattern);

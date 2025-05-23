@@ -31,18 +31,18 @@ public class BuffaloModel {
     }
 
     public String getNextId() throws SQLException {
-            ResultSet resultSet = CrudUtil.execute("select buffalo_id from buffalo order by buffalo_id desc limit 1");
-            String prefix = "BUF";
-            if (resultSet.next()) {
-                String lastId = resultSet.getString(1);
-                String lastIdNumberString = lastId.substring(prefix.length());
-                int lastIdNumber = Integer.parseInt(lastIdNumberString);
-                int nextIdNumber = lastIdNumber + 1;
-                String nextIdString = String.format(prefix + "%03d", nextIdNumber);
-                return nextIdString;
-            }
-            return prefix + "001";
+        ResultSet resultSet = CrudUtil.execute("select buffalo_id from buffalo order by buffalo_id desc limit 1");
+        String prefix = "BUF";
+        if (resultSet.next()) {
+            String lastId = resultSet.getString(1);
+            String lastIdNumberString = lastId.substring(prefix.length());
+            int lastIdNumber = Integer.parseInt(lastIdNumberString);
+            int nextIdNumber = lastIdNumber + 1;
+            String nextIdString = String.format(prefix + "%03d", nextIdNumber);
+            return nextIdString;
         }
+        return prefix + "001";
+    }
 
     public ArrayList<BuffaloDto> viewAllBuffalo() throws SQLException, ClassNotFoundException {
         ResultSet rs = CrudUtil.execute("SELECT * FROM Buffalo");
@@ -53,9 +53,9 @@ public class BuffaloModel {
                     rs.getDouble("Milk_Production"),
                     rs.getString("Gender"),
                     rs.getInt("Age"),
-                            rs.getString("Health_Status")
+                    rs.getString("Health_Status")
             );
-                    viewBuffalo.add(buffaloDto);
+            viewBuffalo.add(buffaloDto);
         }
         return viewBuffalo;
     }

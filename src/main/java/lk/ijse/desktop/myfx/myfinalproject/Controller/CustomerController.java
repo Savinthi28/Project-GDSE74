@@ -23,7 +23,7 @@ public class CustomerController implements Initializable {
     private TableColumn<CustomerDto, String> colAddress;
 
     @FXML
-    private TableColumn<CustomerDto, Integer> colCustId;
+    private TableColumn<CustomerDto, String> colCustId;
 
     @FXML
     private TableColumn<CustomerDto, String> colName;
@@ -70,7 +70,7 @@ public class CustomerController implements Initializable {
 
     @FXML
     void btnDeleteOnAction(ActionEvent event) {
-        int id = Integer.parseInt(lblId.getText());
+        String id = lblId.getText();
         try {
             boolean isDelete = new CustomerModel().deleteCustomer(new CustomerDto(id));
             if (isDelete) {
@@ -94,8 +94,7 @@ public class CustomerController implements Initializable {
 
     @FXML
     public void btnSaveOnAction(ActionEvent event) throws ClassNotFoundException, SQLException {
-        int id = Integer.parseInt(lblId.getText());
-        CustomerDto customerDto = new CustomerDto(id, txtName.getText(), txtAddress.getText(), txtNumber.getText());
+        CustomerDto customerDto = new CustomerDto(lblId.getText(), txtName.getText(), txtAddress.getText(), txtNumber.getText());
 
         String name = txtName.getText();
         String number = txtNumber.getText();
@@ -104,20 +103,20 @@ public class CustomerController implements Initializable {
         boolean isValidNumber = number.matches(numberPattern);
 
         if (isValidName && isValidNumber) {
-        try {
-            CustomerModel customerModel = new CustomerModel();
-            boolean isSave = customerModel.saveCustomer(customerDto);
-            if (isSave) {
-                clearFields();
-                new Alert(Alert.AlertType.INFORMATION, "Customer Saved").show();
-            }else {
+            try {
+                CustomerModel customerModel = new CustomerModel();
+                boolean isSave = customerModel.saveCustomer(customerDto);
+                if (isSave) {
+                    clearFields();
+                    new Alert(Alert.AlertType.INFORMATION, "Customer Saved").show();
+                }else {
+                    new Alert(Alert.AlertType.ERROR, "Customer Not Saved").show();
+                }
+            }catch (Exception e){
+                e.printStackTrace();
                 new Alert(Alert.AlertType.ERROR, "Customer Not Saved").show();
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-            new Alert(Alert.AlertType.ERROR, "Customer Not Saved").show();
 
-        }
+            }
         }
     }
     private void clearFields(){
@@ -136,7 +135,7 @@ public class CustomerController implements Initializable {
         }
         loadTable();
     }
-    
+
     private void loadTable(){
         colCustId.setCellValueFactory(new PropertyValueFactory<>("customerId"));
         colName.setCellValueFactory(new PropertyValueFactory<>("customerName"));
@@ -159,8 +158,8 @@ public class CustomerController implements Initializable {
 
     @FXML
     void btnUpdateOnAction(ActionEvent event) {
-        int id = Integer.parseInt(lblId.getText());
-        CustomerDto customerDto = new CustomerDto(id, txtName.getText(), txtAddress.getText(), txtNumber.getText());
+
+        CustomerDto customerDto = new CustomerDto(lblId.getText(), txtName.getText(), txtAddress.getText(), txtNumber.getText());
 
         String name = txtName.getText();
         String number = txtNumber.getText();
@@ -195,13 +194,13 @@ public class CustomerController implements Initializable {
     }
 
     public void txtNameChange(KeyEvent keyEvent) {
-       String name = txtName.getText();
-       boolean isValidName = name.matches(namePattern);
-       if (!isValidName) {
-           txtName.setStyle(txtName.getStyle() + ";-fx-border-color: red");
-       }else {
-           txtName.setStyle(txtName.getStyle() + ";-fx-border-color: blue");
-       }
+        String name = txtName.getText();
+        boolean isValidName = name.matches(namePattern);
+        if (!isValidName) {
+            txtName.setStyle(txtName.getStyle() + ";-fx-border-color: red");
+        }else {
+            txtName.setStyle(txtName.getStyle() + ";-fx-border-color: blue");
+        }
     }
 
     public void txtNumberChange(KeyEvent keyEvent) {

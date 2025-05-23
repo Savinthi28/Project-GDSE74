@@ -9,15 +9,15 @@ import lombok.*;
 @ToString
 
 public class CurdProductionDto {
-    private int productionId;
+    private String productionId;
     private String productionDate;
     private String expiryDate;
     private int quantity;
     private int potsSize;
     private String ingredients;
-    private int storageId;
+    private String storageId;
 
-    public CurdProductionDto(int id) {
+    public CurdProductionDto(String id) {
         this.productionId = id;
     }
 }
