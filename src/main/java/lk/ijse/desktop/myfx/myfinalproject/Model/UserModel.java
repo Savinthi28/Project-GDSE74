@@ -20,12 +20,16 @@ public class UserModel {
 
     public String getNextId() throws SQLException {
         ResultSet resultSet = CrudUtil.execute("select User_ID from User order by User_ID desc limit 1");
+        char tableChar = 'U';
         if (resultSet.next()) {
-            int lastId = resultSet.getInt(1);
-            int nextId = lastId + 1;
-            return String.valueOf(nextId);
+            String lastId = resultSet.getString(1);
+            String lastIdNUmberString = lastId.substring(1);
+            int lastIdNumber = Integer.parseInt(lastIdNUmberString);
+            int nextIdNumber = lastIdNumber + 1;
+            String nextIdString = String.format(tableChar + "%03d", nextIdNumber);
+            return nextIdString;
         }
-        return "1";
+        return tableChar + "001";
     }
 
     public ArrayList<UserDto> viewAllUser() throws ClassNotFoundException, SQLException {
@@ -33,7 +37,7 @@ public class UserModel {
         ArrayList<UserDto> user = new ArrayList<>();
         while (rs.next()) {
             UserDto userDto = new UserDto(
-                    rs.getInt("User_ID"),
+                    rs.getString("User_ID"),
                     rs.getString("User_Name"),
                     rs.getString("Password")
             );

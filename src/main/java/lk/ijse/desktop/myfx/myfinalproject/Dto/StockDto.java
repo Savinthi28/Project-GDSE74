@@ -9,13 +9,13 @@ import lombok.*;
 @ToString
 
 public class StockDto {
-    private int stockId;
-    private int productionId;
+    private String stockId;
+    private String productionId;
     private String date;
     private int quantity;
     private String stockType;
 
-    public StockDto(int stockId) {
+    public StockDto(String stockId) {
         this.stockId = stockId;
     }
 }

@@ -1,5 +1,6 @@
 package lk.ijse.desktop.myfx.myfinalproject.Controller;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -23,6 +24,7 @@ public class ReportsController implements Initializable {
         try {
             loadNextId();
             loadUserId();
+            clearFields();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -30,8 +32,8 @@ public class ReportsController implements Initializable {
     }
 
     private void loadUserId() throws SQLException {
-        ArrayList<Integer> userIds = ReportsModel.getAllUserId();
-        ObservableList<Integer> users = FXCollections.observableArrayList(userIds);
+        ArrayList<String> userIds = ReportsModel.getAllUserId();
+        ObservableList<String> users = FXCollections.observableArrayList(userIds);
         users.addAll(userIds);
         comUserId.setItems(users);
     }
@@ -43,13 +45,13 @@ public class ReportsController implements Initializable {
     private TableColumn<ReportsDto, String> colGenerateBy;
 
     @FXML
-    private TableColumn<ReportsDto, Integer> colReportId;
+    private TableColumn<ReportsDto, String> colReportId;
 
     @FXML
     private TableColumn<ReportsDto, String> colType;
 
     @FXML
-    private TableColumn<ReportsDto, Integer> colUserId;
+    private TableColumn<ReportsDto, String> colUserId;
 
     @FXML
     private TableView<ReportsDto> tblReports;
@@ -67,28 +69,32 @@ public class ReportsController implements Initializable {
     private TextField txtType;
 
     @FXML
-    private ComboBox<Integer> comUserId;
+    private ComboBox<String> comUserId;
 
     @FXML
-    void btnClearOnAction(ActionEvent event) {
+    void btnClearOnAction(ActionEvent event) throws SQLException {
         clearFields();
     }
 
     @FXML
-    public void btnDeleteOnAction(ActionEvent event)  {
-        int reportId = Integer.parseInt(lblId.getText());
+    public void btnDeleteOnAction(ActionEvent event) {
+        String idToDelete = lblId.getText();
+        if (idToDelete == null || idToDelete.isEmpty()) {
+            new Alert(Alert.AlertType.WARNING, "Please select a Report from the table or enter an ID to delete.").show();
+            return;
+        }
         try {
-            boolean isDelete = new ReportsModel().deleteReports(new ReportsDto(reportId));
-            if (isDelete) {
+            boolean isDeleted = ReportsModel.deleteReports(idToDelete);
+            if (isDeleted) {
                 clearFields();
                 loadTable();
-                new Alert(Alert.AlertType.INFORMATION, "Report Deleted").show();
-            }else {
-                new Alert(Alert.AlertType.ERROR, "Report Not Deleted").show();
+                new Alert(Alert.AlertType.INFORMATION, "Report Deleted Successfully!").show();
+            } else {
+                new Alert(Alert.AlertType.ERROR, "Failed to delete Report.").show();
             }
-        }catch (Exception e){
+        } catch (SQLException e) {
             e.printStackTrace();
-            new Alert(Alert.AlertType.ERROR, "Report Not Deleted").show();
+            new Alert(Alert.AlertType.ERROR, "Error deleting Report: " + e.getMessage()).show();
         }
     }
 
@@ -100,9 +106,7 @@ public class ReportsController implements Initializable {
 
     @FXML
     void btnSaveOnAction(ActionEvent event) {
-        int reportId = Integer.parseInt(lblId.getText());
-        int userId = Integer.parseInt(String.valueOf(comUserId.getValue()));
-        ReportsDto reportsDto = new ReportsDto(reportId,txtDate.getText(),userId,txtType.getText(),txtGenerateBy.getText());
+        ReportsDto reportsDto = new ReportsDto(lblId.getText(),txtDate.getText(),comUserId.getValue(),txtType.getText(),txtGenerateBy.getText());
 
         try {
             ReportsModel reportsModel = new ReportsModel();
@@ -118,13 +122,18 @@ public class ReportsController implements Initializable {
             new Alert(Alert.AlertType.ERROR, "Report could not be saved").show();
         }
     }
-    private void clearFields(){
+    private void clearFields() throws SQLException {
         loadTable();
         lblId.setText("");
         txtDate.setText("");
-        comUserId.setValue(Integer.valueOf(""));
+        comUserId.setValue("");
         txtType.setText("");
         txtGenerateBy.setText("");
+
+        loadNextId();
+        Platform.runLater(()-> {
+            lblId.setText(lblId.getText());
+        });
     }
     private void loadTable() {
         colReportId.setCellValueFactory(new PropertyValueFactory<>("reportId"));
@@ -149,9 +158,7 @@ public class ReportsController implements Initializable {
 
     @FXML
     public void btnUpdateOnAction(ActionEvent event) {
-        int reportId = Integer.parseInt(lblId.getText());
-        int userId = Integer.parseInt(String.valueOf(comUserId.getValue()));
-        ReportsDto reportsDto= new ReportsDto(reportId,txtDate.getText(),userId,txtType.getText(),txtGenerateBy.getText());
+        ReportsDto reportsDto= new ReportsDto(lblId.getText(),txtDate.getText(),comUserId.getValue(),txtType.getText(),txtGenerateBy.getText());
         try {
             boolean isSave = ReportsModel.updateReports(reportsDto);
             if (isSave) {
@@ -170,16 +177,16 @@ public class ReportsController implements Initializable {
     public void tableOnClick(MouseEvent mouseEvent) {
         ReportsDto reportsDto = (ReportsDto) tblReports.getSelectionModel().getSelectedItem();
         if (reportsDto != null) {
-            lblId.setText(String.valueOf(reportsDto.getReportId()));
+            lblId.setText(reportsDto.getReportId());
             txtDate.setText(String.valueOf(reportsDto.getDate()));
-            comUserId.setValue(Integer.valueOf(String.valueOf(reportsDto.getUserId())));
+            comUserId.setValue(reportsDto.getUserId());
             txtType.setText(String.valueOf(reportsDto.getReportType()));
             txtGenerateBy.setText(String.valueOf(reportsDto.getGenerateBy()));
         }
     }
 
     public void comUserIdOnAction(ActionEvent actionEvent) {
-        Integer selectedUserId = (Integer) comUserId.getSelectionModel().getSelectedItem();
+        String selectedUserId = (String) comUserId.getSelectionModel().getSelectedItem();
         System.out.println(selectedUserId);
     }
 }

@@ -1,5 +1,6 @@
 package lk.ijse.desktop.myfx.myfinalproject.Controller;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -60,7 +61,7 @@ public class BuffaloController implements Initializable {
     private final String healthPattern = "^[A-Za-z ]+$";
 
     @FXML
-    void btnClearOnAction(ActionEvent event) {
+    void btnClearOnAction(ActionEvent event) throws SQLException {
         clearFields();
     }
 
@@ -118,19 +119,25 @@ public class BuffaloController implements Initializable {
             }
         }
     }
-    private void clearFields() {
+    private void clearFields() throws SQLException {
         loadTable();
         txtAge.setText("");
         txtMilkProduction.setText("");
         comGender.setValue("");
         lblId.setText("");
         txtHealth.setText("");
+
+        loadNextId();
+        Platform.runLater(()-> {
+            lblId.setText(lblId.getText());
+        });
     }
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
             loadNextId();
             loadBuffaloGender();
+            clearFields();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

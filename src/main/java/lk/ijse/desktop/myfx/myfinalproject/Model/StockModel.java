@@ -20,11 +20,11 @@ public class StockModel {
         );
     }
 
-    public static ArrayList<Integer> getAllProductionId() throws SQLException {
+    public static ArrayList<String> getAllProductionId() throws SQLException {
         ResultSet rs = CrudUtil.execute("select Production_ID from Curd_Production");
-        ArrayList<Integer> list = new ArrayList<>();
+        ArrayList<String> list = new ArrayList<>();
         while (rs.next()) {
-            Integer productionId = rs.getInt(1);
+            String productionId = rs.getString(1);
             list.add(productionId);
         }
         return list;
@@ -32,12 +32,16 @@ public class StockModel {
 
     public String getNextId() throws SQLException {
         ResultSet resultSet = CrudUtil.execute("select Stock_ID from Stock order by Stock_ID desc limit 1");
+        char tableChar = 'S';
         if (resultSet.next()) {
-            int lastId = resultSet.getInt(1);
-            int nextId = lastId + 1;
-            return String.valueOf(nextId);
+            String lastId = resultSet.getString(1);
+            String lastIdNUmberString = lastId.substring(1);
+            int lastIdNumber = Integer.parseInt(lastIdNUmberString);
+            int nextIdNumber = lastIdNumber + 1;
+            String nextIdString = String.format(tableChar + "%03d", nextIdNumber);
+            return nextIdString;
         }
-        return "1";
+        return tableChar + "001";
     }
 
     public ArrayList<StockDto> viewAllStock() throws SQLException, ClassNotFoundException {
@@ -45,8 +49,8 @@ public class StockModel {
         ArrayList<StockDto> stocks = new ArrayList<>();
         while (rs.next()) {
             StockDto stock = new StockDto(
-                    rs.getInt("Stock_ID"),
-                    rs.getInt("Production_ID"),
+                    rs.getString("Stock_ID"),
+                    rs.getString("Production_ID"),
                     rs.getString("Stock_Date"),
                     rs.getInt("Quantity"),
                     rs.getString("Stock_Type")

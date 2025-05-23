@@ -1,5 +1,6 @@
 package lk.ijse.desktop.myfx.myfinalproject.Controller;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -27,6 +28,7 @@ public class RawMaterialPurchaseController implements Initializable {
         try {
             loadNextId();
             loadSupplierId();
+            clearFields();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -34,8 +36,8 @@ public class RawMaterialPurchaseController implements Initializable {
     }
 
     private void loadSupplierId() throws SQLException {
-        ArrayList<Integer> supplierIds = RawMaterialPurchaseModel.getAllSupplierId();
-        ObservableList<Integer> observableList = FXCollections.observableArrayList(supplierIds);
+        ArrayList<String> supplierIds = RawMaterialPurchaseModel.getAllSupplierId();
+        ObservableList<String> observableList = FXCollections.observableArrayList(supplierIds);
         observableList.addAll(supplierIds);
         comSupplierId.setItems(observableList);
     }
@@ -54,13 +56,13 @@ public class RawMaterialPurchaseController implements Initializable {
     private TableColumn<RawMaterialPurchaseDto, Double> colPrice;
 
     @FXML
-    private TableColumn<RawMaterialPurchaseDto, Integer> colPurchaseId;
+    private TableColumn<RawMaterialPurchaseDto, String> colPurchaseId;
 
     @FXML
     private TableColumn<RawMaterialPurchaseDto, Integer> colQuantity;
 
     @FXML
-    private TableColumn<RawMaterialPurchaseDto, Integer> colSupplierId;
+    private TableColumn<RawMaterialPurchaseDto, String> colSupplierId;
 
     @FXML
     private TableView<RawMaterialPurchaseDto> tblRawMaterialPurchase;
@@ -81,16 +83,16 @@ public class RawMaterialPurchaseController implements Initializable {
     private TextField txtQuantity;
 
     @FXML
-    private ComboBox<Integer> comSupplierId;
+    private ComboBox<String> comSupplierId;
 
     @FXML
-    void btnClearOnAction(ActionEvent event) {
+    void btnClearOnAction(ActionEvent event) throws SQLException {
         clearFields();
     }
 
     @FXML
     public void btnDeleteOnAction(ActionEvent event) {
-        int id = Integer.parseInt(lblId.getText());
+        String id = lblId.getText();
         try {
             boolean isDelete = new RawMaterialPurchaseModel().deleteRawMaterialPurchase(new RawMaterialPurchaseDto(id));
             if (isDelete) {
@@ -114,11 +116,9 @@ public class RawMaterialPurchaseController implements Initializable {
 
     @FXML
     void btnSaveOnAction(ActionEvent event) {
-        int purchaseId=Integer.parseInt(lblId.getText());
-        int supplierId=Integer.parseInt(String.valueOf(comSupplierId.getValue()));
         int quantity=Integer.parseInt(txtQuantity.getText());
         double price=Double.parseDouble(txtPrice.getText());
-        RawMaterialPurchaseDto rawMaterialPurchaseDto = new RawMaterialPurchaseDto(purchaseId,supplierId,txtMaterialName.getText(),txtDate.getText(),quantity,price);
+        RawMaterialPurchaseDto rawMaterialPurchaseDto = new RawMaterialPurchaseDto(lblId.getText(),comSupplierId.getValue(),txtMaterialName.getText(),txtDate.getText(),quantity,price);
 
         try {
             RawMaterialPurchaseModel rawMaterialPurchaseModel = new RawMaterialPurchaseModel();
@@ -134,14 +134,19 @@ public class RawMaterialPurchaseController implements Initializable {
             new Alert(Alert.AlertType.ERROR,"Save Failed", ButtonType.OK).show();
         }
     }
-    private void clearFields(){
+    private void clearFields() throws SQLException {
         loadTable();
         lblId.setText("");
-        comSupplierId.setValue(Integer.valueOf(""));
+        comSupplierId.setValue("");
         txtMaterialName.setText("");
         txtDate.setText("");
         txtQuantity.setText("");
         txtPrice.setText("");
+
+        loadNextId();
+        Platform.runLater(()-> {
+            lblId.setText(lblId.getText());
+        });
     }
     private void loadTable() {
         colPurchaseId.setCellValueFactory(new PropertyValueFactory<>("purchaseId"));
@@ -167,11 +172,9 @@ public class RawMaterialPurchaseController implements Initializable {
 
     @FXML
     public void btnUpdateOnAction(ActionEvent event) {
-        int purchaseId=Integer.parseInt(lblId.getText());
-        int supplierId=Integer.parseInt(String.valueOf(comSupplierId.getValue()));
         int quantity=Integer.parseInt(txtQuantity.getText());
         double price=Double.parseDouble(txtPrice.getText());
-        RawMaterialPurchaseDto rawMaterialPurchaseDto = new RawMaterialPurchaseDto(purchaseId,supplierId,txtMaterialName.getText(),txtDate.getText(),quantity,price);
+        RawMaterialPurchaseDto rawMaterialPurchaseDto = new RawMaterialPurchaseDto(lblId.getText(),comSupplierId.getValue(),txtMaterialName.getText(),txtDate.getText(),quantity,price);
         try {
             boolean isSave = RawMaterialPurchaseModel.updateRawMaterialPurchase(rawMaterialPurchaseDto);
             if(isSave){
@@ -190,8 +193,8 @@ public class RawMaterialPurchaseController implements Initializable {
     public void tableOnClick(MouseEvent mouseEvent) {
         RawMaterialPurchaseDto rawMaterialPurchaseDto = (RawMaterialPurchaseDto) tblRawMaterialPurchase.getSelectionModel().getSelectedItem();
         if(rawMaterialPurchaseDto!=null){
-            lblId.setText(String.valueOf(rawMaterialPurchaseDto.getPurchaseId()));
-            comSupplierId.setValue(Integer.valueOf(String.valueOf(rawMaterialPurchaseDto.getSupplierId())));
+            lblId.setText(rawMaterialPurchaseDto.getPurchaseId());
+            comSupplierId.setValue(rawMaterialPurchaseDto.getSupplierId());
             txtMaterialName.setText(rawMaterialPurchaseDto.getMaterialName());
             txtDate.setText(String.valueOf(rawMaterialPurchaseDto.getDate()));
             txtQuantity.setText(String.valueOf(rawMaterialPurchaseDto.getQuantity()));
@@ -231,7 +234,7 @@ public class RawMaterialPurchaseController implements Initializable {
     }
 
     public void comSupplierIdOnAction(ActionEvent actionEvent) {
-        Integer selectedSupplierId = (Integer) comSupplierId.getSelectionModel().getSelectedItem();
+        String selectedSupplierId = (String) comSupplierId.getSelectionModel().getSelectedItem();
         System.out.println(selectedSupplierId);
     }
 }

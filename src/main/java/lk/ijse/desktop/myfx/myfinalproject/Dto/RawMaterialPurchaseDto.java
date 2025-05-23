@@ -9,14 +9,14 @@ import lombok.*;
 @ToString
 
 public class RawMaterialPurchaseDto {
-    private int purchaseId;
-    private int supplierId;
+    private String purchaseId;
+    private String supplierId;
     private String materialName;
     private String Date;
     private int quantity;
     private double unitPrice;
 
-    public RawMaterialPurchaseDto(int id) {
+    public RawMaterialPurchaseDto(String id) {
         this.purchaseId = id;
     }
 }

@@ -11,13 +11,13 @@ import java.sql.Time;
 @ToString
 
 public class MilkStorageDto {
-    private int storageId;
-    private int collectionId;
+    private String storageId;
+    private String collectionId;
     private String date;
     private Time duration;
     private double temperature;
 
-    public MilkStorageDto(int id) {
+    public MilkStorageDto(String id, Integer value, String text, Time duration, double temperature) {
         this.storageId = id;
     }
 }

@@ -32,12 +32,16 @@ public class DailyExpenseModel {
 
     public String getNextId() throws SQLException {
         ResultSet resultSet = CrudUtil.execute("select Expense_ID from Expense order by Expense_ID desc limit 1");
+        char tableChar = 'E';
         if (resultSet.next()) {
-            int lastId = resultSet.getInt(1);
-            int nextId = lastId + 1;
-            return String.valueOf(nextId);
+            String lastId = resultSet.getString(1);
+            String lastIdNUmberString = lastId.substring(1);
+            int lastIdNumber = Integer.parseInt(lastIdNUmberString);
+            int nextIdNumber = lastIdNumber + 1;
+            String nextIdString = String.format(tableChar + "%03d", nextIdNumber);
+            return nextIdString;
         }
-        return "1";
+        return tableChar + "001";
     }
 
     public ArrayList<DailyExpenseDto> viewAllDailyExpense() throws SQLException {
@@ -45,7 +49,7 @@ public class DailyExpenseModel {
         ArrayList<DailyExpenseDto> dailyExpenseDto = new ArrayList<>();
         while (rs.next()) {
             DailyExpenseDto temp = new DailyExpenseDto(
-                    rs.getInt("Expense_ID"),
+                    rs.getString("Expense_ID"),
                     rs.getString("Expense_Date"),
                     rs.getString("Description"),
                     rs.getDouble("Amount"),

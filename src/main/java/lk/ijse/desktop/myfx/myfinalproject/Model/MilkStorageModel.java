@@ -20,11 +20,11 @@ public class MilkStorageModel {
         );
     }
 
-    public static ArrayList<Integer> getAllMilkStorage() throws SQLException {
+    public static ArrayList<String> getAllMilkStorage() throws SQLException {
         ResultSet rst = CrudUtil.execute("SELECT DISTINCT Collection_ID FROM Milk_Collection");
-        ArrayList<Integer> milkStorageIds = new ArrayList<>();
+        ArrayList<String> milkStorageIds = new ArrayList<>();
         while (rst.next()) {
-            Integer milkStorageId = rst.getInt(1);
+            String milkStorageId = rst.getString(1);
             milkStorageIds.add(milkStorageId);
         }
         return milkStorageIds;
@@ -32,12 +32,16 @@ public class MilkStorageModel {
 
     public String getNextId() throws SQLException {
         ResultSet resultSet = CrudUtil.execute("select Storage_ID from Milk_Storage order by Storage_ID desc limit 1");
+        String prefix = "MSI";
         if (resultSet.next()) {
-            int lastId = resultSet.getInt(1);
-            int nextId = lastId + 1;
-            return String.valueOf(nextId);
+            String lastId = resultSet.getString(1);
+            String lastIdNumberString = lastId.substring(prefix.length());
+            int lastIdNumber = Integer.parseInt(lastIdNumberString);
+            int nextIdNumber = lastIdNumber + 1;
+            String nextIdString = String.format(prefix + "%03d", nextIdNumber);
+            return nextIdString;
         }
-        return "1";
+        return prefix + "001";
     }
 
     public ArrayList<MilkStorageDto> viewAllMilkStorage() throws SQLException, ClassNotFoundException {
@@ -45,8 +49,8 @@ public class MilkStorageModel {
         ArrayList<MilkStorageDto> list = new ArrayList<>();
         while (rs.next()) {
             MilkStorageDto milkStorageDto = new MilkStorageDto(
-                    rs.getInt("Storage_ID"),
-                    rs.getInt("Collection_ID"),
+                    rs.getString("Storage_ID"),
+                    rs.getString("Collection_ID"),
                     rs.getString("Storage_Date"),
                     rs.getTime("Duration"),
                     rs.getDouble("Temperature")

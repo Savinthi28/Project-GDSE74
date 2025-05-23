@@ -1,5 +1,6 @@
 package lk.ijse.desktop.myfx.myfinalproject.Controller;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -28,6 +29,7 @@ public class PotsPurchaseController implements Initializable {
         try {
             loadNextId();
             loadPotsSize();
+            clearFields();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -50,7 +52,7 @@ public class PotsPurchaseController implements Initializable {
     private TableColumn<PotsPurchaseDto, String> colDate;
 
     @FXML
-    private TableColumn<PotsPurchaseDto, Integer> colId;
+    private TableColumn<PotsPurchaseDto, String> colId;
 
     @FXML
     private TableColumn<PotsPurchaseDto, Integer> colPotsSize;
@@ -80,13 +82,13 @@ public class PotsPurchaseController implements Initializable {
     private TextField txtUnitPrice;
 
     @FXML
-    void btnClearOnAction(ActionEvent event) {
+    void btnClearOnAction(ActionEvent event) throws SQLException {
         clearFields();
     }
 
     @FXML
     public void btnDeleteOnAction(ActionEvent event) {
-        int id = Integer.parseInt(lblId.getText());
+        String id = lblId.getText();
         try {
             boolean isDelete = new PotsPurchaseModel().deletePotsPurchase(new PotsPurchaseDto(id));
             if (isDelete) {
@@ -110,11 +112,10 @@ public class PotsPurchaseController implements Initializable {
 
     @FXML
     public void btnSaveOnAction(ActionEvent event) {
-        int id = Integer.parseInt(lblId.getText());
         int potsSize = Integer.parseInt(String.valueOf(comPotsSize.getValue()));
         int quantity = Integer.parseInt(txtQuantity.getText());
         double unitPrice = Double.parseDouble(txtUnitPrice.getText());
-        PotsPurchaseDto potsPurchaseDto = new PotsPurchaseDto(id,potsSize,txtDate.getText(),quantity,unitPrice);
+        PotsPurchaseDto potsPurchaseDto = new PotsPurchaseDto(lblId.getText(),potsSize,txtDate.getText(),quantity,unitPrice);
 
         try {
             PotsPurchaseModel potsPurchaseModel = new PotsPurchaseModel();
@@ -130,13 +131,18 @@ public class PotsPurchaseController implements Initializable {
             new Alert(Alert.AlertType.ERROR, "Pots Purchase Failed").show();
         }
     }
-    private void clearFields(){
+    private void clearFields() throws SQLException {
         loadTable();
         lblId.setText("");
-        comPotsSize.setValue(Integer.valueOf(""));
+        comPotsSize.setValue(null);
         txtDate.setText("");
         txtQuantity.setText("");
         txtUnitPrice.setText("");
+
+        loadNextId();
+        Platform.runLater(()-> {
+            lblId.setText(lblId.getText());
+        });
     }
     private void loadTable() {
         colId.setCellValueFactory(new PropertyValueFactory<>("purchaseId"));
@@ -161,11 +167,10 @@ public class PotsPurchaseController implements Initializable {
 
     @FXML
     public void btnUpdateOnAction(ActionEvent event) {
-        int id = Integer.parseInt(lblId.getText());
         int potsSize = Integer.parseInt(String.valueOf(comPotsSize.getValue()));
         int quantity = Integer.parseInt(txtQuantity.getText());
         double unitPrice = Double.parseDouble(txtUnitPrice.getText());
-        PotsPurchaseDto potsPurchaseDto = new PotsPurchaseDto(id,potsSize,txtDate.getText(),quantity,unitPrice);
+        PotsPurchaseDto potsPurchaseDto = new PotsPurchaseDto(lblId.getText(),potsSize,txtDate.getText(),quantity,unitPrice);
         try {
             boolean isSave = PotsPurchaseModel.updatePotsPurchase(potsPurchaseDto);
             if (isSave) {
@@ -184,7 +189,7 @@ public class PotsPurchaseController implements Initializable {
     public void tableOnClick(MouseEvent mouseEvent) {
         PotsPurchaseDto potsPurchaseDto = (PotsPurchaseDto) tblPotsPurchase.getSelectionModel().getSelectedItem();
         if (potsPurchaseDto != null) {
-            lblId.setText(String.valueOf(potsPurchaseDto.getPurchaseId()));
+            lblId.setText(potsPurchaseDto.getPurchaseId());
             comPotsSize.setValue(Integer.valueOf(String.valueOf(potsPurchaseDto.getPotsSize())));
             txtDate.setText(potsPurchaseDto.getDate());
             txtQuantity.setText(String.valueOf(potsPurchaseDto.getQuantity()));

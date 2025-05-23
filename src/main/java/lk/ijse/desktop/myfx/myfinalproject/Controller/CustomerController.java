@@ -1,5 +1,6 @@
 package lk.ijse.desktop.myfx.myfinalproject.Controller;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -64,7 +65,7 @@ public class CustomerController implements Initializable {
 
 
     @FXML
-    void btnClearOnAction(ActionEvent event) {
+    void btnClearOnAction(ActionEvent event) throws SQLException {
         clearFields();
     }
 
@@ -119,17 +120,23 @@ public class CustomerController implements Initializable {
             }
         }
     }
-    private void clearFields(){
+    private void clearFields() throws SQLException {
         loadTable();
         lblId.setText("");
         txtName.setText("");
         txtAddress.setText("");
         txtNumber.setText("");
+
+        loadNextId();
+        Platform.runLater(()-> {
+            lblId.setText(lblId.getText());
+                });
     }
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
             loadNextId();
+            clearFields();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

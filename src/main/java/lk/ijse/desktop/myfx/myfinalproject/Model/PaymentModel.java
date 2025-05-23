@@ -21,21 +21,21 @@ public class PaymentModel {
         );
     }
 
-    public static ArrayList<Integer> getAllCustomerId() throws SQLException {
+    public static ArrayList<String> getAllCustomerId() throws SQLException {
         ResultSet rst = CrudUtil.execute("SELECT DISTINCT Customer_ID FROM Customer");
-        ArrayList<Integer> customerIds = new ArrayList<>();
+        ArrayList<String> customerIds = new ArrayList<>();
         while (rst.next()) {
-            Integer customerId = rst.getInt(1);
+            String customerId = rst.getString(1);
             customerIds.add(customerId);
         }
         return customerIds;
     }
 
-    public static ArrayList<Integer> getAllOrderId() throws SQLException {
+    public static ArrayList<String> getAllOrderId() throws SQLException {
         ResultSet rst = CrudUtil.execute("SELECT DISTINCT Order_ID FROM Payment");
-        ArrayList<Integer> orderIds = new ArrayList<>();
+        ArrayList<String> orderIds = new ArrayList<>();
         while (rst.next()) {
-            Integer orderId = rst.getInt(1);
+            String orderId = rst.getString(1);
             orderIds.add(orderId);
         }
         return orderIds;
@@ -53,12 +53,16 @@ public class PaymentModel {
 
     public String getNextId() throws SQLException {
         ResultSet resultSet = CrudUtil.execute("select Payment_ID from Payment order by Payment_ID desc limit 1");
+        char tableChar = 'P';
         if (resultSet.next()) {
-            int lastId = resultSet.getInt(1);
-            int nextId = lastId + 1;
-            return String.valueOf(nextId);
+            String lastId = resultSet.getString(1);
+            String lastIdNUmberString = lastId.substring(1);
+            int lastIdNumber = Integer.parseInt(lastIdNUmberString);
+            int nextIdNumber = lastIdNumber + 1;
+            String nextIdString = String.format(tableChar + "%03d", nextIdNumber);
+            return nextIdString;
         }
-        return "1";
+        return tableChar + "001";
     }
 
     public ArrayList<PaymentDto> viewAllPayment() throws SQLException, ClassNotFoundException {
@@ -66,9 +70,9 @@ public class PaymentModel {
         ArrayList<PaymentDto> payments = new ArrayList<>();
         while (rs.next()) {
             PaymentDto paymentDto = new PaymentDto(
-                    rs.getInt("Payment_ID"),
-                    rs.getInt("Order_ID"),
-                    rs.getInt("Customer_ID"),
+                    rs.getString("Payment_ID"),
+                    rs.getString("Order_ID"),
+                    rs.getString("Customer_ID"),
                     rs.getString("Payment_Date"),
                     rs.getString("Payment_Method"),
                     rs.getDouble("Payment_Amount")

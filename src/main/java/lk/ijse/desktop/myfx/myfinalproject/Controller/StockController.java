@@ -1,5 +1,6 @@
 package lk.ijse.desktop.myfx.myfinalproject.Controller;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -28,6 +29,7 @@ public class StockController implements Initializable {
         try {
             loadNextId();
             loadProductionId();
+            clearFields();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -35,8 +37,8 @@ public class StockController implements Initializable {
     }
 
     private void loadProductionId()throws SQLException {
-        ArrayList<Integer> productionIds = StockModel.getAllProductionId();
-        ObservableList<Integer> observableList = FXCollections.observableArrayList(productionIds);
+        ArrayList<String> productionIds = StockModel.getAllProductionId();
+        ObservableList<String> observableList = FXCollections.observableArrayList(productionIds);
         observableList.addAll(productionIds);
         comProductionId.setItems(observableList);
     }
@@ -49,13 +51,13 @@ public class StockController implements Initializable {
     private TableColumn<StockDto, String> colDate;
 
     @FXML
-    private TableColumn<StockDto, Integer> colProductionId;
+    private TableColumn<StockDto, String> colProductionId;
 
     @FXML
     private TableColumn<StockDto, Integer> colQuantity;
 
     @FXML
-    private TableColumn<StockDto, Integer> colStockId;
+    private TableColumn<StockDto, String> colStockId;
 
     @FXML
     private TableColumn<StockDto, String> colStockType;
@@ -67,7 +69,7 @@ public class StockController implements Initializable {
     private TextField txtDate;
 
     @FXML
-    private ComboBox<Integer> comProductionId;
+    private ComboBox<String> comProductionId;
 
     @FXML
     private TextField txtQuantity;
@@ -79,13 +81,13 @@ public class StockController implements Initializable {
     private TextField txtStockType;
 
     @FXML
-    void btnClearOnAction(ActionEvent event) {
+    void btnClearOnAction(ActionEvent event) throws SQLException {
         clearFields();
     }
 
     @FXML
     public void btnDeleteOnAction(ActionEvent event) {
-        int id = Integer.parseInt(lblId.getText());
+        String id = lblId.getText();
         try {
             boolean isDelete = new StockModel().deleteStock(new StockDto(id));
             if (isDelete) {
@@ -109,10 +111,8 @@ public class StockController implements Initializable {
 
     @FXML
     public void btnSaveOnAction(ActionEvent event) {
-        int stockId = Integer.parseInt(lblId.getText());
-        int productionId = Integer.parseInt(String.valueOf(comProductionId.getValue()));
         int quantity = Integer.parseInt(txtQuantity.getText());
-        StockDto stockDto = new StockDto(stockId,productionId,txtDate.getText(),quantity,txtStockType.getText());
+        StockDto stockDto = new StockDto(lblId.getText(),comProductionId.getValue(),txtDate.getText(),quantity,txtStockType.getText());
 
         try {
             StockModel stockModel = new StockModel();
@@ -128,13 +128,18 @@ public class StockController implements Initializable {
             new Alert(Alert.AlertType.ERROR, "Something went wrong").show();
         }
     }
-    private void clearFields(){
+    private void clearFields() throws SQLException {
         loadTable();
         lblId.setText("");
-        comProductionId.setValue(Integer.valueOf(""));
+        comProductionId.setValue("");
         txtDate.setText("");
         txtQuantity.setText("");
         txtStockType.setText("");
+
+        loadNextId();
+        Platform.runLater(()-> {
+            lblId.setText(lblId.getText());
+        });
     }
     private void loadTable() {
         colStockId.setCellValueFactory(new PropertyValueFactory<>("stockId"));
@@ -159,10 +164,8 @@ public class StockController implements Initializable {
 
     @FXML
     public void btnUpdateOnAction(ActionEvent event) {
-        int stockId = Integer.parseInt(lblId.getText());
-        int productionId = Integer.parseInt(String.valueOf(comProductionId.getValue()));
         int quantity = Integer.parseInt(txtQuantity.getText());
-        StockDto stockDto = new StockDto(stockId,productionId,txtDate.getText(),quantity,txtStockType.getText());
+        StockDto stockDto = new StockDto(lblId.getText(),comProductionId.getValue(),txtDate.getText(),quantity,txtStockType.getText());
         try {
             boolean isSave = StockModel.updateSrock(stockDto);
             if (isSave) {
@@ -181,8 +184,8 @@ public class StockController implements Initializable {
     public void tableOnClick(MouseEvent mouseEvent) {
         StockDto stockDto = (StockDto) tblStock.getSelectionModel().getSelectedItem();
         if (stockDto != null) {
-            lblId.setText(String.valueOf(stockDto.getStockId()));
-            comProductionId.setValue(Integer.valueOf(String.valueOf(stockDto.getProductionId())));
+            lblId.setText(stockDto.getStockId());
+            comProductionId.setValue(stockDto.getProductionId());
             txtDate.setText(stockDto.getDate());
             txtQuantity.setText(String.valueOf(stockDto.getQuantity()));
             txtStockType.setText(stockDto.getStockType());
@@ -213,7 +216,7 @@ public class StockController implements Initializable {
     }
 
     public void comProductionIdOnAction(ActionEvent actionEvent) {
-        Integer selectedProductionId = (Integer) comProductionId.getSelectionModel().getSelectedItem();
+        String selectedProductionId = (String) comProductionId.getSelectionModel().getSelectedItem();
         System.out.println(selectedProductionId);
     }
 }

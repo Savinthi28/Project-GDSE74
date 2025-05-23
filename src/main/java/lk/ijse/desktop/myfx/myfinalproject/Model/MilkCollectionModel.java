@@ -31,12 +31,16 @@ public class MilkCollectionModel {
 
     public String getNextId() throws SQLException {
         ResultSet resultSet = CrudUtil.execute("select Collection_ID from Milk_Collection order by Collection_ID desc limit 1");
+        String prefix = "MC";
         if (resultSet.next()) {
-            int lastId = resultSet.getInt(1);
-            int nextId = lastId + 1;
-            return String.valueOf(nextId);
+            String lastId = resultSet.getString(1);
+            String lastIdNumberString = lastId.substring(prefix.length());
+            int lastIdNumber = Integer.parseInt(lastIdNumberString);
+            int nextIdNumber = lastIdNumber + 1;
+            String nextIdString = String.format(prefix + "%03d", nextIdNumber);
+            return nextIdString;
         }
-        return "1";
+        return prefix + "001";
     }
 
     public ArrayList<MilkCollectionDto> viewAllMilkCollection() throws SQLException, ClassNotFoundException {
@@ -44,7 +48,7 @@ public class MilkCollectionModel {
         ArrayList<MilkCollectionDto> milkCollection = new ArrayList<>();
         while (rs.next()) {
             MilkCollectionDto milkCollectionDto = new MilkCollectionDto(
-                    rs.getInt("Collection_ID"),
+                    rs.getString("Collection_ID"),
                     rs.getString("Collection_Date"),
                     rs.getDouble("Quantity"),
                     rs.getString("Buffalo_ID")

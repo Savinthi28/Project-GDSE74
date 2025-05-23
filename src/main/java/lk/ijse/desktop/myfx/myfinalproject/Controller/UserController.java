@@ -1,5 +1,6 @@
 package lk.ijse.desktop.myfx.myfinalproject.Controller;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -19,7 +20,7 @@ import java.util.ResourceBundle;
 public class UserController implements Initializable {
 
     @FXML
-    private TableColumn<UserDto, Integer> colId;
+    private TableColumn<UserDto, String> colId;
 
     @FXML
     private TableColumn<UserDto, String> colName;
@@ -40,13 +41,13 @@ public class UserController implements Initializable {
     private TextField txtPassword;
 
     @FXML
-    void btnClearOnAction(ActionEvent event) {
+    void btnClearOnAction(ActionEvent event) throws SQLException {
         clearFields();
     }
 
     @FXML
     public void btnDeleteOnAction(ActionEvent event) {
-        int id = Integer.parseInt(lblId.getText());
+        String id = lblId.getText();
         try {
             boolean isDelete = new UserModel().deleteUser(new UserDto(id));
             if (isDelete) {
@@ -70,8 +71,7 @@ public class UserController implements Initializable {
 
     @FXML
    public void btnSaveOnAction(ActionEvent event) throws ClassNotFoundException, SQLException {
-        int id = Integer.parseInt(lblId.getText());
-        UserDto userDto = new UserDto(id, txtName.getText(), txtPassword.getText());
+        UserDto userDto = new UserDto(lblId.getText(), txtName.getText(), txtPassword.getText());
 
         try {
             UserModel userModel = new UserModel();
@@ -87,17 +87,23 @@ public class UserController implements Initializable {
             new Alert(Alert.AlertType.ERROR, "User has not been saved").show();
         }
     }
-    private void clearFields() {
+    private void clearFields() throws SQLException {
         loadTable();
         lblId.setText("");
         txtName.setText("");
         txtPassword.setText("");
+
+        loadNextId();
+        Platform.runLater(()-> {
+            lblId.setText(lblId.getText());
+        });
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
             loadNextId();
+            clearFields();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -125,8 +131,7 @@ public class UserController implements Initializable {
 
     @FXML
     public void btnUpdateOnAction(ActionEvent event) {
-        int id = Integer.parseInt(lblId.getText());
-        UserDto userDto = new UserDto(id, txtName.getText(), txtPassword.getText());
+        UserDto userDto = new UserDto(lblId.getText(), txtName.getText(), txtPassword.getText());
         try {
             boolean isSave = UserModel.updateUser(userDto);
             if (isSave) {

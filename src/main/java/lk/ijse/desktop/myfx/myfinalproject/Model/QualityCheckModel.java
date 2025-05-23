@@ -22,11 +22,11 @@ public class QualityCheckModel {
         );
     }
 
-    public static ArrayList<Integer> getAllQualityCollectionId() throws SQLException {
+    public static ArrayList<String> getAllQualityCollectionId() throws SQLException {
         ResultSet rst = CrudUtil.execute("SELECT DISTINCT Collection_ID FROM Milk_Collection");
-        ArrayList<Integer> qualityCollectionIds = new ArrayList<>();
+        ArrayList<String> qualityCollectionIds = new ArrayList<>();
         while (rst.next()) {
-            Integer collectionId = rst.getInt(1);
+            String collectionId = rst.getString(1);
             qualityCollectionIds.add(collectionId);
         }
         return qualityCollectionIds;
@@ -34,12 +34,16 @@ public class QualityCheckModel {
 
     public String getNextId() throws SQLException {
         ResultSet resultSet = CrudUtil.execute("select Check_ID from Quality_Check order by Check_ID desc limit 1");
+        char tableChar = 'Q';
         if (resultSet.next()) {
-            int lastId = resultSet.getInt(1);
-            int nextId = lastId + 1;
-            return String.valueOf(nextId);
+            String lastId = resultSet.getString(1);
+            String lastIdNUmberString = lastId.substring(1);
+            int lastIdNumber = Integer.parseInt(lastIdNUmberString);
+            int nextIdNumber = lastIdNumber + 1;
+            String nextIdString = String.format(tableChar + "%03d", nextIdNumber);
+            return nextIdString;
         }
-        return "1";
+        return tableChar + "001";
     }
 
     public ArrayList<QualityCheckDto> viewAllQualityCheck() throws SQLException, ClassNotFoundException {
@@ -47,8 +51,8 @@ public class QualityCheckModel {
         ArrayList<QualityCheckDto> qualityCheck = new ArrayList<>();
         while (rs.next()) {
             QualityCheckDto qualityCheckDto = new QualityCheckDto(
-                    rs.getInt("Check_ID"),
-                    rs.getInt("Collection_ID"),
+                    rs.getString("Check_ID"),
+                    rs.getString("Collection_ID"),
                     rs.getString("Appearance"),
                     rs.getDouble("Fat_Content"),
                     rs.getDouble("Temperature"),

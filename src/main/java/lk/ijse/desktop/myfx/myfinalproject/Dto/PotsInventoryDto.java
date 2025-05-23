@@ -9,12 +9,12 @@ import lombok.*;
 @ToString
 
 public class PotsInventoryDto {
-    private int id;
+    private String id;
     private int quantity;
     private int potsSize;
     private String condition;
 
-    public PotsInventoryDto(int id) {
+    public PotsInventoryDto(String id) {
         this.id = id;
     }
 }

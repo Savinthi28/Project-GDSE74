@@ -1,5 +1,6 @@
 package lk.ijse.desktop.myfx.myfinalproject.Controller;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -29,6 +30,7 @@ public class PotsInventoryController implements Initializable {
         try {
             loadNextId();
             loadPotsSize();
+            clearFields();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -50,7 +52,7 @@ public class PotsInventoryController implements Initializable {
     private TableColumn<PotsInventoryDto, String> colCondition;
 
     @FXML
-    private TableColumn<PotsInventoryDto, Integer> colId;
+    private TableColumn<PotsInventoryDto, String> colId;
 
     @FXML
     private TableColumn<PotsInventoryDto, Integer> colPotsSize;
@@ -74,13 +76,13 @@ public class PotsInventoryController implements Initializable {
     private TextField txtQuantity;
 
     @FXML
-    void btnClearOnAction(ActionEvent event) {
+    void btnClearOnAction(ActionEvent event) throws SQLException {
         clearFields();
     }
 
     @FXML
     public void btnDeleteOnAction(ActionEvent event) {
-        int id = Integer.parseInt(lblId.getText());
+        String id = lblId.getText();
         try {
             boolean isDelete = new PotsInventoryModel().deletePotsInventory(new PotsInventoryDto(id));
             if (isDelete) {
@@ -104,10 +106,9 @@ public class PotsInventoryController implements Initializable {
 
     @FXML
     public void btnSaveOnAction(ActionEvent event) {
-        int id = Integer.parseInt(lblId.getText());
         int quantity = Integer.parseInt(txtQuantity.getText());
         int potsSize = Integer.parseInt(String.valueOf(comPotsSize.getValue()));
-        PotsInventoryDto potsInventoryDto = new PotsInventoryDto(id,quantity,potsSize,txtCondition.getText());
+        PotsInventoryDto potsInventoryDto = new PotsInventoryDto(lblId.getText(),quantity,potsSize,txtCondition.getText());
 
         try {
             PotsInventoryModel potsInventoryModel = new PotsInventoryModel();
@@ -123,12 +124,17 @@ public class PotsInventoryController implements Initializable {
             new Alert(Alert.AlertType.ERROR, "Pots Inventory Not Saved").show();
         }
     }
-    private void clearFields() {
+    private void clearFields() throws SQLException {
         loadTable();
         lblId.setText("");
         txtQuantity.setText("");
         comPotsSize.setValue(Integer.valueOf(""));
         txtCondition.setText("");
+
+        loadNextId();
+        Platform.runLater(()-> {
+            lblId.setText(lblId.getText());
+        });
     }
     private void loadTable() {
         colId.setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -153,10 +159,9 @@ public class PotsInventoryController implements Initializable {
 
     @FXML
     public void btnUpdateOnAction(ActionEvent event) {
-        int id = Integer.parseInt(lblId.getText());
         int quantity = Integer.parseInt(txtQuantity.getText());
         int potsSize = Integer.parseInt(String.valueOf(comPotsSize.getValue()));
-        PotsInventoryDto potsInventoryDto = new PotsInventoryDto(id,quantity,potsSize,txtCondition.getText());
+        PotsInventoryDto potsInventoryDto = new PotsInventoryDto(lblId.getText(),quantity,potsSize,txtCondition.getText());
         try {
             boolean isSave = PotsInventoryModel.updatePotsInventory(potsInventoryDto);
             if (isSave) {
@@ -175,7 +180,7 @@ public class PotsInventoryController implements Initializable {
     public void tableOnClick(MouseEvent mouseEvent) {
         PotsInventoryDto potsInventoryDto = (PotsInventoryDto) tblPotsInventory.getSelectionModel().getSelectedItem();
         if (potsInventoryDto != null) {
-            lblId.setText(String.valueOf(potsInventoryDto.getId()));
+            lblId.setText(potsInventoryDto.getId());
             txtQuantity.setText(String.valueOf(potsInventoryDto.getQuantity()));
             comPotsSize.setValue(Integer.valueOf(String.valueOf(potsInventoryDto.getPotsSize())));
             txtCondition.setText(String.valueOf(potsInventoryDto.getCondition()));

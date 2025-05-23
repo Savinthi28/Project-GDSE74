@@ -9,14 +9,14 @@ import lombok.*;
 @ToString
 
 public class PaymentDto {
-    private Integer paymentId;
-    private Integer orderId;
-    private Integer customerId;
+    private String paymentId;
+    private String orderId;
+    private String customerId;
     private String date;
     private String paymentMethod;
     private double amount;
 
-    public PaymentDto(int id) {
+    public PaymentDto(String id) {
         this.paymentId = id;
     }
 }

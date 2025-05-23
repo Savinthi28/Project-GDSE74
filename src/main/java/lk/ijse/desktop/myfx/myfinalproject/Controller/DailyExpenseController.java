@@ -1,5 +1,6 @@
 package lk.ijse.desktop.myfx.myfinalproject.Controller;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -40,7 +41,7 @@ public class DailyExpenseController implements Initializable {
     private TableColumn<DailyExpenseDto, Boolean> colExpense;
 
     @FXML
-    private TableColumn<DailyExpenseDto, Integer> colId;
+    private TableColumn<DailyExpenseDto, String> colId;
 
     @FXML
     private TableView<DailyExpenseDto> tblExpense;
@@ -61,13 +62,13 @@ public class DailyExpenseController implements Initializable {
     private Label lblId;
 
     @FXML
-    void btnClearOnAction(ActionEvent event) {
+    void btnClearOnAction(ActionEvent event) throws SQLException {
         clearFields();
     }
 
     @FXML
     void btnDeleteOnAction(ActionEvent event) {
-        int id = Integer.parseInt(lblId.getText());
+        String id = lblId.getText();
         try {
             boolean isDelete = new DailyExpenseModel().deleteDailyExpense(new DailyExpenseDto(id));
             if (isDelete) {
@@ -91,10 +92,9 @@ public class DailyExpenseController implements Initializable {
 
     @FXML
     public void btnSaveOnAction(ActionEvent event) {
-        int id = Integer.parseInt(lblId.getText());
         double amount = Double.parseDouble(txtAmount.getText());
         boolean expense = Boolean.parseBoolean(String.valueOf(comExpense.getValue()));
-        DailyExpenseDto dailyExpenseDto = new DailyExpenseDto(id,txtDate.getText(),txtDescription.getText(),amount,expense);
+        DailyExpenseDto dailyExpenseDto = new DailyExpenseDto(lblId.getText(),txtDate.getText(),txtDescription.getText(),amount,expense);
 
         try {
             DailyExpenseModel dailyExpenseModel = new DailyExpenseModel();
@@ -110,13 +110,18 @@ public class DailyExpenseController implements Initializable {
             new Alert(Alert.AlertType.ERROR,"Failed to add daily expense").show();
         }
     }
-    private void clearFields(){
+    private void clearFields() throws SQLException {
         loadTable();
         lblId.setText("");
         txtDate.setText("");
         txtDescription.setText("");
         txtAmount.setText("");
         comExpense.setValue(Boolean.valueOf(""));
+
+        loadNextId();
+        Platform.runLater(()-> {
+            lblId.setText(lblId.getText());
+        });
     }
     private void loadTable(){
         colId.setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -143,6 +148,7 @@ public class DailyExpenseController implements Initializable {
         try {
             loadNextId();
             loadExpense();
+            clearFields();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -158,10 +164,9 @@ public class DailyExpenseController implements Initializable {
 
     @FXML
     void btnUpdateOnAction(ActionEvent event) {
-        int id = Integer.parseInt(lblId.getText());
         double amount = Double.parseDouble(txtAmount.getText());
         boolean expense = Boolean.parseBoolean(String.valueOf(comExpense.getValue()));
-        DailyExpenseDto dailyExpenseDto = new DailyExpenseDto(id,txtDate.getText(),txtDescription.getText(),amount,expense);
+        DailyExpenseDto dailyExpenseDto = new DailyExpenseDto(lblId.getText(),txtDate.getText(),txtDescription.getText(),amount,expense);
         try {
             boolean isSave = DailyExpenseModel.updateDailyExpense(dailyExpenseDto);
             if (isSave) {
@@ -180,7 +185,7 @@ public class DailyExpenseController implements Initializable {
     public void tableOnClick(MouseEvent mouseEvent) {
         DailyExpenseDto dailyExpenseDto = (DailyExpenseDto) tblExpense.getSelectionModel().getSelectedItem();
         if (dailyExpenseDto != null) {
-            lblId.setText(String.valueOf(dailyExpenseDto.getId()));
+            lblId.setText(dailyExpenseDto.getId());
             txtDate.setText(String.valueOf(dailyExpenseDto.getDate()));
             txtDescription.setText(String.valueOf(dailyExpenseDto.getDescription()));
             txtAmount.setText(String.valueOf(dailyExpenseDto.getAmount()));

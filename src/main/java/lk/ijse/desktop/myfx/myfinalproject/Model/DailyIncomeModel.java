@@ -32,12 +32,16 @@ public class DailyIncomeModel {
 
     public String getNextId() throws SQLException {
         ResultSet resultSet = CrudUtil.execute("select Income_ID from Daily_Income order by Income_ID desc limit 1");
+        String prefix = "DI";
         if (resultSet.next()) {
-            int lastId = resultSet.getInt(1);
-            int nextId = lastId + 1;
-            return String.valueOf(nextId);
+            String lastId = resultSet.getString(1);
+            String lastIdNumberString = lastId.substring(prefix.length());
+            int lastIdNumber = Integer.parseInt(lastIdNumberString);
+            int nextIdNumber = lastIdNumber + 1;
+            String nextIdString = String.format(prefix + "%03d", nextIdNumber);
+            return nextIdString;
         }
-        return "1";
+        return prefix + "001";
     }
 
     public ArrayList<DailyIncomeDto> viewDailyIncome()throws SQLException, ClassNotFoundException {
@@ -45,7 +49,7 @@ public class DailyIncomeModel {
         ArrayList<DailyIncomeDto> dailyIncome = new ArrayList<>();
         while (rs.next()) {
             DailyIncomeDto dailyIncomeDto = new DailyIncomeDto(
-                    rs.getInt("Income_ID"),
+                    rs.getString("Income_ID"),
                     rs.getString("Customer_Name"),
                     rs.getString("Income_Date"),
                     rs.getString("Description"),

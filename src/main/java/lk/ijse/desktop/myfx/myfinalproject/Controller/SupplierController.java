@@ -1,5 +1,6 @@
 package lk.ijse.desktop.myfx.myfinalproject.Controller;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -30,7 +31,7 @@ public class SupplierController implements Initializable {
     private TableColumn<SupplierDto, String> colAddress;
 
     @FXML
-    private TableColumn<SupplierDto, Integer> colId;
+    private TableColumn<SupplierDto, String> colId;
 
     @FXML
     private TableColumn<SupplierDto, String> colName;
@@ -54,13 +55,13 @@ public class SupplierController implements Initializable {
     private TextField txtNumber;
 
     @FXML
-    void btnClearOnAction(ActionEvent event) {
+    void btnClearOnAction(ActionEvent event) throws SQLException {
         clearFields();
     }
 
     @FXML
     void btnDeleteOnAction(ActionEvent event) {
-        int id = Integer.parseInt(lblId.getText());
+        String id = lblId.getText();
         try {
             boolean isDelete = new SupplierModel().deleteSupplier(new SupplierDto(id));
             if (isDelete) {
@@ -84,8 +85,7 @@ public class SupplierController implements Initializable {
 
     @FXML
     public void btnSaveOnAction(ActionEvent event) throws SQLException, ClassNotFoundException {
-        int id = Integer.parseInt(lblId.getText());
-        SupplierDto supplierDto = new SupplierDto(id, txtName.getText(), txtNumber.getText(), txtAddress.getText());
+        SupplierDto supplierDto = new SupplierDto(lblId.getText(), txtName.getText(), txtNumber.getText(), txtAddress.getText());
 
         try {
             SupplierModel supplierModel = new SupplierModel();
@@ -102,18 +102,24 @@ public class SupplierController implements Initializable {
         }
     }
 
-    private void clearFields() {
+    private void clearFields() throws SQLException {
         loadTable();
         txtAddress.setText("");
         lblId.setText("");
         txtName.setText("");
         txtNumber.setText("");
+
+        loadNextId();
+        Platform.runLater(()-> {
+            lblId.setText(lblId.getText());
+        });
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
             loadNextId();
+            clearFields();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -142,8 +148,7 @@ public class SupplierController implements Initializable {
 
     @FXML
     public void btnUpdateOnAction(ActionEvent event) {
-        int id = Integer.parseInt(lblId.getText());
-        SupplierDto supplierDto = new SupplierDto(id, txtName.getText(), txtNumber.getText(), txtAddress.getText());
+        SupplierDto supplierDto = new SupplierDto(lblId.getText(), txtName.getText(), txtNumber.getText(), txtAddress.getText());
         try {
             boolean isSave = SupplierModel.updateSupplier(supplierDto);
             if (isSave) {
@@ -162,7 +167,7 @@ public class SupplierController implements Initializable {
     public void tableOnClick(MouseEvent mouseEvent) {
         SupplierDto supplierDto = (SupplierDto) tblSupplier.getSelectionModel().getSelectedItem();
         if (supplierDto != null) {
-            lblId.setText(String.valueOf(supplierDto.getSupplierId()));
+            lblId.setText(supplierDto.getSupplierId());
             txtName.setText(supplierDto.getSupplierName());
             txtNumber.setText(supplierDto.getContactNumber());
             txtAddress.setText(supplierDto.getAddress());

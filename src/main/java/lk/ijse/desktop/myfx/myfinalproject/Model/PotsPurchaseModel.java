@@ -32,12 +32,16 @@ public class PotsPurchaseModel {
 
     public String getNextId() throws SQLException {
         ResultSet resultSet = CrudUtil.execute("select Purchase_ID from Pots_Purchase_ID order by Purchase_ID desc limit 1");
+        String prefix = "PP";
         if (resultSet.next()) {
-            int lastId = resultSet.getInt(1);
-            int nextId = lastId + 1;
-            return String.valueOf(nextId);
+            String lastId = resultSet.getString(1);
+            String lastIdNumberString = lastId.substring(prefix.length());
+            int lastIdNumber = Integer.parseInt(lastIdNumberString);
+            int nextIdNumber = lastIdNumber + 1;
+            String nextIdString = String.format(prefix + "%03d", nextIdNumber);
+            return nextIdString;
         }
-        return "1";
+        return prefix + "001";
     }
 
     public ArrayList<PotsPurchaseDto> viewAllPotsPurchase() throws SQLException {
@@ -45,7 +49,7 @@ public class PotsPurchaseModel {
         ArrayList<PotsPurchaseDto> potsPurchase = new ArrayList<>();
         while (rs.next()) {
             PotsPurchaseDto potsPurchaseDto = new PotsPurchaseDto(
-                    rs.getInt("Purchase_ID"),
+                    rs.getString("Purchase_ID"),
                     rs.getInt("Pots_Size"),
                     rs.getString("Purchase_Date"),
                     rs.getInt("Quantity"),

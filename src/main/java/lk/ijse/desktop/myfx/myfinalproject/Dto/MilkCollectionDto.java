@@ -9,12 +9,12 @@ import lombok.*;
 @ToString
 
 public class MilkCollectionDto {
-    private int id;
+    private String id;
     private String date;
     private double quantity;
     private String buffaloId;
 
-    public MilkCollectionDto(int id) {
+    public MilkCollectionDto(String id) {
         this.id = id;
     }
 }

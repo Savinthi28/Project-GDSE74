@@ -9,13 +9,13 @@ import lombok.*;
 @ToString
 
 public class ReportsDto {
-    private int reportId;
+    private String reportId;
     private String date;
-    private int userId;
+    private String userId;
     private String reportType;
     private String generateBy;
 
-    public ReportsDto(int reportId) {
+    public ReportsDto(String reportId) {
         this.reportId = reportId;
     }
 }

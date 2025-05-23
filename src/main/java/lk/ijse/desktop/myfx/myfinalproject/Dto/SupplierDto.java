@@ -9,12 +9,12 @@ import lombok.*;
 @ToString
 
 public class SupplierDto {
-    private int supplierId;
+    private String supplierId;
     private String supplierName;
     private String contactNumber;
     private String address;
 
-    public SupplierDto(int id) {
+    public SupplierDto(String id) {
         this.supplierId = id;
     }
 }

@@ -21,11 +21,11 @@ public class RawMaterialPurchaseModel {
         );
     }
 
-    public static ArrayList<Integer> getAllSupplierId() throws SQLException {
+    public static ArrayList<String> getAllSupplierId() throws SQLException {
         ResultSet rs = CrudUtil.execute("select Supplier_ID from Supplier");
-        ArrayList<Integer> supplierIds = new ArrayList<>();
+        ArrayList<String> supplierIds = new ArrayList<>();
         while (rs.next()) {
-            Integer supplierId = rs.getInt(1);
+            String supplierId = rs.getString(1);
             supplierIds.add(supplierId);
         }
         return supplierIds;
@@ -33,12 +33,16 @@ public class RawMaterialPurchaseModel {
 
     public String getNextId() throws SQLException {
         ResultSet resultSet = CrudUtil.execute("select Purchase_ID from Raw_Material_Purchase order by Purchase_ID desc limit 1");
+        String prefix = "RMP";
         if (resultSet.next()) {
-            int lastId = resultSet.getInt(1);
-            int nextId = lastId + 1;
-            return String.valueOf(nextId);
+            String lastId = resultSet.getString(1);
+            String lastIdNumberString = lastId.substring(prefix.length());
+            int lastIdNumber = Integer.parseInt(lastIdNumberString);
+            int nextIdNumber = lastIdNumber + 1;
+            String nextIdString = String.format(prefix + "%03d", nextIdNumber);
+            return nextIdString;
         }
-        return "1";
+        return prefix + "001";
     }
 
     public ArrayList<RawMaterialPurchaseDto> viewAllRawMaterialPurchase()throws SQLException, ClassNotFoundException {
@@ -46,8 +50,8 @@ public class RawMaterialPurchaseModel {
         ArrayList<RawMaterialPurchaseDto> rawMaterialPurchase = new ArrayList<>();
         while (rs.next()) {
             RawMaterialPurchaseDto rawMaterialPurchaseDto = new RawMaterialPurchaseDto(
-                    rs.getInt("Purchase_ID"),
-                    rs.getInt("Supplier_ID"),
+                    rs.getString("Purchase_ID"),
+                    rs.getString("Supplier_ID"),
                     rs.getString("Material_Name"),
                     rs.getString("Purchase_Date"),
                     rs.getInt("Quantity"),

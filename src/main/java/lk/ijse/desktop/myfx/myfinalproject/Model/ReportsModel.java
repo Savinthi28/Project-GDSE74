@@ -20,11 +20,11 @@ public class ReportsModel {
         );
     }
 
-    public static ArrayList<Integer> getAllUserId() throws SQLException {
+    public static ArrayList<String> getAllUserId() throws SQLException {
         ResultSet rs = CrudUtil.execute("select DISTINCT User_ID from User");
-        ArrayList<Integer> userIds = new ArrayList<>();
+        ArrayList<String> userIds = new ArrayList<>();
         while (rs.next()) {
-            Integer userId = rs.getInt(1);
+            String userId = rs.getString(1);
             userIds.add(userId);
         }
         return userIds;
@@ -32,12 +32,16 @@ public class ReportsModel {
 
     public String getNextId() throws SQLException {
         ResultSet resultSet = CrudUtil.execute("select Report_ID from Reports order by Report_ID desc limit 1");
+        char tableChar = 'R';
         if (resultSet.next()) {
-            int lastId = resultSet.getInt(1);
-            int nextId = lastId + 1;
-            return String.valueOf(nextId);
+            String lastId = resultSet.getString(1);
+            String lastIdNUmberString = lastId.substring(1);
+            int lastIdNumber = Integer.parseInt(lastIdNUmberString);
+            int nextIdNumber = lastIdNumber + 1;
+            String nextIdString = String.format(tableChar + "%03d", nextIdNumber);
+            return nextIdString;
         }
-        return "1";
+        return tableChar + "001";
     }
 
     public ArrayList<ReportsDto> viewAllReports() throws SQLException , ClassNotFoundException {
@@ -45,9 +49,9 @@ public class ReportsModel {
         ArrayList<ReportsDto> reports = new ArrayList<>();
         while (rs.next()) {
             ReportsDto reportsDto = new ReportsDto(
-                    rs.getInt("Report_ID"),
+                    rs.getString("Report_ID"),
                     rs.getString("Report_date"),
-                    rs.getInt("User_ID"),
+                    rs.getString("User_ID"),
                     rs.getString("Report_Type"),
                     rs.getString("Generate_By")
             );
@@ -66,8 +70,8 @@ public class ReportsModel {
         );
     }
 
-    public boolean deleteReports(ReportsDto reportsDto) throws SQLException{
+    public static boolean deleteReports(String reportsDto) throws SQLException{
         String sql = "delete from Reports where Report_ID=?";
-        return CrudUtil.execute(sql, reportsDto.getReportId());
+        return CrudUtil.execute(sql, reportsDto);
     }
 }

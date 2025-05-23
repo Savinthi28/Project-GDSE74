@@ -31,12 +31,16 @@ public class PotsInventoryModel {
 
     public String getNextId() throws SQLException {
         ResultSet resultSet = CrudUtil.execute("select Inventory_ID from Pots_Inventory order by Inventory_ID desc limit 1");
+        String prefix = "PI";
         if (resultSet.next()) {
-            int lastId = resultSet.getInt(1);
-            int nextId = lastId + 1;
-            return String.valueOf(nextId);
+            String lastId = resultSet.getString(1);
+            String lastIdNumberString = lastId.substring(prefix.length());
+            int lastIdNumber = Integer.parseInt(lastIdNumberString);
+            int nextIdNumber = lastIdNumber + 1;
+            String nextIdString = String.format(prefix + "%03d", nextIdNumber);
+            return nextIdString;
         }
-        return "1";
+        return prefix + "001";
     }
 
     public ArrayList<PotsInventoryDto> viewAllPotsInventory() throws SQLException, ClassNotFoundException {
@@ -44,7 +48,7 @@ public class PotsInventoryModel {
         ArrayList<PotsInventoryDto> viewPotsInventory = new ArrayList<>();
         while (rs.next()) {
             PotsInventoryDto viewPotsInventoryDto = new PotsInventoryDto(
-            rs.getInt("Inventory_ID"),
+            rs.getString("Inventory_ID"),
             rs.getInt("Quantity"),
             rs.getInt("Pots_Size"),
             rs.getString("Condition")

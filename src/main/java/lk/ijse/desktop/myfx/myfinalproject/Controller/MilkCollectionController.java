@@ -1,5 +1,6 @@
 package lk.ijse.desktop.myfx.myfinalproject.Controller;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -29,6 +30,7 @@ public class MilkCollectionController implements Initializable {
         try {
             loadNextId();
             loadMilkCollectionBuffaloId();
+            clearFields();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -53,7 +55,7 @@ public class MilkCollectionController implements Initializable {
     private TableColumn<MilkCollectionDto, String> colDate;
 
     @FXML
-    private TableColumn<MilkCollectionDto, Integer> colId;
+    private TableColumn<MilkCollectionDto, String> colId;
 
     @FXML
     private TableColumn<MilkCollectionDto, Double> colQuantity;
@@ -92,13 +94,13 @@ public class MilkCollectionController implements Initializable {
         }
     }
     @FXML
-    void btnClearOnAction(ActionEvent event) {
+    void btnClearOnAction(ActionEvent event) throws SQLException {
         clearFields();
     }
 
     @FXML
     public void btnDeleteOnAction(ActionEvent event) {
-        int id = Integer.parseInt(lblId.getText());
+        String id = lblId.getText();
         try {
             boolean isDelete = new MilkCollectionModel().deleteMikCollection(new MilkCollectionDto(id));
             if (isDelete) {
@@ -122,9 +124,8 @@ public class MilkCollectionController implements Initializable {
 
     @FXML
     public void btnSaveOnAction(ActionEvent event) {
-        int id = Integer.parseInt(lblId.getText());
         double quantity = Double.parseDouble(txtQuantity.getText());
-        MilkCollectionDto milkCollectionDto = new MilkCollectionDto(id, txtDate.getText(), quantity, comMilkCollection.getValue());
+        MilkCollectionDto milkCollectionDto = new MilkCollectionDto(lblId.getText(), txtDate.getText(), quantity, comMilkCollection.getValue());
 
         try {
             MilkCollectionModel milkCollectionModel = new MilkCollectionModel();
@@ -141,12 +142,17 @@ public class MilkCollectionController implements Initializable {
         }
     }
 
-    private void clearFields() {
+    private void clearFields() throws SQLException {
         loadTable();
         lblId.setText("");
         txtDate.setText("");
         txtQuantity.setText("");
         comMilkCollection.setValue("");
+
+        loadNextId();
+        Platform.runLater(()-> {
+            lblId.setText(lblId.getText());
+        });
     }
 
     private void loadTable() {
@@ -171,9 +177,8 @@ public class MilkCollectionController implements Initializable {
 
     @FXML
     public void btnUpdateOnAction(ActionEvent event) {
-        int id = Integer.parseInt(lblId.getText());
         double quantity = Double.parseDouble(txtQuantity.getText());
-        MilkCollectionDto milkCollectionDto = new MilkCollectionDto(id, txtDate.getText(), quantity, comMilkCollection.getValue());
+        MilkCollectionDto milkCollectionDto = new MilkCollectionDto(lblId.getText(), txtDate.getText(), quantity, comMilkCollection.getValue());
         try {
             boolean isSave = MilkCollectionModel.updateMilkCollection(milkCollectionDto);
             if (isSave) {

@@ -9,11 +9,11 @@ import lombok.*;
 @ToString
 
 public class UserDto {
-    private int id;
+    private String id;
     private String userName;
     private String password;
 
-    public UserDto(int id) {
+    public UserDto(String id) {
         this.id = id;
     }
 }

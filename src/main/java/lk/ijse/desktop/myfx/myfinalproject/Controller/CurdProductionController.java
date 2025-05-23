@@ -1,5 +1,6 @@
 package lk.ijse.desktop.myfx.myfinalproject.Controller;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -79,7 +80,7 @@ public class CurdProductionController implements Initializable {
     private final String ingredientsPattern = "^[A-Za-z '-]+$";
 
     @FXML
-    void btnClearOnAction(ActionEvent event) {
+    void btnClearOnAction(ActionEvent event) throws SQLException {
         clearFields();
     }
 
@@ -137,7 +138,7 @@ public class CurdProductionController implements Initializable {
             }
         }
     }
-    private void clearFields() {
+    private void clearFields() throws SQLException {
         loadTable();
         txtExpiryDate.setText("");
         lblId.setText("");
@@ -146,6 +147,11 @@ public class CurdProductionController implements Initializable {
         txtProductionDate.setText("");
         txtQuantity.setText("");
         comStorageId.setValue("");
+
+        loadNextId();
+        Platform.runLater(()-> {
+            lblId.setText(lblId.getText());
+        });
     }
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -153,6 +159,7 @@ public class CurdProductionController implements Initializable {
             loadNextId();
             loadPotsSize();
             loadStorageId();
+            clearFields();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

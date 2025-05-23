@@ -9,15 +9,15 @@ import lombok.*;
 @ToString
 
 public class QualityCheckDto {
-    private int checkId;
-    private int collectionId;
+    private String checkId;
+    private String collectionId;
     private String appearance;
     private double fatContent;
     private double temperature;
     private String date;
     private String notes;
 
-    public QualityCheckDto(int id) {
+    public QualityCheckDto(String id) {
         this.checkId = id;
     }
 }

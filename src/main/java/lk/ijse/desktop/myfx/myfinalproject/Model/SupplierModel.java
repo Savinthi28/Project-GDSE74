@@ -21,12 +21,16 @@ public class SupplierModel {
 
     public String getNextId() throws SQLException {
         ResultSet resultSet = CrudUtil.execute("select Supplier_ID from Supplier order by Supplier_ID desc limit 1");
+        String prefix = "SI";
         if (resultSet.next()) {
-            int lastId = resultSet.getInt(1);
-            int nextId = lastId + 1;
-            return String.valueOf(nextId);
+            String lastId = resultSet.getString(1);
+            String lastIdNumberString = lastId.substring(prefix.length());
+            int lastIdNumber = Integer.parseInt(lastIdNumberString);
+            int nextIdNumber = lastIdNumber + 1;
+            String nextIdString = String.format(prefix + "%03d", nextIdNumber);
+            return nextIdString;
         }
-        return "1";
+        return prefix + "001";
     }
 
     public ArrayList<SupplierDto> viewAllSupplier() throws ClassNotFoundException, SQLException {
@@ -34,7 +38,7 @@ public class SupplierModel {
         ArrayList<SupplierDto> viewSupplier = new ArrayList<>();
         while (rs.next()) {
             SupplierDto supplierDto = new SupplierDto(
-                    rs.getInt("Supplier_ID"),
+                    rs.getString("Supplier_ID"),
                     rs.getString("Supplier_Name"),
                     rs.getString("ContactNumber"),
                     rs.getString("Address")

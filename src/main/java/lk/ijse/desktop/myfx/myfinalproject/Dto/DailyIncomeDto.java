@@ -9,13 +9,13 @@ import lombok.*;
 @ToString
 
 public class DailyIncomeDto {
-    private int id;
+    private String id;
     private String customerName;
     private String date;
     private String description;
     private double amount;
 
-    public DailyIncomeDto(int id) {
+    public DailyIncomeDto(String id) {
         this.id = id;
     }
 }

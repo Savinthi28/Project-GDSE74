@@ -1,5 +1,6 @@
 package lk.ijse.desktop.myfx.myfinalproject.Controller;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -22,7 +23,7 @@ public class PaymentController implements Initializable {
     private TableColumn<PaymentDto, Double> colAmount;
 
     @FXML
-    private TableColumn<PaymentDto, Integer> colCustomerId;
+    private TableColumn<PaymentDto, String> colCustomerId;
 
     @FXML
     private TableColumn<PaymentDto, String> colDate;
@@ -31,10 +32,10 @@ public class PaymentController implements Initializable {
     private TableColumn<PaymentDto, String> colMethod;
 
     @FXML
-    private TableColumn<PaymentDto, Integer> colOrderId;
+    private TableColumn<PaymentDto, String> colOrderId;
 
     @FXML
-    private TableColumn<PaymentDto, Integer> colPaymentId;
+    private TableColumn<PaymentDto, String> colPaymentId;
 
     @FXML
     private TableView<PaymentDto> tblPayment;
@@ -43,10 +44,10 @@ public class PaymentController implements Initializable {
     private TextField txtAmount;
 
     @FXML
-    private ComboBox<Integer> comCustomerId;
+    private ComboBox<String> comCustomerId;
 
     @FXML
-    private ComboBox<Integer> comOrderId;
+    private ComboBox<String> comOrderId;
 
     @FXML
     private ComboBox<String> comPaymentMethod;
@@ -58,13 +59,13 @@ public class PaymentController implements Initializable {
     private Label lblId;
 
     @FXML
-    void btnClearOnAction(ActionEvent event) {
+    void btnClearOnAction(ActionEvent event) throws SQLException {
         clearFields();
     }
 
     @FXML
     void btnDeleteOnAction(ActionEvent event) {
-        int id = Integer.parseInt(lblId.getText());
+        String id = lblId.getText();
         try {
             boolean isDelete = new PaymentModel().deletePayment(new PaymentDto(id));
             if (isDelete) {
@@ -88,11 +89,8 @@ public class PaymentController implements Initializable {
 
     @FXML
     void btnSaveOnAction(ActionEvent event) {
-        int paymentId = Integer.parseInt(lblId.getText());
-        int orderId=Integer.parseInt(String.valueOf(comOrderId.getValue()));
-        int customerId=Integer.parseInt(String.valueOf(comCustomerId.getValue()));
         double amount=Double.parseDouble(txtAmount.getText());
-        PaymentDto paymentDto = new PaymentDto(paymentId,orderId,customerId,txtDate.getText(),comPaymentMethod.getValue(),amount);
+        PaymentDto paymentDto = new PaymentDto(lblId.getText(),comOrderId.getValue(),comCustomerId.getValue(),txtDate.getText(),comPaymentMethod.getValue(),amount);
 
         try {
             PaymentModel paymentModel = new PaymentModel();
@@ -108,14 +106,19 @@ public class PaymentController implements Initializable {
             new Alert(Alert.AlertType.ERROR, "Payment Not Saved").show();
         }
     }
-    private void clearFields(){
+    private void clearFields() throws SQLException {
         loadTable();
         lblId.setText("");
-        comOrderId.setValue(Integer.valueOf(""));
-        comCustomerId.setValue(Integer.valueOf(""));
+        comOrderId.setValue("");
+        comCustomerId.setValue("");
         txtDate.setText("");
         comPaymentMethod.setValue("");
         txtAmount.setText("");
+
+        loadNextId();
+        Platform.runLater(()-> {
+            lblId.setText(lblId.getText());
+        });
     }
     private void loadTable(){
         colPaymentId.setCellValueFactory(new PropertyValueFactory<>("paymentId"));
@@ -146,6 +149,7 @@ public class PaymentController implements Initializable {
             loadOrderId();
             loadCustomerId();
             loadPaymentMethod();
+            clearFields();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -153,15 +157,15 @@ public class PaymentController implements Initializable {
     }
 
     private void loadCustomerId() throws SQLException {
-        ArrayList<Integer> customerIds = PaymentModel.getAllCustomerId();
-        ObservableList<Integer> customers = FXCollections.observableArrayList(customerIds);
+        ArrayList<String> customerIds = PaymentModel.getAllCustomerId();
+        ObservableList<String> customers = FXCollections.observableArrayList(customerIds);
         customers.addAll(customerIds);
         comCustomerId.setItems(customers);
     }
 
     private void loadOrderId() throws SQLException {
-        ArrayList<Integer> orderId = PaymentModel.getAllOrderId();
-        ObservableList<Integer> orders = FXCollections.observableArrayList(orderId);
+        ArrayList<String> orderId = PaymentModel.getAllOrderId();
+        ObservableList<String> orders = FXCollections.observableArrayList(orderId);
         orders.addAll(orderId);
         comOrderId.setItems(orders);
     }
@@ -175,11 +179,8 @@ public class PaymentController implements Initializable {
 
     @FXML
     public void btnUpdateOnAction(ActionEvent event) {
-        int paymentId = Integer.parseInt(lblId.getText());
-        int orderId = Integer.parseInt(String.valueOf(comOrderId.getValue()));
-        int customerId = Integer.parseInt(String.valueOf(comCustomerId.getValue()));
         double amount = Double.parseDouble(txtAmount.getText());
-        PaymentDto paymentDto = new PaymentDto(paymentId,orderId,customerId,txtDate.getText(),comPaymentMethod.getValue(),amount);
+        PaymentDto paymentDto = new PaymentDto(lblId.getText(),comOrderId.getValue(),comCustomerId.getValue(),txtDate.getText(),comPaymentMethod.getValue(),amount);
         try {
             boolean isSave = PaymentModel.updatePayment(paymentDto);
             if (isSave) {
@@ -199,8 +200,8 @@ public class PaymentController implements Initializable {
         PaymentDto paymentDto = (PaymentDto) tblPayment.getSelectionModel().getSelectedItem();
         if (paymentDto != null) {
             lblId.setText(String.valueOf(paymentDto.getPaymentId()));
-            comOrderId.setValue(Integer.valueOf(String.valueOf(paymentDto.getOrderId())));
-            comCustomerId.setValue(Integer.valueOf(String.valueOf(paymentDto.getCustomerId())));
+            comOrderId.setValue(paymentDto.getOrderId());
+            comCustomerId.setValue(paymentDto.getCustomerId());
             txtDate.setText(String.valueOf(paymentDto.getDate()));
             comPaymentMethod.setValue(String.valueOf(paymentDto.getPaymentMethod()));
             txtAmount.setText(String.valueOf(paymentDto.getAmount()));
@@ -208,12 +209,12 @@ public class PaymentController implements Initializable {
     }
 
     public void comOrderIdOnAction(ActionEvent actionEvent) {
-        Integer selectedOrderId = (Integer) comOrderId.getSelectionModel().getSelectedItem();
+        String selectedOrderId = (String) comOrderId.getSelectionModel().getSelectedItem();
         System.out.println(selectedOrderId);
     }
 
     public void comCustomerIdOnAction(ActionEvent actionEvent) {
-        Integer selectedCustomerId = (Integer) comCustomerId.getSelectionModel().getSelectedItem();
+        String selectedCustomerId = (String) comCustomerId.getSelectionModel().getSelectedItem();
         System.out.println(selectedCustomerId);
     }
 

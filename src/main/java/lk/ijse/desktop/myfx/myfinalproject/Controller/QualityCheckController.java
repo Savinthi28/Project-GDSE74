@@ -1,5 +1,6 @@
 package lk.ijse.desktop.myfx.myfinalproject.Controller;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -28,6 +29,7 @@ public class QualityCheckController implements Initializable {
         try {
             loadNextId();
             loadQualityCollectionId();
+            clearFields();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -35,8 +37,8 @@ public class QualityCheckController implements Initializable {
     }
 
     private void loadQualityCollectionId() throws SQLException {
-        ArrayList<Integer> collectionId = QualityCheckModel.getAllQualityCollectionId();
-        ObservableList<Integer> observableList = FXCollections.observableArrayList(collectionId);
+        ArrayList<String> collectionId = QualityCheckModel.getAllQualityCollectionId();
+        ObservableList<String> observableList = FXCollections.observableArrayList(collectionId);
         observableList.addAll(collectionId);
         comCollectionId.setItems(observableList);
     }
@@ -50,10 +52,10 @@ public class QualityCheckController implements Initializable {
     private TableColumn<QualityCheckDto, String> colAppearance;
 
     @FXML
-    private TableColumn<QualityCheckDto, Integer> colCheckId;
+    private TableColumn<QualityCheckDto, String> colCheckId;
 
     @FXML
-    private TableColumn<QualityCheckDto, Integer> colCollectionId;
+    private TableColumn<QualityCheckDto, String> colCollectionId;
 
     @FXML
     private TableColumn<QualityCheckDto, String> colDate;
@@ -77,7 +79,7 @@ public class QualityCheckController implements Initializable {
     private Label lblId;
 
     @FXML
-    private ComboBox<Integer> comCollectionId;
+    private ComboBox<String> comCollectionId;
 
     @FXML
     private TextField txtDate;
@@ -92,13 +94,13 @@ public class QualityCheckController implements Initializable {
     private TextField txtTemperature;
 
     @FXML
-    void btnClearOnAction(ActionEvent event) {
+    void btnClearOnAction(ActionEvent event) throws SQLException {
         clearFields();
     }
 
     @FXML
     public void btnDeleteOnAction(ActionEvent event) {
-        int id = Integer.parseInt(lblId.getText());
+        String id = lblId.getText();
         try {
             boolean isDelete = new QualityCheckModel().deleteQualityCheck(new QualityCheckDto(id));
             if (isDelete) {
@@ -122,11 +124,9 @@ public class QualityCheckController implements Initializable {
 
     @FXML
     public void btnSaveOnAction(ActionEvent event) throws ClassNotFoundException, SQLException {
-        int checkId = Integer.parseInt(lblId.getText());
-        int collectionId = Integer.parseInt(String.valueOf(comCollectionId.getValue()));
         double fatContent = Double.parseDouble(txtFatContent.getText());
         double temperature = Double.parseDouble(txtTemperature.getText());
-        QualityCheckDto qualityCheckDto = new QualityCheckDto(checkId,collectionId,txtAppearance.getText(),fatContent,temperature,txtDate.getText(),txtNotes.getText());
+        QualityCheckDto qualityCheckDto = new QualityCheckDto(lblId.getText(),comCollectionId.getValue(),txtAppearance.getText(),fatContent,temperature,txtDate.getText(),txtNotes.getText());
 
         try {
             QualityCheckModel qualityCheckModel = new QualityCheckModel();
@@ -142,15 +142,20 @@ public class QualityCheckController implements Initializable {
             new Alert(Alert.AlertType.ERROR, "Quality Check Not Saved").show();
         }
     }
-    private void clearFields() {
+    private void clearFields() throws SQLException {
         loadTable();
         lblId.setText("");
-        comCollectionId.setValue(Integer.valueOf(""));
+        comCollectionId.setValue("");
         txtAppearance.setText("");
         txtFatContent.setText("");
         txtTemperature.setText("");
         txtDate.setText("");
         txtNotes.setText("");
+
+        loadNextId();
+        Platform.runLater(()-> {
+            lblId.setText(lblId.getText());
+        });
     }
     private void loadTable() {
         colCheckId.setCellValueFactory(new PropertyValueFactory<>("checkId"));
@@ -177,11 +182,9 @@ public class QualityCheckController implements Initializable {
 
     @FXML
     public void btnUpdateOnAction(ActionEvent event) {
-        int checkId = Integer.parseInt(lblId.getText());
-        int collectionId = Integer.parseInt(String.valueOf(comCollectionId.getValue()));
         double fatContent = Double.parseDouble(txtFatContent.getText());
         double temperature = Double.parseDouble(txtTemperature.getText());
-        QualityCheckDto qualityCheckDto = new QualityCheckDto(checkId,collectionId,txtAppearance.getText(),fatContent,temperature,txtDate.getText(),txtNotes.getText());
+        QualityCheckDto qualityCheckDto = new QualityCheckDto(lblId.getText(),comCollectionId.getValue(),txtAppearance.getText(),fatContent,temperature,txtDate.getText(),txtNotes.getText());
         try {
             boolean isSave = QualityCheckModel.updateQualityCheck(qualityCheckDto);
             if (isSave) {
@@ -200,7 +203,7 @@ public class QualityCheckController implements Initializable {
     public void tableOnClick(MouseEvent mouseEvent) {
         QualityCheckDto qualityCheckDto = (QualityCheckDto) tblQualityCheck.getSelectionModel().getSelectedItem();
         if (qualityCheckDto != null) {
-            lblId.setText(String.valueOf(qualityCheckDto.getCheckId()));
+            lblId.setText(qualityCheckDto.getCheckId());
             comCollectionId.setValue(qualityCheckDto.getCollectionId());
             txtAppearance.setText(qualityCheckDto.getAppearance());
             txtFatContent.setText(String.valueOf(qualityCheckDto.getFatContent()));
@@ -237,7 +240,7 @@ public class QualityCheckController implements Initializable {
     }
 
     public void comCollectionIdOnAction(ActionEvent actionEvent) {
-        Integer selectedCollectionId = (Integer) comCollectionId.getSelectionModel().getSelectedItem();
+        String selectedCollectionId = (String) comCollectionId.getSelectionModel().getSelectedItem();
         System.out.println(selectedCollectionId);
     }
 }
