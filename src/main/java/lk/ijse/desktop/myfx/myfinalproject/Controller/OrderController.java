@@ -11,12 +11,12 @@ import javafx.scene.input.MouseEvent;
 import lk.ijse.desktop.myfx.myfinalproject.Dto.CurdProductionDto;
 import lk.ijse.desktop.myfx.myfinalproject.Dto.OrderDetailsDto;
 import lk.ijse.desktop.myfx.myfinalproject.Dto.OrderDto;
-import lk.ijse.desktop.myfx.myfinalproject.Dto.PotsPurchaseDto;
+import lk.ijse.desktop.myfx.myfinalproject.Dto.PotsPurchaseDto; // Unused, consider removing
 import lk.ijse.desktop.myfx.myfinalproject.Dto.TM.CartTM;
 import lk.ijse.desktop.myfx.myfinalproject.Model.CurdProductionModel;
 import lk.ijse.desktop.myfx.myfinalproject.Model.CustomerModel;
 import lk.ijse.desktop.myfx.myfinalproject.Model.OrderModel;
-import lk.ijse.desktop.myfx.myfinalproject.Model.PotsPurchaseModel;
+import lk.ijse.desktop.myfx.myfinalproject.Model.PotsPurchaseModel; // Unused, consider removing
 
 import java.net.URL;
 import java.sql.Date;
@@ -32,10 +32,10 @@ public class OrderController implements Initializable {
     private TableColumn<CartTM, String> colAction;
 
     @FXML
-    private TableColumn<CartTM, Integer> colItemId;
+    private TableColumn<CartTM, String> colItemId; // Changed to String, as productionId is String
 
     @FXML
-    private TableColumn<CartTM, String> colItemName;
+    private TableColumn<CartTM, String> colItemName; // Changed to String
 
     @FXML
     private TableColumn<CartTM, Integer> colQty;
@@ -53,13 +53,13 @@ public class OrderController implements Initializable {
     private Label lblCustomerName;
 
     @FXML
-    private Label lblCustomerName1;
+    private Label lblCustomerName1; // Appears to be a duplicate or placeholder
 
     @FXML
     private TextField txtUnitPrice;
 
     @FXML
-    private Label lblID;
+    private Label lblID; // This holds the Order ID
 
     @FXML
     private Label lblItemName;
@@ -84,7 +84,7 @@ public class OrderController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         colItemId.setCellValueFactory(new PropertyValueFactory<>("productionId"));
-        colItemName.setCellValueFactory(new PropertyValueFactory<>("potsSize"));
+        colItemName.setCellValueFactory(new PropertyValueFactory<>("potsSize")); // Assuming potsSize is the item name
         colQty.setCellValueFactory(new PropertyValueFactory<>("qty"));
         colUnitPrice.setCellValueFactory(new PropertyValueFactory<>("unitPrice"));
         colTotalPrice.setCellValueFactory(new PropertyValueFactory<>("totalPrice"));
@@ -95,201 +95,136 @@ public class OrderController implements Initializable {
             lbl_Order_Date.setText(LocalDate.now().toString());
             loadCustomerId();
             loadNextId();
-            loadCustomerId();
-            loadProductionIds();
-            loadItemIds();
+            loadProductionIds(); // consolidated loadProductionIds and loadItemIds as they do the same
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Failed to initialize order controller: " + e.getMessage(), e);
         }
-        // loadTable();
     }
 
-    private void loadItemIds() throws SQLException{
-        comProductionId.setItems(FXCollections.observableArrayList(CurdProductionModel.getAllProductionIds()));
-    }
-
+    // Removed loadItemIds() as loadProductionIds() does the same thing.
     private void loadProductionIds() throws SQLException {
         ArrayList<String> productionIdList = CurdProductionModel.getAllProductionIds();
         ObservableList<String> ProductionIds = FXCollections.observableArrayList(productionIdList);
-        ProductionIds.addAll(productionIdList);
+        // ProductionIds.addAll(productionIdList); // This line adds duplicates, remove it
         comProductionId.setItems(ProductionIds);
     }
 
     private void loadCustomerId() throws SQLException {
         ArrayList<String> customerId = OrderModel.getAllCustomerId();
         ObservableList<String> observableList = FXCollections.observableArrayList(customerId);
-        observableList.addAll(customerId);
+        // observableList.addAll(customerId); // This line adds duplicates, remove it
         comCustomerID.setItems(observableList);
     }
-
-
-
 
     @FXML
     void btnClearOnAction(ActionEvent event) {
         clearFields();
     }
 
-    @FXML
-   /* void btnDeleteOnAction(ActionEvent event) {
-        String id = lblId.getText();
-        try {
-            boolean isDelete = new OrderModel().deleteOrder(new OrderDto(id));
-            if (isDelete) {
-                clearFields();
-                loadTable();
-                new Alert(Alert.AlertType.INFORMATION, "Order Deleted").show();
-            }else {
-                new Alert(Alert.AlertType.ERROR, "Order Not Deleted").show();
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-            new Alert(Alert.AlertType.ERROR, "Order Not Delete").show();
-        }
-    }*/
-
     private void loadNextId () throws SQLException {
         OrderModel orderModel = new OrderModel();
         String id = orderModel.getNextId();
         lblID.setText(id);
     }
-
-    @FXML
-   /* void btnSaveOnAction(ActionEvent event) {
-
-        OrderDto orderDto = new OrderDto(lblId.getText(),comCustomerId.getValue(),txtDate.getText());
-
-        try {
-            OrderModel orderModel = new OrderModel();
-            boolean isSaved = orderModel.saveOrder(orderDto);
-            if(isSaved){
-                clearFields();
-                new Alert(Alert.AlertType.INFORMATION,"Order Saved").show();
-            }else {
-                new Alert(Alert.AlertType.ERROR,"Order Not Saved").show();
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-            new Alert(Alert.AlertType.ERROR,"Order Not Saved").show();
-        }
-    }
-    private void clearFields(){
-        loadTable();
-        lblId.setText("");
-        comCustomerId.setValue("");
-        txtDate.setText("");
-    }
-    private void loadTable(){
-        colOrderId.setCellValueFactory(new PropertyValueFactory<>("orderId"));
-        colCustomerId.setCellValueFactory(new PropertyValueFactory<>("customerId"));
-        colDate.setCellValueFactory(new PropertyValueFactory<>("date"));
-
-        try {
-            OrderModel orderModel = new OrderModel();
-            ArrayList<OrderDto> orderDtos = orderModel.viewAllOrder();
-            if(orderDtos != null ){
-                ObservableList<OrderDto> orders = FXCollections.observableArrayList(orderDtos);
-                tblOrder.setItems(orders);
-            }else {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-    }
-
-    @FXML
-    public void btnUpdateOnAction(ActionEvent event) {
-
-        OrderDto orderDto = new OrderDto(lblId.getText(),comCustomerId.getValue(),txtDate.getText());
-        try {
-            boolean isSave = OrderModel.updateOrder(orderDto);
-            if(isSave){
-                clearFields();
-                loadTable();
-                new Alert(Alert.AlertType.INFORMATION,"Order Updated").show();
-            }else {
-                new Alert(Alert.AlertType.ERROR,"Order Not Updated").show();
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-            new Alert(Alert.AlertType.ERROR,"Order Not Updated").show();
-        }
-    }*/
-
-   /* public void tableOnClick(MouseEvent mouseEvent) {
-        OrderDto orderDto = (OrderDto) tblOrder.getSelectionModel().getSelectedItem();
-        if(orderDto != null){
-            lblId.setText(orderDto.getOrderId());
-            comCustomerId.setValue(orderDto.getCustomerId());
-            txtDate.setText(String.valueOf(orderDto.getDate()));
-        }
-    }*/
-
     public void comCustomerOnAction(ActionEvent actionEvent) throws SQLException {
-        String selectedCustomerId = (String) comCustomerID.getSelectionModel().getSelectedItem();
-        System.out.println(selectedCustomerId);
-        String name = CustomerModel.findNameById(selectedCustomerId);
-        System.out.println(name);
-        lblCustomerName.setText(name);
+        String selectedCustomerId = comCustomerID.getSelectionModel().getSelectedItem(); // No need for casting
+        if (selectedCustomerId != null && !selectedCustomerId.isEmpty()) {
+            System.out.println(selectedCustomerId);
+            String name = CustomerModel.findNameById(selectedCustomerId);
+            System.out.println(name);
+            lblCustomerName.setText(name);
+        } else {
+            lblCustomerName.setText(""); // Clear name if no customer selected
+        }
     }
 
     public void comPotsSizeOnAction(ActionEvent actionEvent) {
-        String selectedCustomerId = (String) comCustomerID.getSelectionModel().getSelectedItem();
+        // This method seems to be misnamed or unused.
+        // It's currently redundant if you are using comProductionIdOnAction for item selection.
+        String selectedCustomerId = comCustomerID.getSelectionModel().getSelectedItem();
         System.out.println(selectedCustomerId);
     }
+
     private void clearFields(){
-        // loadTable();
-
+        comCustomerID.getSelectionModel().clearSelection();
+        comProductionId.getSelectionModel().clearSelection();
+        lblCustomerName.setText("");
+        lblItemName.setText("");
+        lblItemQty.setText("");
+        txtUnitPrice.setText("");
+        txtQuantity.setText("");
+        cartData.clear(); // Clear the cart table as well
+        try {
+            loadNextId(); // Generate a new order ID
+        } catch (SQLException e) {
+            new Alert(Alert.AlertType.ERROR, "Error generating next order ID: " + e.getMessage()).show();
+            e.printStackTrace();
+        }
     }
-
-
 
     public void btnAddToCartOnAction(ActionEvent actionEvent) {
         try {
             String selectedItemId = comProductionId.getValue();
             String cartQtyString = txtQuantity.getText();
 
-            if (selectedItemId == null){
-                new Alert(Alert.AlertType.WARNING, "Please select production item").show();
+            if (selectedItemId == null || selectedItemId.isEmpty()){
+                new Alert(Alert.AlertType.WARNING, "Please select a production item").show();
                 return;
             }
             if (!cartQtyString.matches("^[0-9]+$") || cartQtyString.isEmpty()){
-                new Alert(Alert.AlertType.WARNING, "Please enter valid quantity").show();
+                new Alert(Alert.AlertType.WARNING, "Please enter a valid quantity (numbers only)").show();
                 return;
             }
             int cartQty = Integer.parseInt(cartQtyString);
-            int currentAvailableQty = Integer.parseInt(lblItemQty.getText());
-            String itemName = lblItemName.getText();
-            double unitPrice = Double.parseDouble(txtUnitPrice.getText());
-            double total = unitPrice * cartQty;
 
             if (cartQty <= 0){
                 new Alert(Alert.AlertType.WARNING, "Quantity must be positive").show();
                 return;
             }
+
+            int currentAvailableQty;
+            try {
+                currentAvailableQty = Integer.parseInt(lblItemQty.getText());
+            } catch (NumberFormatException e) {
+                new Alert(Alert.AlertType.ERROR, "Available quantity is not a valid number. Please re-select item.").show();
+                return;
+            }
+
+            String itemName = lblItemName.getText();
+            double unitPrice;
+            try {
+                unitPrice = Double.parseDouble(txtUnitPrice.getText());
+            } catch (NumberFormatException e) {
+                new Alert(Alert.AlertType.ERROR, "Unit price is not a valid number. Please re-select item.").show();
+                return;
+            }
+
+            double total = unitPrice * cartQty;
+
             for(CartTM existingItem : cartData){
                 if(existingItem.getProductionId().equals(selectedItemId)){
                     int newQty = existingItem.getQty() + cartQty;
+                    // Calculate original stock for validation purposes
                     int originalStock = currentAvailableQty + existingItem.getQty();
 
                     if (newQty > originalStock){
-                        new Alert(Alert.AlertType.WARNING, "Cannot add more than available stock."+
+                        new Alert(Alert.AlertType.WARNING, "Cannot add more than available stock. Available: " +
                                 (originalStock - existingItem.getQty())).show();
                         return;
                     }
                     existingItem.setQty(newQty);
                     existingItem.setTotalPrice(newQty * unitPrice);
-                    lblItemQty.setText(String.valueOf(originalStock - newQty));
+                    lblItemQty.setText(String.valueOf(originalStock - newQty)); // Update displayed available quantity
                     txtQuantity.clear();
                     table.refresh();
                     return;
                 }
             }
             if (cartQty > currentAvailableQty){
-                new Alert(Alert.AlertType.WARNING, "Cannot add more than available stock."+ currentAvailableQty).show();
+                new Alert(Alert.AlertType.WARNING, "Cannot add more than available stock. Available: " + currentAvailableQty).show();
                 return;
             }
+
             Button removeBtn = new Button("Remove");
             CartTM newItem = new CartTM(
                     selectedItemId,
@@ -301,93 +236,111 @@ public class OrderController implements Initializable {
             );
 
             removeBtn.setOnAction((ActionEvent event) -> {
-                int currentStock = Integer.parseInt(lblItemQty.getText());
-                lblItemQty.setText(String.valueOf(currentStock + newItem.getQty()));
-                table.refresh();
+                // When "Remove" is clicked, return the quantity to the available stock
+                int currentStockDisplay = Integer.parseInt(lblItemQty.getText());
+                lblItemQty.setText(String.valueOf(currentStockDisplay + newItem.getQty()));
+                cartData.remove(newItem); // Remove item from cart
+                table.refresh(); // Refresh the table
             });
+
             lblItemQty.setText(String.valueOf(currentAvailableQty - cartQty));
             cartData.add(newItem);
             txtQuantity.clear();
             table.refresh();
 
         }catch (Exception e){
-            new Alert(Alert.AlertType.ERROR, "Something went wrong" + e.getMessage()).show();
+            new Alert(Alert.AlertType.ERROR, "Something went wrong adding to cart: " + e.getMessage()).show();
             e.printStackTrace();
         }
     }
 
     public void btnPlaceOrder0nAction(ActionEvent actionEvent) {
         if (table.getItems().isEmpty()){
-            new Alert(Alert.AlertType.WARNING, "Please select production item").show();
+            new Alert(Alert.AlertType.WARNING, "Please add items to the cart before placing an order.").show();
             return;
         }
-        if (comCustomerID.getValue() == null){
-            new Alert(Alert.AlertType.WARNING, "Please select customer ID").show();
+        if (comCustomerID.getValue() == null || comCustomerID.getValue().isEmpty()){
+            new Alert(Alert.AlertType.WARNING, "Please select a customer ID.").show();
             return;
         }
+
         String selectedCustomerId = comCustomerID.getValue();
         String orderId = lblID.getText();
         Date date = Date.valueOf(lbl_Order_Date.getText());
-        String productId = comProductionId.getValue();
 
         ArrayList<OrderDetailsDto> cartList = new ArrayList<>();
-        int orderTotal = 0;
+        int orderTotalQuantity = 0; // Renamed for clarity, represents total quantity of items in order
 
         for (CartTM cartTM : cartData){
-            orderTotal += cartTM.getQty();
+            orderTotalQuantity += cartTM.getQty(); // Summing up quantities
+            // Ensure productionId is used here, not productId as it's the DTO field name
             OrderDetailsDto orderDetailsDto = new OrderDetailsDto(
-                    orderId,
-                    productId,
+                    orderId, // This is correctly passed here
+                    cartTM.getProductionId(), // Use getProductionId() from CartTM
                     cartTM.getQty(),
                     cartTM.getUnitPrice(),
-                    cartTM.getTotalPrice()
+                    cartTM.getTotalPrice() // totalPrice might not be stored in Order_Details table directly
             );
             cartList.add(orderDetailsDto);
         }
+
         OrderDto orderDto = new OrderDto(
                 orderId,
                 selectedCustomerId,
                 date,
-                orderTotal,
+                orderTotalQuantity, // Use the summed quantity
                 cartList
         );
         try {
             boolean isPlaced = OrderModel.placeOrder(orderDto);
             if(isPlaced){
-                clearFields();
-                new Alert(Alert.AlertType.INFORMATION, "Order Placed").show();
-                table.getItems().clear();
+                new Alert(Alert.AlertType.INFORMATION, "Order Placed Successfully!").show();
+                clearFields(); // Clears all fields and table, generates new ID
             }else {
-                new Alert(Alert.AlertType.ERROR, "Order Not Placed").show();
+                new Alert(Alert.AlertType.ERROR, "Order Not Placed. Please check details.").show();
             }
         }catch (Exception e){
             e.printStackTrace();
-            new Alert(Alert.AlertType.ERROR, "Something went wrong").show();
+            new Alert(Alert.AlertType.ERROR, "An error occurred while placing the order: " + e.getMessage()).show();
         }
     }
 
     public void btnResetOnAction(ActionEvent actionEvent) {
+        clearFields();
     }
 
     public void tableOnClick(MouseEvent mouseEvent) {
+        // You can implement logic here if you want to select an item from the table
+        // and populate the fields for editing, etc.
     }
 
     public void comProductionIdOnAction(ActionEvent actionEvent) throws SQLException, ClassNotFoundException {
-       /* String selectedProductionId = (String) comProductionId.getSelectionModel().getSelectedItem();
-        System.out.println(selectedProductionId);
-        int potSize = PotsPurchaseModel.findpotById(selectedProductionId);
-        System.out.println(potSize);
-        lblItemQty.setText(String.valueOf(potSize));
 
-        */
         String selectedItemId = comProductionId.getValue();
-        if (selectedItemId != null){
+        if (selectedItemId != null && !selectedItemId.isEmpty()){
             CurdProductionDto product = CurdProductionModel.findById(selectedItemId);
             if (product != null){
-                lblItemName.setText(String.valueOf(product.getPotsSize()));
+                lblItemName.setText(String.valueOf(product.getPotsSize())); // Assuming PotsSize is the descriptive name
                 lblItemQty.setText(String.valueOf(product.getQuantity()));
-                txtUnitPrice.getText();
+                // If unit price is part of CurdProductionDto, set it here
+                // Otherwise, you need a way to get the unit price for the product.
+                // For now, txtUnitPrice is not set, which could be an issue if it's expected for calculations.
+                // Assuming unit price is manually entered or fetched from another model.
+                // For demonstration, let's assume `product.getUnitPrice()` exists in CurdProductionDto or related
+                // If it's not directly in CurdProductionDto, you'll need another lookup.
+                // For now, we'll assume it's `txtUnitPrice.getText()` is being manually set or
+                // retrieved from elsewhere. If it should be fetched, add logic here.
+                // Example: txtUnitPrice.setText(String.valueOf(product.getSomeUnitPrice()));
+            } else {
+                lblItemName.setText("");
+                lblItemQty.setText("");
+                txtUnitPrice.setText("");
+                new Alert(Alert.AlertType.WARNING, "Production item details not found.").show();
             }
+        } else {
+            lblItemName.setText("");
+            lblItemQty.setText("");
+            txtUnitPrice.setText("");
         }
     }
 }

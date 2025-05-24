@@ -82,7 +82,7 @@ public class CurdProductionModel {
     public static boolean reduceQty(OrderDetailsDto orderDetailsDto) throws SQLException{
         return CrudUtil.execute(
                 "update Curd_Production set Quantity = Quantity -? where Production_ID = ?",
-                orderDetailsDto.getUnitPrice(),
+                orderDetailsDto.getQuantity(),
                 orderDetailsDto.getProductionId()
         );
     }
