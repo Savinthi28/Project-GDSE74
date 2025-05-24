@@ -1,8 +1,11 @@
 package lk.ijse.desktop.myfx.myfinalproject.Model;
 
+import lk.ijse.desktop.myfx.myfinalproject.DBConnection.DBConnection;
+import lk.ijse.desktop.myfx.myfinalproject.Dto.OrderDetailsDto;
 import lk.ijse.desktop.myfx.myfinalproject.Dto.OrderDto;
 import lk.ijse.desktop.myfx.myfinalproject.Util.CrudUtil;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -27,6 +30,36 @@ public class OrderModel {
         }
         return customerIds;
     }
+
+    public static boolean placeOrder(OrderDto orderDto) throws SQLException {
+        Connection connection = DBConnection.getInstance().getConnection();
+        try {
+            connection.setAutoCommit(false);
+            boolean isSave = CrudUtil.execute(
+                    "INSERT INTO Orders (Order_ID, Customer_ID, Order_Date) VALUES (?,?,?)",
+                    orderDto.getOrderId(),
+                    orderDto.getCustomerId(),
+                    orderDto.getDate()
+            );
+            if (isSave) {
+                boolean isDetailsSave = new OrderDetailsModel().saveOrderDetailsList(orderDto.getCartList());
+                if (isDetailsSave) {
+                    connection.commit();
+                    return true;
+                }
+            }
+            connection.rollback();
+            return false;
+        }catch (Exception e){
+            connection.rollback();
+            e.printStackTrace();
+            return false;
+        }finally {
+            connection.setAutoCommit(true);
+        }
+    }
+
+
 
     public String getNextId() throws SQLException {
         ResultSet resultSet = CrudUtil.execute("select Order_ID from Orders order by Order_ID desc limit 1");

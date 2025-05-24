@@ -9,5 +9,5 @@ module lk.ijse.desktop.myfx.myfinalproject {
     opens lk.ijse.desktop.myfx.myfinalproject.Controller to javafx.fxml;
     exports lk.ijse.desktop.myfx.myfinalproject;
     opens lk.ijse.desktop.myfx.myfinalproject.Dto to javafx.base;
-
+    opens lk.ijse.desktop.myfx.myfinalproject.Dto.TM to javafx.base;
 }

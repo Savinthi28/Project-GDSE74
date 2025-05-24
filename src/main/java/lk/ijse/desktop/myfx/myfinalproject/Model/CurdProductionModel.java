@@ -1,6 +1,7 @@
 package lk.ijse.desktop.myfx.myfinalproject.Model;
 
 import lk.ijse.desktop.myfx.myfinalproject.Dto.CurdProductionDto;
+import lk.ijse.desktop.myfx.myfinalproject.Dto.OrderDetailsDto;
 import lk.ijse.desktop.myfx.myfinalproject.Util.CrudUtil;
 
 import java.sql.ResultSet;
@@ -60,6 +61,30 @@ public class CurdProductionModel {
             list.add(productionId);
         }
         return list;
+    }
+
+    public static CurdProductionDto findById(String selectedItemId) throws SQLException {
+        ResultSet rst = CrudUtil.execute("select * from Curd_Production where Production_ID = ?",selectedItemId);
+        if(rst.next()) {
+            return new CurdProductionDto(
+                    rst.getString(1),
+                    rst.getString(2),
+                    rst.getString(3),
+                    rst.getInt(4),
+                    rst.getInt(5),
+                    rst.getString(6),
+                    rst.getString(7)
+            );
+        }
+        return null;
+    }
+
+    public static boolean reduceQty(OrderDetailsDto orderDetailsDto) throws SQLException{
+        return CrudUtil.execute(
+                "update Curd_Production set Quantity = Quantity -? where Production_ID = ?",
+                orderDetailsDto.getUnitPrice(),
+                orderDetailsDto.getProductionId()
+        );
     }
 
     public String getNextId() throws SQLException {

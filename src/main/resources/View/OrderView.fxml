@@ -74,6 +74,19 @@
                      </font>
                   </Label>
                   <Label fx:id="lblCustomerName" text="Name" HBox.hgrow="ALWAYS" />
+                  <Label alignment="CENTER" minWidth="120.0" style="-fx-font-weight: bold;" text="Quantity">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="50.0" />
+                     </HBox.margin>
+                  </Label>
+                  <Label fx:id="lblItemQty" alignment="CENTER" minWidth="120.0" style="-fx-font-weight: bold;" text="0" textAlignment="CENTER">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
                </HBox>
 
                <HBox alignment="CENTER_LEFT" spacing="10.0">
@@ -88,7 +101,7 @@
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lblPotSize" text="Name" HBox.hgrow="ALWAYS" />
+                  <Label fx:id="lblItemName" text="Name" HBox.hgrow="ALWAYS" />
                </HBox>
 
                <HBox alignment="CENTER_LEFT" spacing="10.0">
@@ -118,7 +131,7 @@
                </Button>
             </HBox>
 
-            <TableView fx:id="tblOrder" onMouseClicked="#tableOnClick" prefHeight="300.0" style="-fx-background-radius: 5; -fx-border-radius: 5;" VBox.vgrow="ALWAYS">
+            <TableView fx:id="table" onMouseClicked="#tableOnClick" prefHeight="300.0" style="-fx-background-radius: 5; -fx-border-radius: 5;" VBox.vgrow="ALWAYS">
                <columns>
                   <TableColumn fx:id="colItemId" text="Production ID" />
                   <TableColumn fx:id="colItemName" text="Pot Size" />

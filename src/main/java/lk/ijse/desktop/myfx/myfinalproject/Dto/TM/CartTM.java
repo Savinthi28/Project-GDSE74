@@ -1,5 +1,6 @@
 package lk.ijse.desktop.myfx.myfinalproject.Dto.TM;
 
+import javafx.scene.control.Button;
 import lombok.*;
 
 @Getter
@@ -14,4 +15,5 @@ public class CartTM {
     private int qty;
     private double unitPrice;
     private double totalPrice;
+    private Button btnRemove;
 }

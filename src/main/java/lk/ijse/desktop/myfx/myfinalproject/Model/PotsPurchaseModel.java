@@ -30,6 +30,7 @@ public class PotsPurchaseModel {
         return potsSize;
     }
 
+
     public String getNextId() throws SQLException {
         ResultSet resultSet = CrudUtil.execute("select Purchase_ID from Pots_Purchase_ID order by Purchase_ID desc limit 1");
         String prefix = "PP";
