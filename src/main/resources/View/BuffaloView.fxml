@@ -56,7 +56,7 @@
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="txtMilkProduction" onKeyReleased="#txtMilkChange" style="-fx-background-radius: 3;" HBox.hgrow="ALWAYS" />
+                  <TextField fx:id="txtMilkProduction" onKeyReleased="#txtMilkChange" promptText="milkproduction" style="-fx-background-radius: 3;" HBox.hgrow="ALWAYS" />
                </HBox>
 
                <HBox alignment="CENTER_LEFT" spacing="10.0">
@@ -74,7 +74,7 @@
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="txtAge" onKeyReleased="#txtAgeChange" style="-fx-background-radius: 3;" HBox.hgrow="ALWAYS" />
+                  <TextField fx:id="txtAge" onKeyReleased="#txtAgeChange" promptText="age" style="-fx-background-radius: 3;" HBox.hgrow="ALWAYS" />
                </HBox>
 
                <HBox alignment="CENTER_LEFT" spacing="10.0">
@@ -83,7 +83,7 @@
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="txtHealth" onKeyReleased="#txtHealthChange" style="-fx-background-radius: 3;" HBox.hgrow="ALWAYS" />
+                  <TextField fx:id="txtHealth" onKeyReleased="#txtHealthChange" promptText="healthstatus" style="-fx-background-radius: 3;" HBox.hgrow="ALWAYS" />
                </HBox>
             </VBox>
 

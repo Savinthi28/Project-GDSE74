@@ -22,7 +22,7 @@
          <children>
             <HBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="760.0" style="-fx-background-color: #3a6b7a;">
                <children>
-                  <Button mnemonicParsing="false" onAction="#btnGoToCurdProduOnAction" style="-fx-background-color: s;" text="Curd Production" textFill="WHITE">
+                  <Button mnemonicParsing="false" onAction="#btnGoToCurdProduOnAction" style="-fx-background-color: s; -fx-background-radius: 10;" text="Curd Production" textFill="WHITE">
                      <font>
                         <Font name="System Bold" size="24.0" />
                      </font>
@@ -30,7 +30,7 @@
                         <Insets left="200.0" right="100.0" />
                      </HBox.margin>
                   </Button>
-                  <Button mnemonicParsing="false" onAction="#btnGoToStockOnAction" prefHeight="45.0" prefWidth="186.0" style="-fx-background-color: #68a197;" text="Stock" textFill="WHITE">
+                  <Button mnemonicParsing="false" onAction="#btnGoToStockOnAction" prefHeight="45.0" prefWidth="186.0" style="-fx-background-color: #68a197; -fx-background-radius: 10;" text="Stock" textFill="WHITE">
                      <font>
                         <Font name="System Bold Italic" size="24.0" />
                      </font>
@@ -70,7 +70,7 @@
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="txtDate" style="-fx-background-radius: 4; -fx-border-color: #e2e8f0; -fx-border-radius: 4; -fx-border-width: 1;" HBox.hgrow="ALWAYS" />
+                  <TextField fx:id="txtDate" promptText="yyyy-mm-dd" style="-fx-background-radius: 4; -fx-border-color: #e2e8f0; -fx-border-radius: 4; -fx-border-width: 1;" HBox.hgrow="ALWAYS" />
                </HBox>
 
                <HBox alignment="CENTER_LEFT" prefHeight="40.0" spacing="15">
@@ -79,7 +79,7 @@
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="txtQuantity" style="-fx-background-radius: 4; -fx-border-color: #e2e8f0; -fx-border-radius: 4; -fx-border-width: 1;" HBox.hgrow="ALWAYS" />
+                  <TextField fx:id="txtQuantity" promptText="000000000" style="-fx-background-radius: 4; -fx-border-color: #e2e8f0; -fx-border-radius: 4; -fx-border-width: 1;" HBox.hgrow="ALWAYS" />
                </HBox>
 
                <HBox alignment="CENTER_LEFT" prefHeight="40.0" spacing="15">
@@ -88,7 +88,7 @@
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="txtStockType" style="-fx-background-radius: 4; -fx-border-color: #e2e8f0; -fx-border-radius: 4; -fx-border-width: 1;" HBox.hgrow="ALWAYS" />
+                  <TextField fx:id="txtStockType" promptText="stocktype" style="-fx-background-radius: 4; -fx-border-color: #e2e8f0; -fx-border-radius: 4; -fx-border-width: 1;" HBox.hgrow="ALWAYS" />
                </HBox>
             </VBox>
 

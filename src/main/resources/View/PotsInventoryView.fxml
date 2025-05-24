@@ -22,7 +22,7 @@
          <children>
             <HBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="760.0" style="-fx-background-color: #3a6b7a;">
                <children>
-                  <Button mnemonicParsing="false" onAction="#btnGoToSupplierOnAction" style="-fx-background-color: s;" text="Supplier" textFill="WHITE">
+                  <Button mnemonicParsing="false" onAction="#btnGoToSupplierOnAction" style="-fx-background-color: s; -fx-background-radius: 10;" text="Supplier" textFill="WHITE">
                      <font>
                         <Font name="System Bold" size="24.0" />
                      </font>
@@ -30,7 +30,7 @@
                         <Insets left="60.0" right="20.0" />
                      </HBox.margin>
                   </Button>
-                  <Button mnemonicParsing="false" onAction="#btnGoToPotsInventoryOnAction" style="-fx-background-color: #68a197;" text="Pots Inventory" textFill="WHITE">
+                  <Button mnemonicParsing="false" onAction="#btnGoToPotsInventoryOnAction" style="-fx-background-color: #68a197; -fx-background-radius: 10;" text="Pots Inventory" textFill="WHITE">
                      <font>
                         <Font name="System Bold Italic" size="24.0" />
                      </font>
@@ -38,7 +38,7 @@
                         <Insets right="20.0" />
                      </HBox.margin>
                   </Button>
-                  <Button mnemonicParsing="false" onAction="#btnGoToPotsPurchaseOnAction" style="-fx-background-color: s;" text="Pots Purchase" textFill="WHITE">
+                  <Button mnemonicParsing="false" onAction="#btnGoToPotsPurchaseOnAction" style="-fx-background-color: s; -fx-background-radius: 10;" text="Pots Purchase" textFill="WHITE">
                      <font>
                         <Font name="System Bold" size="24.0" />
                      </font>
@@ -46,7 +46,7 @@
                         <Insets right="20.0" />
                      </HBox.margin>
                   </Button>
-                  <Button mnemonicParsing="false" onAction="#btnGoToRawMaterialOnAction" style="-fx-background-color: s;" text="Raw Material Purchase" textFill="WHITE">
+                  <Button mnemonicParsing="false" onAction="#btnGoToRawMaterialOnAction" style="-fx-background-color: s; -fx-background-radius: 10;" text="Raw Material Purchase" textFill="WHITE">
                      <font>
                         <Font name="System Bold Italic" size="24.0" />
                      </font>
@@ -74,7 +74,7 @@
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="txtQuantity" style="-fx-background-radius: 3; -fx-border-color: #bdc3c7; -fx-border-radius: 3;" HBox.hgrow="ALWAYS" />
+                  <TextField fx:id="txtQuantity" promptText="0000000" style="-fx-background-radius: 3; -fx-border-color: #bdc3c7; -fx-border-radius: 3;" HBox.hgrow="ALWAYS" />
                </HBox>
 
                <HBox alignment="CENTER_LEFT" prefHeight="40.0" spacing="15">
@@ -92,7 +92,7 @@
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="txtCondition" style="-fx-background-radius: 3; -fx-border-color: #bdc3c7; -fx-border-radius: 3;" HBox.hgrow="ALWAYS" />
+                  <TextField fx:id="txtCondition" promptText="condition" style="-fx-background-radius: 3; -fx-border-color: #bdc3c7; -fx-border-radius: 3;" HBox.hgrow="ALWAYS" />
                </HBox>
             </VBox>
 

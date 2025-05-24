@@ -8,6 +8,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.layout.AnchorPane;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -97,5 +98,10 @@ public class DashboardController implements Initializable {
 
     public void btnGoDashboardOnAction(ActionEvent actionEvent) {
         navigateTo("/View/DashboardOverView.fxml");
+    }
+
+    public void btnGoLogoutOnAction(ActionEvent actionEvent) throws IOException {
+        ancMainContainer.getChildren().clear();
+        AnchorPane anchorPane = FXMLLoader.load(getClass().getResource("/View/LoginView.fxml"));
     }
 }

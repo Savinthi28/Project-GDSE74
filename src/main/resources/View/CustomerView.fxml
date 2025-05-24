@@ -55,7 +55,7 @@
                         <Font name="System Bold Italic" size="18.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="txtName" onKeyReleased="#txtNameChange" style="-fx-background-radius: 3;" HBox.hgrow="ALWAYS" />
+                  <TextField fx:id="txtName" onKeyReleased="#txtNameChange" promptText="name" style="-fx-background-radius: 3;" HBox.hgrow="ALWAYS" />
                </HBox>
 
                <HBox alignment="CENTER_LEFT" spacing="10.0">
@@ -64,7 +64,7 @@
                         <Font name="System Bold" size="18.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="txtAddress" style="-fx-background-radius: 3;" HBox.hgrow="ALWAYS" />
+                  <TextField fx:id="txtAddress" promptText="address" style="-fx-background-radius: 3;" HBox.hgrow="ALWAYS" />
                </HBox>
 
                <HBox alignment="CENTER_LEFT" spacing="10.0">
@@ -73,7 +73,7 @@
                         <Font name="System Bold Italic" size="18.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="txtNumber" onKeyReleased="#txtNumberChange" style="-fx-background-radius: 3;" HBox.hgrow="ALWAYS" />
+                  <TextField fx:id="txtNumber" onKeyReleased="#txtNumberChange" promptText="0777777777" style="-fx-background-radius: 3;" HBox.hgrow="ALWAYS" />
                </HBox>
             </VBox>
 

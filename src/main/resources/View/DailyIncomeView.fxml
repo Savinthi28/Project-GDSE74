@@ -22,7 +22,7 @@
          <children>
             <HBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="760.0" style="-fx-background-color: #2a5058;">
                <children>
-                  <Button mnemonicParsing="false" onAction="#btnGoToIncomeOnAction" style="-fx-background-color: #68a197;" text="Daily Income" textFill="WHITE">
+                  <Button mnemonicParsing="false" onAction="#btnGoToIncomeOnAction" style="-fx-background-color: #68a197; -fx-background-radius: 10;" text="Daily Income" textFill="WHITE">
                      <font>
                         <Font name="System Bold" size="24.0" />
                      </font>
@@ -30,7 +30,7 @@
                         <Insets left="200.0" right="100.0" />
                      </HBox.margin>
                   </Button>
-                  <Button mnemonicParsing="false" onAction="#btnGoToExpenseOnAction" style="-fx-background-color: s;" text="Daily Expense" textFill="WHITE">
+                  <Button mnemonicParsing="false" onAction="#btnGoToExpenseOnAction" style="-fx-background-color: s; -fx-background-radius: 10;" text="Daily Expense" textFill="WHITE">
                      <font>
                         <Font name="System Bold Italic" size="24.0" />
                      </font>
@@ -62,7 +62,7 @@
                               <Font name="System Bold Italic" size="18.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="txtName" style="-fx-background-radius: 3;" HBox.hgrow="ALWAYS" />
+                        <TextField fx:id="txtName" promptText="name" style="-fx-background-radius: 3;" HBox.hgrow="ALWAYS" />
                      </children>
                   </HBox>
 
@@ -73,7 +73,7 @@
                               <Font name="System Bold" size="18.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="txtDate" style="-fx-background-radius: 3;" HBox.hgrow="ALWAYS" />
+                        <TextField fx:id="txtDate" promptText="yyyy-mm-dd" style="-fx-background-radius: 3;" HBox.hgrow="ALWAYS" />
                      </children>
                   </HBox>
 
@@ -95,7 +95,7 @@
                               <Font name="System Bold" size="18.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="txtAmount" style="-fx-background-radius: 3;" HBox.hgrow="ALWAYS" />
+                        <TextField fx:id="txtAmount" promptText="000000000.00" style="-fx-background-radius: 3;" HBox.hgrow="ALWAYS" />
                      </children>
                   </HBox>
                </children>

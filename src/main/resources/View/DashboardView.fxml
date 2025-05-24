@@ -19,13 +19,10 @@
                <VBox.margin>
                   <Insets left="25.0" />
                </VBox.margin>
-               <padding>
-                  <Insets bottom="20.0" />
-               </padding>
                 </Label>
             <Line endX="118.50738525390625" endY="2.384185791015625E-6" fill="#0a0101" startX="-100.0" strokeLineCap="ROUND" strokeWidth="3.0">
                <VBox.margin>
-                  <Insets bottom="30.0" top="10.0" />
+                  <Insets bottom="10.0" />
                </VBox.margin>
             </Line>
                 <VBox alignment="CENTER" prefHeight="793.0" prefWidth="224.0" spacing="25.0" style="-fx-background-color: #b0b0b0;">
@@ -81,6 +78,11 @@
                      </font>
                   </Button>
                   <Button mnemonicParsing="false" onAction="#btnGoReportOnAction" prefHeight="35.0" prefWidth="165.0" style="-fx-background-color: #d1d1d1; -fx-background-radius: 20;" text="Reports">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                  </Button>
+                  <Button mnemonicParsing="false" onAction="#btnGoLogoutOnAction" prefHeight="35.0" prefWidth="165.0" style="-fx-background-color: black; -fx-background-radius: 20;" text="Logout" textFill="WHITE">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>

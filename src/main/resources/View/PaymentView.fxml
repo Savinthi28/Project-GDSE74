@@ -71,7 +71,7 @@
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="txtDate" style="-fx-background-radius: 3;" HBox.hgrow="ALWAYS" />
+                  <TextField fx:id="txtDate" promptText="yyyy-mm-dd" style="-fx-background-radius: 3;" HBox.hgrow="ALWAYS" />
                </HBox>
 
                <HBox alignment="CENTER_LEFT" prefHeight="40.0" spacing="10">
@@ -89,7 +89,7 @@
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="txtAmount" style="-fx-background-radius: 3;" HBox.hgrow="ALWAYS" />
+                  <TextField fx:id="txtAmount" promptText="00000000000.00" style="-fx-background-radius: 3;" HBox.hgrow="ALWAYS" />
                </HBox>
                <VBox.margin>
                   <Insets />

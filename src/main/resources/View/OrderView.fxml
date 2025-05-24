@@ -97,13 +97,13 @@
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="txtUnitPrice" style="-fx-background-radius: 3;" HBox.hgrow="ALWAYS" />
+                  <TextField fx:id="txtUnitPrice" promptText="00000000.00" style="-fx-background-radius: 3;" HBox.hgrow="ALWAYS" />
                   <Label alignment="CENTER" minWidth="120.0" style="-fx-font-weight: bold;" text="Quantity">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="txtQuantity" style="-fx-background-radius: 3;" HBox.hgrow="ALWAYS" />
+                  <TextField fx:id="txtQuantity" promptText="0000000000" style="-fx-background-radius: 3;" HBox.hgrow="ALWAYS" />
                </HBox>
             </VBox>
 

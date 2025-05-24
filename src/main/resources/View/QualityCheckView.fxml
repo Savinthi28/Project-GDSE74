@@ -22,7 +22,7 @@
          <children>
             <HBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="760.0" style="-fx-background-color: #4a6b7a;">
                <children>
-                  <Button mnemonicParsing="false" onAction="#btnGoToMilkCollectionOnAction" style="-fx-background-color: s;" text="Milk Collection" textFill="WHITE">
+                  <Button mnemonicParsing="false" onAction="#btnGoToMilkCollectionOnAction" style="-fx-background-color: s; -fx-background-radius: 10;" text="Milk Collection" textFill="WHITE">
                      <font>
                         <Font name="System Bold" size="24.0" />
                      </font>
@@ -30,7 +30,7 @@
                         <Insets left="100.0" right="100.0" />
                      </HBox.margin>
                   </Button>
-                  <Button mnemonicParsing="false" onAction="#btnGoToMilkStorageOnAction" style="-fx-background-color: s;" text="Milk Storage" textFill="WHITE">
+                  <Button mnemonicParsing="false" onAction="#btnGoToMilkStorageOnAction" style="-fx-background-color: s; -fx-background-radius: 10;" text="Milk Storage" textFill="WHITE">
                      <font>
                         <Font name="System Bold" size="24.0" />
                      </font>
@@ -38,7 +38,7 @@
                         <Insets right="100.0" />
                      </HBox.margin>
                   </Button>
-                  <Button mnemonicParsing="false" onAction="#btnGoToQualityCheckOnAction" style="-fx-background-color: #68a197;" text="Quality Check" textFill="WHITE">
+                  <Button mnemonicParsing="false" onAction="#btnGoToQualityCheckOnAction" style="-fx-background-color: #68a197; -fx-background-radius: 10;" text="Quality Check" textFill="WHITE">
                      <font>
                         <Font name="System Bold" size="24.0" />
                      </font>
@@ -90,7 +90,7 @@
                         <Font name="System Bold Italic" size="18.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="txtAppearance" style="-fx-background-radius: 4; -fx-border-color: #e2e8f0; -fx-border-radius: 4; -fx-border-width: 1;" HBox.hgrow="ALWAYS" />
+                  <TextField fx:id="txtAppearance" promptText="appearance" style="-fx-background-radius: 4; -fx-border-color: #e2e8f0; -fx-border-radius: 4; -fx-border-width: 1;" HBox.hgrow="ALWAYS" />
                </HBox>
 
                <HBox alignment="CENTER_LEFT" prefHeight="40.0" spacing="15">
@@ -99,7 +99,7 @@
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="txtFatContent" style="-fx-background-radius: 4; -fx-border-color: #e2e8f0; -fx-border-radius: 4; -fx-border-width: 1;" HBox.hgrow="ALWAYS" />
+                  <TextField fx:id="txtFatContent" promptText="00000" style="-fx-background-radius: 4; -fx-border-color: #e2e8f0; -fx-border-radius: 4; -fx-border-width: 1;" HBox.hgrow="ALWAYS" />
                </HBox>
 
                <HBox alignment="CENTER_LEFT" prefHeight="40.0" spacing="15">
@@ -108,7 +108,7 @@
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="txtTemperature" style="-fx-background-radius: 4; -fx-border-color: #e2e8f0; -fx-border-radius: 4; -fx-border-width: 1;" HBox.hgrow="ALWAYS" />
+                  <TextField fx:id="txtTemperature" promptText="00000" style="-fx-background-radius: 4; -fx-border-color: #e2e8f0; -fx-border-radius: 4; -fx-border-width: 1;" HBox.hgrow="ALWAYS" />
                </HBox>
 
                <HBox alignment="CENTER_LEFT" prefHeight="40.0" spacing="15">
@@ -117,7 +117,7 @@
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="txtDate" style="-fx-background-radius: 4; -fx-border-color: #e2e8f0; -fx-border-radius: 4; -fx-border-width: 1;" HBox.hgrow="ALWAYS" />
+                  <TextField fx:id="txtDate" promptText="yyyy-mm-dd" style="-fx-background-radius: 4; -fx-border-color: #e2e8f0; -fx-border-radius: 4; -fx-border-width: 1;" HBox.hgrow="ALWAYS" />
                </HBox>
 
                <HBox alignment="CENTER_LEFT" prefHeight="40.0" spacing="15">
@@ -126,7 +126,7 @@
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="txtNotes" style="-fx-background-radius: 4; -fx-border-color: #e2e8f0; -fx-border-radius: 4; -fx-border-width: 1;" HBox.hgrow="ALWAYS" />
+                  <TextField fx:id="txtNotes" promptText="notes" style="-fx-background-radius: 4; -fx-border-color: #e2e8f0; -fx-border-radius: 4; -fx-border-width: 1;" HBox.hgrow="ALWAYS" />
                </HBox>
             </VBox>
 
