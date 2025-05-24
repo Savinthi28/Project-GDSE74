@@ -9,79 +9,89 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import lk.ijse.desktop.myfx.myfinalproject.Dto.OrderDto;
+import lk.ijse.desktop.myfx.myfinalproject.Model.CurdProductionModel;
+import lk.ijse.desktop.myfx.myfinalproject.Model.CustomerModel;
 import lk.ijse.desktop.myfx.myfinalproject.Model.OrderModel;
 
 import java.net.URL;
 import java.sql.SQLException;
-import java.sql.Time;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+
+
 public class OrderController implements Initializable {
+    @FXML
+    private TableColumn<?, ?> colAction;
+
+    @FXML
+    private TableColumn<?, ?> colItemId;
+
+    @FXML
+    private TableColumn<?, ?> colItemName;
+
+    @FXML
+    private TableColumn<?, ?> colQty;
+
+    @FXML
+    private TableColumn<?, ?> colTotalPrice;
+
+    @FXML
+    private TableColumn<?, ?> colUnitPrice;
+
+    @FXML
+    private ComboBox<String> comCustomerID;
+
+    @FXML
+    private Label lblCustomerName;
+
+    @FXML
+    private Label lblCustomerName1;
+
+    @FXML
+    private Label lblID;
+    @FXML
+    private Label lblPotSize;
+
+    @FXML
+    private Label lbl_Order_Date;
+
+    @FXML
+    private ComboBox<String> comProductionId;
+
+    @FXML
+    private TableView<?> tblOrder;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
+            lbl_Order_Date.setText(LocalDate.now().toString());
+            loadCustomerId();
             loadNextId();
             loadCustomerId();
-            loadPotsSize();
+            loadProductionIds();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        loadTable();
+        // loadTable();
     }
 
-    private void loadPotsSize() throws SQLException {
-        ArrayList<Integer> potsSize = OrderModel.getAllPotsSize();
-        ObservableList<Integer> observableList = FXCollections.observableArrayList(potsSize);
-        observableList.addAll(potsSize);
-        comPotsSize.setItems(observableList);
+    private void loadProductionIds() throws SQLException {
+        ArrayList<String> productionIdList = CurdProductionModel.getAllProductionIds();
+        ObservableList<String> ProductionIds = FXCollections.observableArrayList(productionIdList);
+        ProductionIds.addAll(productionIdList);
+        comProductionId.setItems(ProductionIds);
     }
 
     private void loadCustomerId() throws SQLException {
-        ArrayList<Integer> customerId = OrderModel.getAllCustomerId();
-        ObservableList<Integer> observableList = FXCollections.observableArrayList(customerId);
+        ArrayList<String> customerId = OrderModel.getAllCustomerId();
+        ObservableList<String> observableList = FXCollections.observableArrayList(customerId);
         observableList.addAll(customerId);
-        comCustomerId.setItems(observableList);
+        comCustomerID.setItems(observableList);
     }
 
-    @FXML
-    private TableColumn<OrderDto, Integer> colCustomerId;
 
-    @FXML
-    private TableColumn<OrderDto, String> colDate;
 
-    @FXML
-    private TableColumn<OrderDto, Integer> colOrderId;
-
-    @FXML
-    private TableColumn<OrderDto, Integer> colPotsSize;
-
-    @FXML
-    private TableColumn<OrderDto, Integer> colQuantity;
-
-    @FXML
-    private TableColumn<OrderDto, Time> colTime;
-
-    @FXML
-    private TableView<OrderDto> tblOrder;
-
-    @FXML
-    private ComboBox<Integer> comCustomerId;
-
-    @FXML
-    private ComboBox<Integer> comPotsSize;
-
-    @FXML
-    private TextField txtDate;
-
-    @FXML
-    private Label lblId;
-
-    @FXML
-    private TextField txtQuantity;
-
-    @FXML
-    private TextField txtTime;
 
     @FXML
     void btnClearOnAction(ActionEvent event) {
@@ -89,8 +99,8 @@ public class OrderController implements Initializable {
     }
 
     @FXML
-    void btnDeleteOnAction(ActionEvent event) {
-        int id = Integer.parseInt(lblId.getText());
+   /* void btnDeleteOnAction(ActionEvent event) {
+        String id = lblId.getText();
         try {
             boolean isDelete = new OrderModel().deleteOrder(new OrderDto(id));
             if (isDelete) {
@@ -104,22 +114,18 @@ public class OrderController implements Initializable {
             e.printStackTrace();
             new Alert(Alert.AlertType.ERROR, "Order Not Delete").show();
         }
-    }
+    }*/
 
     private void loadNextId () throws SQLException {
         OrderModel orderModel = new OrderModel();
         String id = orderModel.getNextId();
-        lblId.setText(id);
+        lblID.setText(id);
     }
 
     @FXML
-    void btnSaveOnAction(ActionEvent event) {
-        int orderId = Integer.parseInt(lblId.getText());
-        int customerId=Integer.parseInt(String.valueOf(comCustomerId.getValue()));
-        Time time = Time.valueOf(txtTime.getText());
-        int potsSize = Integer.parseInt(String.valueOf(comPotsSize.getValue()));
-        int quantity = Integer.parseInt(txtQuantity.getText());
-        OrderDto orderDto = new OrderDto(orderId,customerId,txtDate.getText(),time,potsSize,quantity);
+   /* void btnSaveOnAction(ActionEvent event) {
+
+        OrderDto orderDto = new OrderDto(lblId.getText(),comCustomerId.getValue(),txtDate.getText());
 
         try {
             OrderModel orderModel = new OrderModel();
@@ -138,19 +144,13 @@ public class OrderController implements Initializable {
     private void clearFields(){
         loadTable();
         lblId.setText("");
-        comCustomerId.setValue(Integer.valueOf(""));
+        comCustomerId.setValue("");
         txtDate.setText("");
-        txtTime.setText("");
-        comPotsSize.setValue(Integer.valueOf(""));
-        txtQuantity.setText("");
     }
     private void loadTable(){
         colOrderId.setCellValueFactory(new PropertyValueFactory<>("orderId"));
         colCustomerId.setCellValueFactory(new PropertyValueFactory<>("customerId"));
         colDate.setCellValueFactory(new PropertyValueFactory<>("date"));
-        colTime.setCellValueFactory(new PropertyValueFactory<>("time"));
-        colPotsSize.setCellValueFactory(new PropertyValueFactory<>("potsSize"));
-        colQuantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
 
         try {
             OrderModel orderModel = new OrderModel();
@@ -168,12 +168,8 @@ public class OrderController implements Initializable {
 
     @FXML
     public void btnUpdateOnAction(ActionEvent event) {
-        int orderId = Integer.parseInt(lblId.getText());
-        int customerId = Integer.parseInt(String.valueOf(comCustomerId.getValue()));
-        Time time = Time.valueOf(txtTime.getText());
-        int potsSize = Integer.parseInt(String.valueOf(comPotsSize.getValue()));
-        int quantity = Integer.parseInt(txtQuantity.getText());
-        OrderDto orderDto = new OrderDto(orderId,customerId,txtDate.getText(),time,potsSize,quantity);
+
+        OrderDto orderDto = new OrderDto(lblId.getText(),comCustomerId.getValue(),txtDate.getText());
         try {
             boolean isSave = OrderModel.updateOrder(orderDto);
             if(isSave){
@@ -187,27 +183,53 @@ public class OrderController implements Initializable {
             e.printStackTrace();
             new Alert(Alert.AlertType.ERROR,"Order Not Updated").show();
         }
-    }
+    }*/
 
-    public void tableOnClick(MouseEvent mouseEvent) {
+   /* public void tableOnClick(MouseEvent mouseEvent) {
         OrderDto orderDto = (OrderDto) tblOrder.getSelectionModel().getSelectedItem();
         if(orderDto != null){
-            lblId.setText(String.valueOf(orderDto.getOrderId()));
-            comCustomerId.setValue(Integer.valueOf(String.valueOf(orderDto.getCustomerId())));
+            lblId.setText(orderDto.getOrderId());
+            comCustomerId.setValue(orderDto.getCustomerId());
             txtDate.setText(String.valueOf(orderDto.getDate()));
-            txtTime.setText(String.valueOf(orderDto.getTime()));
-            comPotsSize.setValue(Integer.valueOf(String.valueOf(orderDto.getPotsSize())));
-            txtQuantity.setText(String.valueOf(orderDto.getQuantity()));
         }
-    }
+    }*/
 
-    public void comCustomerIdOnAction(ActionEvent actionEvent) {
-        Integer selectedCustomerId = (Integer) comCustomerId.getSelectionModel().getSelectedItem();
+    public void comCustomerOnAction(ActionEvent actionEvent) throws SQLException {
+        String selectedCustomerId = (String) comCustomerID.getSelectionModel().getSelectedItem();
         System.out.println(selectedCustomerId);
+        String name = CustomerModel.findNameById(selectedCustomerId);
+        System.out.println(name);
+        lblCustomerName.setText(name);
     }
 
     public void comPotsSizeOnAction(ActionEvent actionEvent) {
-        Integer selectedPotsSize = (Integer) comPotsSize.getSelectionModel().getSelectedItem();
-        System.out.println(selectedPotsSize);
+        String selectedCustomerId = (String) comCustomerID.getSelectionModel().getSelectedItem();
+        System.out.println(selectedCustomerId);
+    }
+    private void clearFields(){
+        // loadTable();
+
+    }
+
+
+
+    public void btnAddToCartOnAction(ActionEvent actionEvent) {
+    }
+
+    public void btnPlaceOrder0nAction(ActionEvent actionEvent) {
+    }
+
+    public void btnResetOnAction(ActionEvent actionEvent) {
+    }
+
+    public void tableOnClick(MouseEvent mouseEvent) {
+    }
+
+    public void comProductionIdOnAction(ActionEvent actionEvent) throws SQLException {
+        String selectedProductionId = (String) comProductionId.getSelectionModel().getSelectedItem();
+        System.out.println(selectedProductionId);
+        int potSize = CurdProductionModel.findpotById(selectedProductionId);
+        System.out.println(potSize);
+        lblPotSize.setText(String.valueOf(potSize));
     }
 }

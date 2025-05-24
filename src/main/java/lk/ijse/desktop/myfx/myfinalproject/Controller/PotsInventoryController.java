@@ -107,7 +107,7 @@ public class PotsInventoryController implements Initializable {
     @FXML
     public void btnSaveOnAction(ActionEvent event) {
         int quantity = Integer.parseInt(txtQuantity.getText());
-        int potsSize = Integer.parseInt(String.valueOf(comPotsSize.getValue()));
+        int potsSize = comPotsSize.getValue();
         PotsInventoryDto potsInventoryDto = new PotsInventoryDto(lblId.getText(),quantity,potsSize,txtCondition.getText());
 
         try {
@@ -128,7 +128,7 @@ public class PotsInventoryController implements Initializable {
         loadTable();
         lblId.setText("");
         txtQuantity.setText("");
-        comPotsSize.setValue(Integer.valueOf(""));
+        comPotsSize.setValue(0);
         txtCondition.setText("");
 
         loadNextId();
