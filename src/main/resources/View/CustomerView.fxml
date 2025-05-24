@@ -83,6 +83,11 @@
                   <Button fx:id="btnUpdate" mnemonicParsing="false" onAction="#btnUpdateOnAction" style="-fx-background-color: #2980b9; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 3;" text="Update" />
                   <Button fx:id="btnClear" mnemonicParsing="false" onAction="#btnClearOnAction" style="-fx-background-color: #f39c12; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 3;" text="Clear" />
                   <Button fx:id="btnDelete" mnemonicParsing="false" onAction="#btnDeleteOnAction" style="-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 3;" text="Delete" />
+                  <Button mnemonicParsing="false" onAction="#CustomerReportOnAction" style="-fx-background-color: #9d4dff;" text="Order Report" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Button>
                </buttons>
             </ButtonBar>
 

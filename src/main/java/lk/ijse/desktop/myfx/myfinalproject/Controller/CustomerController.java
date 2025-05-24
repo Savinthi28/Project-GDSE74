@@ -10,13 +10,18 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import lk.ijse.desktop.myfx.myfinalproject.DBConnection.DBConnection;
 import lk.ijse.desktop.myfx.myfinalproject.Dto.CustomerDto;
 import lk.ijse.desktop.myfx.myfinalproject.Model.CustomerModel;
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.view.JasperViewer;
 
 import java.net.URL;
+import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.ResourceBundle;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 public class CustomerController implements Initializable {
 
@@ -219,4 +224,38 @@ public class CustomerController implements Initializable {
             txtNumber.setStyle(txtNumber.getStyle() + ";-fx-border-color: blue");
         }
     }
+
+    public void CustomerReportOnAction(ActionEvent actionEvent) {
+        CustomerDto customerDto = tblCustomer.getSelectionModel().getSelectedItem();
+
+        if (customerDto == null) {
+            new Alert(Alert.AlertType.WARNING, "Please select a customer first!").show();
+            return;
+        }
+
+        try {
+            JasperReport jasperReport = JasperCompileManager.compileReport(getClass().getResourceAsStream("/report/CustomerOrderDetailsReport.jrxml"));
+            Connection connection = DBConnection.getInstance().getConnection();
+
+            Map<String, Object> parameters = new HashMap<>();
+
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            String formattedDate = LocalDate.now().format(formatter);
+
+            parameters.put("P_Date", formattedDate);
+            parameters.put("P_Customer_ID", customerDto.getCustomerId());
+
+
+            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, connection);
+
+            JasperViewer.viewReport(jasperPrint, false);
+        } catch (JRException e) {
+            new Alert(Alert.AlertType.ERROR, "Error in generating report: " + e.getMessage()).show();
+            e.printStackTrace();
+        } catch (SQLException e) {
+            new Alert(Alert.AlertType.ERROR, "Database Error: " + e.getMessage()).show();
+            e.printStackTrace();
+        }
+    }
 }
+
