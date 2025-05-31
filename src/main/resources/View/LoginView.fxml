@@ -63,7 +63,7 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                      </rowConstraints>
 
-                     <Label style="-fx-font-weight: bold;" text="Username :">
+                     <Label style="-fx-font-weight: bold;" text="User ID :">
                         <font>
                            <Font size="18.0" />
                         </font>
