@@ -9,14 +9,14 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="750.0" prefWidth="1400.0" style="-fx-background-color: #f0f2f5;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.desktop.myfx.myfinalproject.Controller.BuffaloController">
+<AnchorPane prefHeight="900.0" prefWidth="1400.0" style="-fx-background-color: #f0f2f5;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.desktop.myfx.myfinalproject.Controller.BuffaloController">
    <children>
       <VBox spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <padding>
@@ -47,7 +47,7 @@
                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   </rowConstraints>
 
-                  <Label text="Buffalo ID:" style="-fx-font-weight: bold;">
+                  <Label style="-fx-font-weight: bold;" text="Buffalo ID:">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -58,28 +58,28 @@
                      </font>
                   </Label>
 
-                  <Label text="Daily Milk Production (Liters):" style="-fx-font-weight: bold;" GridPane.rowIndex="1">
+                  <Label style="-fx-font-weight: bold;" text="Daily Milk Production (Liters):" GridPane.rowIndex="1">
                      <font>
                         <Font size="16.0" />
                      </font>
                   </Label>
                   <TextField fx:id="txtMilkProduction" onKeyReleased="#txtMilkChange" promptText="e.g., 15.5" style="-fx-background-radius: 5; -fx-border-color: #cccccc; -fx-border-radius: 5;" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
-                  <Label text="Gender:" style="-fx-font-weight: bold;" GridPane.rowIndex="2">
+                  <Label style="-fx-font-weight: bold;" text="Gender:" GridPane.rowIndex="2">
                      <font>
                         <Font size="16.0" />
                      </font>
                   </Label>
                   <ComboBox fx:id="comGender" onAction="#comGenderOnAction" prefWidth="250.0" style="-fx-background-radius: 5; -fx-border-color: #cccccc; -fx-border-radius: 5;" GridPane.columnIndex="1" GridPane.rowIndex="2" />
 
-                  <Label text="Age (Years):" style="-fx-font-weight: bold;" GridPane.rowIndex="3">
+                  <Label style="-fx-font-weight: bold;" text="Age (Years):" GridPane.rowIndex="3">
                      <font>
                         <Font size="16.0" />
                      </font>
                   </Label>
                   <TextField fx:id="txtAge" onKeyReleased="#txtAgeChange" promptText="e.g., 5" style="-fx-background-radius: 5; -fx-border-color: #cccccc; -fx-border-radius: 5;" GridPane.columnIndex="1" GridPane.rowIndex="3" />
 
-                  <Label text="Health Status:" style="-fx-font-weight: bold;" GridPane.rowIndex="4">
+                  <Label style="-fx-font-weight: bold;" text="Health Status:" GridPane.rowIndex="4">
                      <font>
                         <Font size="16.0" />
                      </font>

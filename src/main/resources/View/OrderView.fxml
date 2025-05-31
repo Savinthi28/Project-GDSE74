@@ -128,6 +128,17 @@
                </HBox>
             </VBox>
 
+            <Label text="Available Quantity:" style="-fx-font-weight: bold;" GridPane.rowIndex="3">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblItemQty" text="0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Label>
+
             <TableView fx:id="table" onMouseClicked="#tableOnClick" prefHeight="300.0" style="-fx-background-radius: 8; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 8, 0, 0, 2);" VBox.vgrow="ALWAYS">
                <columns>
                   <TableColumn fx:id="colItemId" style="-fx-alignment: CENTER; -fx-font-weight: bold;" text="Product ID" />

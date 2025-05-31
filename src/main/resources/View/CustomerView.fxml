@@ -8,14 +8,14 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="750.0" prefWidth="1400.0" style="-fx-background-color: #f0f2f5;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.desktop.myfx.myfinalproject.Controller.CustomerController">
+<AnchorPane prefHeight="900.0" prefWidth="1400.0" style="-fx-background-color: #f0f2f5;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.desktop.myfx.myfinalproject.Controller.CustomerController">
    <children>
       <VBox spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <padding>
@@ -45,7 +45,7 @@
                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   </rowConstraints>
 
-                  <Label text="Customer ID:" style="-fx-font-weight: bold;">
+                  <Label style="-fx-font-weight: bold;" text="Customer ID:">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -56,21 +56,21 @@
                      </font>
                   </Label>
 
-                  <Label text="Customer Name:" style="-fx-font-weight: bold;" GridPane.rowIndex="1">
+                  <Label style="-fx-font-weight: bold;" text="Customer Name:" GridPane.rowIndex="1">
                      <font>
                         <Font size="16.0" />
                      </font>
                   </Label>
                   <TextField fx:id="txtName" onKeyReleased="#txtNameChange" promptText="Enter full name" style="-fx-background-radius: 5; -fx-border-color: #cccccc; -fx-border-radius: 5;" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
-                  <Label text="Address:" style="-fx-font-weight: bold;" GridPane.rowIndex="2">
+                  <Label style="-fx-font-weight: bold;" text="Address:" GridPane.rowIndex="2">
                      <font>
                         <Font size="16.0" />
                      </font>
                   </Label>
                   <TextField fx:id="txtAddress" promptText="Enter address" style="-fx-background-radius: 5; -fx-border-color: #cccccc; -fx-border-radius: 5;" GridPane.columnIndex="1" GridPane.rowIndex="2" />
 
-                  <Label text="Contact Number:" style="-fx-font-weight: bold;" GridPane.rowIndex="3">
+                  <Label style="-fx-font-weight: bold;" text="Contact Number:" GridPane.rowIndex="3">
                      <font>
                         <Font size="16.0" />
                      </font>

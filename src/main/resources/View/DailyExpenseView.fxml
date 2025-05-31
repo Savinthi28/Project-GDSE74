@@ -9,14 +9,14 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="ancDailyExpense" prefHeight="750.0" prefWidth="1400.0" style="-fx-background-color: #f0f2ff;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.desktop.myfx.myfinalproject.Controller.DailyExpenseController">
+<AnchorPane fx:id="ancDailyExpense" prefHeight="900.0" prefWidth="1400.0" style="-fx-background-color: #f0f2ff;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.desktop.myfx.myfinalproject.Controller.DailyExpenseController">
    <children>
       <VBox spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <padding>
@@ -55,7 +55,7 @@
                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   </rowConstraints>
 
-                  <Label text="Expense ID:" style="-fx-font-weight: bold;">
+                  <Label style="-fx-font-weight: bold;" text="Expense ID:">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -66,28 +66,28 @@
                      </font>
                   </Label>
 
-                  <Label text="Expense Date:" style="-fx-font-weight: bold;" GridPane.rowIndex="1">
+                  <Label style="-fx-font-weight: bold;" text="Expense Date:" GridPane.rowIndex="1">
                      <font>
                         <Font size="16.0" />
                      </font>
                   </Label>
                   <TextField fx:id="txtDate" promptText="YYYY-MM-DD" style="-fx-background-radius: 5; -fx-border-color: #cccccc; -fx-border-radius: 5;" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
-                  <Label text="Description:" style="-fx-font-weight: bold;" GridPane.rowIndex="2">
+                  <Label style="-fx-font-weight: bold;" text="Description:" GridPane.rowIndex="2">
                      <font>
                         <Font size="16.0" />
                      </font>
                   </Label>
                   <TextField fx:id="txtDescription" promptText="Brief description of expense" style="-fx-background-radius: 5; -fx-border-color: #cccccc; -fx-border-radius: 5;" GridPane.columnIndex="1" GridPane.rowIndex="2" />
 
-                  <Label text="Amount (LKR):" style="-fx-font-weight: bold;" GridPane.columnIndex="2" GridPane.rowIndex="0">
+                  <Label style="-fx-font-weight: bold;" text="Amount (LKR):" GridPane.columnIndex="2" GridPane.rowIndex="0">
                      <font>
                         <Font size="16.0" />
                      </font>
                   </Label>
                   <TextField fx:id="txtAmount" promptText="e.g., 1500.00" style="-fx-background-radius: 5; -fx-border-color: #cccccc; -fx-border-radius: 5;" GridPane.columnIndex="3" GridPane.rowIndex="0" />
 
-                  <Label text="Expense Category:" style="-fx-font-weight: bold;" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                  <Label style="-fx-font-weight: bold;" text="Expense Category:" GridPane.columnIndex="2" GridPane.rowIndex="1">
                      <font>
                         <Font size="16.0" />
                      </font>

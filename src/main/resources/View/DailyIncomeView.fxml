@@ -9,14 +9,14 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="ancDailyIncome" prefHeight="750.0" prefWidth="1400.0" style="-fx-background-color: #f0f2ff;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.desktop.myfx.myfinalproject.Controller.DailyIncomeController">
+<AnchorPane fx:id="ancDailyIncome" prefHeight="900.0" prefWidth="1400.0" style="-fx-background-color: #f0f2ff;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.desktop.myfx.myfinalproject.Controller.DailyIncomeController">
    <children>
       <VBox spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <padding>
@@ -55,7 +55,7 @@
                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   </rowConstraints>
 
-                  <Label text="Income ID:" style="-fx-font-weight: bold;">
+                  <Label style="-fx-font-weight: bold;" text="Income ID:">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -66,33 +66,33 @@
                      </font>
                   </Label>
 
-                  <Label text="Customer Name:" style="-fx-font-weight: bold;" GridPane.rowIndex="1">
+                  <Label style="-fx-font-weight: bold;" text="Customer Name:" GridPane.rowIndex="1">
                      <font>
                         <Font size="16.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="txtName" promptText="Enter customer name" style="-fx-background-radius: 5; -fx-border-color: #cccccc; -fx-border-radius: 5;" HBox.hgrow="ALWAYS" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <TextField fx:id="txtName" promptText="Enter customer name" style="-fx-background-radius: 5; -fx-border-color: #cccccc; -fx-border-radius: 5;" GridPane.columnIndex="1" GridPane.rowIndex="1" HBox.hgrow="ALWAYS" />
 
-                  <Label text="Income Date:" style="-fx-font-weight: bold;" GridPane.rowIndex="2">
+                  <Label style="-fx-font-weight: bold;" text="Income Date:" GridPane.rowIndex="2">
                      <font>
                         <Font size="16.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="txtDate" promptText="YYYY-MM-DD" style="-fx-background-radius: 5; -fx-border-color: #cccccc; -fx-border-radius: 5;" HBox.hgrow="ALWAYS" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <TextField fx:id="txtDate" promptText="YYYY-MM-DD" style="-fx-background-radius: 5; -fx-border-color: #cccccc; -fx-border-radius: 5;" GridPane.columnIndex="1" GridPane.rowIndex="2" HBox.hgrow="ALWAYS" />
 
-                  <Label text="Description:" style="-fx-font-weight: bold;" GridPane.columnIndex="2" GridPane.rowIndex="0">
+                  <Label style="-fx-font-weight: bold;" text="Description:" GridPane.columnIndex="2" GridPane.rowIndex="0">
                      <font>
                         <Font size="16.0" />
                      </font>
                   </Label>
                   <ComboBox fx:id="comDescription" onAction="#comDescriptionOnAction" prefWidth="250.0" style="-fx-background-radius: 5; -fx-border-color: #cccccc; -fx-border-radius: 5;" GridPane.columnIndex="3" GridPane.rowIndex="0" />
 
-                  <Label text="Amount (LKR):" style="-fx-font-weight: bold;" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                  <Label style="-fx-font-weight: bold;" text="Amount (LKR):" GridPane.columnIndex="2" GridPane.rowIndex="1">
                      <font>
                         <Font size="16.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="txtAmount" promptText="e.g., 15000.00" style="-fx-background-radius: 5; -fx-border-color: #cccccc; -fx-border-radius: 5;" HBox.hgrow="ALWAYS" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                  <TextField fx:id="txtAmount" promptText="e.g., 15000.00" style="-fx-background-radius: 5; -fx-border-color: #cccccc; -fx-border-radius: 5;" GridPane.columnIndex="3" GridPane.rowIndex="1" HBox.hgrow="ALWAYS" />
                </GridPane>
             </VBox>
 

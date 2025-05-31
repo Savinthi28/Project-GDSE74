@@ -9,14 +9,14 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="750.0" prefWidth="1400.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.desktop.myfx.myfinalproject.Controller.PaymentController">
+<AnchorPane prefHeight="900.0" prefWidth="1400.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.desktop.myfx.myfinalproject.Controller.PaymentController">
    <children>
       <VBox spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <padding>
@@ -48,7 +48,7 @@
                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   </rowConstraints>
 
-                  <Label text="Payment ID:" style="-fx-font-weight: bold;">
+                  <Label style="-fx-font-weight: bold;" text="Payment ID:">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -59,35 +59,35 @@
                      </font>
                   </Label>
 
-                  <Label text="Order ID:" style="-fx-font-weight: bold;" GridPane.rowIndex="1">
+                  <Label style="-fx-font-weight: bold;" text="Order ID:" GridPane.rowIndex="1">
                      <font>
                         <Font size="16.0" />
                      </font>
                   </Label>
                   <ComboBox fx:id="comOrderId" onAction="#comOrderIdOnAction" prefWidth="250.0" style="-fx-background-radius: 5; -fx-border-color: #cccccc; -fx-border-radius: 5;" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
-                  <Label text="Customer ID:" style="-fx-font-weight: bold;" GridPane.rowIndex="2">
+                  <Label style="-fx-font-weight: bold;" text="Customer ID:" GridPane.rowIndex="2">
                      <font>
                         <Font size="16.0" />
                      </font>
                   </Label>
                   <ComboBox fx:id="comCustomerId" onAction="#comCustomerIdOnAction" prefWidth="250.0" style="-fx-background-radius: 5; -fx-border-color: #cccccc; -fx-border-radius: 5;" GridPane.columnIndex="1" GridPane.rowIndex="2" />
 
-                  <Label text="Payment Date:" style="-fx-font-weight: bold;" GridPane.rowIndex="3">
+                  <Label style="-fx-font-weight: bold;" text="Payment Date:" GridPane.rowIndex="3">
                      <font>
                         <Font size="16.0" />
                      </font>
                   </Label>
                   <TextField fx:id="txtDate" promptText="YYYY-MM-DD" style="-fx-background-radius: 5; -fx-border-color: #cccccc; -fx-border-radius: 5;" GridPane.columnIndex="1" GridPane.rowIndex="3" />
 
-                  <Label text="Payment Method:" style="-fx-font-weight: bold;" GridPane.columnIndex="2" GridPane.rowIndex="0">
+                  <Label style="-fx-font-weight: bold;" text="Payment Method:" GridPane.columnIndex="2" GridPane.rowIndex="0">
                      <font>
                         <Font size="16.0" />
                      </font>
                   </Label>
                   <ComboBox fx:id="comPaymentMethod" onAction="#comPaymentMethodOnAction" prefWidth="250.0" style="-fx-background-radius: 5; -fx-border-color: #cccccc; -fx-border-radius: 5;" GridPane.columnIndex="3" GridPane.rowIndex="0" />
 
-                  <Label text="Payment Amount (LKR):" style="-fx-font-weight: bold;" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                  <Label style="-fx-font-weight: bold;" text="Payment Amount (LKR):" GridPane.columnIndex="2" GridPane.rowIndex="1">
                      <font>
                         <Font size="16.0" />
                      </font>

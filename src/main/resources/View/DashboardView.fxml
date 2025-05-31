@@ -48,7 +48,7 @@
                                 <Font size="18.0" />
                             </font>
                         </Button>
-                        <Button mnemonicParsing="false" onAction="#btnGoSupplierOnAction" prefHeight="45.0" prefWidth="200.0" style="-fx-background-color: #5d6d7e; -fx-background-radius: 8; -fx-text-fill: white; -fx-font-weight: bold;" text="Supplier">
+                        <Button mnemonicParsing="false" onAction="#btnGoSupplierOnAction" prefHeight="45.0" prefWidth="200.0" style="-fx-background-color: #5d6d7e; -fx-background-radius: 8; -fx-text-fill: white; -fx-font-weight: bold;" text="Supply">
                             <font>
                                 <Font size="18.0" />
                             </font>
