@@ -143,7 +143,7 @@ public class CurdProductionController implements Initializable {
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                new Alert(Alert.AlertType.ERROR, "Error while saving Curd Production").show();
+                new Alert(Alert.AlertType.ERROR, "Curd Production has not been save").show();
             }
         }
     }

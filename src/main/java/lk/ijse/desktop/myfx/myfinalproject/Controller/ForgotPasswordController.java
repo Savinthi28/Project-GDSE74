@@ -9,7 +9,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import lk.ijse.desktop.myfx.myfinalproject.Dto.UserDto;
 import lk.ijse.desktop.myfx.myfinalproject.Model.UserModel;
-import lk.ijse.desktop.myfx.myfinalproject.Util.EmailSender; // අලුත් Utility class එක import කරගන්නවා
+import lk.ijse.desktop.myfx.myfinalproject.Util.EmailSender;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -20,44 +20,42 @@ public class ForgotPasswordController {
     private TextField txtEmail;
 
     @FXML
-    private AnchorPane forgotPasswordPane; // UI එක load කරන AnchorPane එක.
+    private AnchorPane forgotPasswordPane;
 
     @FXML
     void btnSendPasswordOnAction(ActionEvent event) {
         String email = txtEmail.getText();
 
         if (email.isEmpty()) {
-            new Alert(Alert.AlertType.ERROR, "කරුණාකර ඔබගේ ඊමේල් ලිපිනය ඇතුලත් කරන්න.").show();
+            new Alert(Alert.AlertType.ERROR, "Pleace enter your email").show();
             return;
         }
 
         try {
             UserModel userModel = new UserModel();
-            UserDto userDto = userModel.getUserByEmail(email); // ඊමේල් එකෙන් user කෙනෙක් ඉන්නවද කියලා බලනවා
+            UserDto userDto = userModel.getUserByEmail(email);
 
             if (userDto != null) {
-                // ඊමේල් එක හමුවුනා, password එක යවන්න
-                String subject = "ඔබගේ MyFinalProject සඳහා වන මුරපදය";
-                String body = "ආදරණීය " + userDto.getUserName() + ",\n\nඔබගේ මුරපදය: " + userDto.getPassword() + "\n\nසුභ පැතුම්,\nMyFinalProject කණ්ඩායම";
+                String subject = "MyFinalProject Password Reset";
+                String body = "Lovely" + userDto.getUserName() + ",\n\nYour Password " + userDto.getPassword() + "\n\nCongratulations,\nMyFinalProject ";
 
-                boolean emailSent = EmailSender.sendEmail(email, subject, body); // EmailSender utility එක භාවිතා කරනවා
+                boolean emailSent = EmailSender.sendEmail(email, subject, body);
 
                 if (emailSent) {
-                    new Alert(Alert.AlertType.INFORMATION, "ඔබගේ මුරපදය ඔබගේ ඊමේල් ලිපිනයට යවන ලදී.").show();
-                    // අවශ්‍ය නම්, නැවත login page එකට යන්න පුළුවන්
+                    new Alert(Alert.AlertType.INFORMATION, "Password Reset Link Sent").show();
                     backToLoginPage();
                 } else {
-                    new Alert(Alert.AlertType.ERROR, "ඊමේල් යැවීම අසාර්ථක විය. කරුණාකර නැවත උත්සාහ කරන්න.").show();
+                    new Alert(Alert.AlertType.ERROR, "Something went wrong while sending the email.").show();
                 }
             } else {
-                new Alert(Alert.AlertType.ERROR, "මෙම ඊමේල් ලිපිනයෙන් කිසිදු පරිශීලකයෙකු සොයාගත නොහැක.").show();
+                new Alert(Alert.AlertType.ERROR, "No user found with this email").show();
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            new Alert(Alert.AlertType.ERROR, "දත්ත සමුදා දෝෂයක්: " + e.getMessage()).show();
+            new Alert(Alert.AlertType.ERROR, "Database error" + e.getMessage()).show();
         } catch (IOException e) {
             e.printStackTrace();
-            new Alert(Alert.AlertType.ERROR, "පිටු මාරු කිරීමේ දෝෂයක්: " + e.getMessage()).show();
+            new Alert(Alert.AlertType.ERROR, "Page switching error" + e.getMessage()).show();
         }
     }
 
@@ -68,7 +66,6 @@ public class ForgotPasswordController {
 
     private void backToLoginPage() throws IOException {
         forgotPasswordPane.getChildren().clear();
-        // ඔබගේ login FXML file එකේ නම මෙතනට දෙන්න. සාමාන්‍යයෙන් LoginPageView.fxml
         Parent parent = FXMLLoader.load(getClass().getResource("/View/LoginView.fxml"));
         forgotPasswordPane.getChildren().add(parent);
     }

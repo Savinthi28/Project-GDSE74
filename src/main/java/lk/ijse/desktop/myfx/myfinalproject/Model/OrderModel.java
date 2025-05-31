@@ -1,7 +1,6 @@
 package lk.ijse.desktop.myfx.myfinalproject.Model;
 
 import lk.ijse.desktop.myfx.myfinalproject.DBConnection.DBConnection;
-import lk.ijse.desktop.myfx.myfinalproject.Dto.OrderDetailsDto;
 import lk.ijse.desktop.myfx.myfinalproject.Dto.OrderDto;
 import lk.ijse.desktop.myfx.myfinalproject.Util.CrudUtil;
 

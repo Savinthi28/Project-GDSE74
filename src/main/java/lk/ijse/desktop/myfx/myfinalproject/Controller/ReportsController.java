@@ -10,7 +10,6 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import lk.ijse.desktop.myfx.myfinalproject.Dto.ReportsDto;
-import lk.ijse.desktop.myfx.myfinalproject.Dto.UserDto;
 import lk.ijse.desktop.myfx.myfinalproject.Model.ReportsModel;
 
 import java.net.URL;

@@ -124,7 +124,7 @@ public class OrderController implements Initializable {
         lblID.setText(id);
     }
     public void comCustomerOnAction(ActionEvent actionEvent) throws SQLException {
-        String selectedCustomerId = comCustomerID.getSelectionModel().getSelectedItem(); // No need for casting
+        String selectedCustomerId = comCustomerID.getSelectionModel().getSelectedItem();
         if (selectedCustomerId != null && !selectedCustomerId.isEmpty()) {
             System.out.println(selectedCustomerId);
             String name = CustomerModel.findNameById(selectedCustomerId);
@@ -210,7 +210,7 @@ public class OrderController implements Initializable {
                     }
                     existingItem.setQty(newQty);
                     existingItem.setTotalPrice(newQty * unitPrice);
-                    lblItemQty.setText(String.valueOf(originalStock - newQty)); // Update displayed available quantity
+                    lblItemQty.setText(String.valueOf(originalStock - newQty));
                     txtQuantity.clear();
                     table.refresh();
                     return;

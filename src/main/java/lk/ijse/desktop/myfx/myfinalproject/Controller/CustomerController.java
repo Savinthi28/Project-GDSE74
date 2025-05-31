@@ -96,7 +96,7 @@ public class CustomerController implements Initializable {
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                new Alert(Alert.AlertType.ERROR, "Customer has not been delete").show();
+                new Alert(Alert.AlertType.ERROR, "Customer not delete").show();
             }
         }
     }

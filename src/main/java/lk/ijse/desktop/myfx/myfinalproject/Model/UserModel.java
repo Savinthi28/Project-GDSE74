@@ -72,12 +72,11 @@ public class UserModel {
                     rs.getString("Email")
             );
         }
-        return null; // දී ඇති ඊමේල් එකෙන් user කෙනෙක් හමු නොවූ විට
+        return null;
     }
 
-    // අලුත් method එක: User_ID සහ Password එකෙන් user කෙනෙක් validate කරන්න
     public boolean isValidUser(String userId, String password) throws SQLException {
         ResultSet rs = CrudUtil.execute("SELECT * FROM User WHERE User_ID = ? AND Password = ?", userId, password);
-        return rs.next(); // record එකක් තියෙනවා නම් true, නැත්නම් false
+        return rs.next();
     }
 }

@@ -12,7 +12,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import lk.ijse.desktop.myfx.myfinalproject.Dto.BuffaloDto;
 import lk.ijse.desktop.myfx.myfinalproject.Model.BuffaloModel;
-import lombok.Getter;
 
 import java.net.URL;
 import java.sql.SQLException;

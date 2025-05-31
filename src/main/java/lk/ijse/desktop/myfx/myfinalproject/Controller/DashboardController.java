@@ -7,7 +7,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button; // Added for button styling
+import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
@@ -21,7 +21,6 @@ public class DashboardController implements Initializable {
     @FXML
     private AnchorPane ancMainContainer;
 
-    // Declare all your sidebar buttons as FXML fields
     @FXML private Button btnGoDashboardOnAction;
     @FXML private Button btnGoBuffaloOnAction;
     @FXML private Button btnGoIMilkOnAction;
@@ -35,7 +34,6 @@ public class DashboardController implements Initializable {
     @FXML private Button btnGoReportOnAction;
     @FXML private Button btnGoLogoutOnAction;
 
-    // Keep track of the currently active button
     private Button currentActiveButton;
 
     public AnchorPane getAncMainContainer() {
@@ -45,7 +43,6 @@ public class DashboardController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         System.out.println("Dashboard load, I'm initializer");
-        // Set Dashboard button as active on startup
         setActiveButton(btnGoDashboardOnAction);
         navigateTo("/View/DashboardOverView.fxml");
     }
@@ -65,19 +62,16 @@ public class DashboardController implements Initializable {
         }
     }
 
-    // New method to handle button activation and styling
     private void setActiveButton(Button newActiveButton) {
-        // Reset the previous active button's style to default
-        if (currentActiveButton != null && currentActiveButton != btnGoLogoutOnAction) { // Exclude logout button
+        if (currentActiveButton != null && currentActiveButton != btnGoLogoutOnAction) {
             currentActiveButton.setStyle("-fx-background-color: #5d6d7e; -fx-background-radius: 8; -fx-text-fill: white; -fx-font-weight: bold;");
         }
 
-        // Set the new active button's style to white background and dark text
-        if (newActiveButton != btnGoLogoutOnAction) { // Exclude logout button
+        if (newActiveButton != btnGoLogoutOnAction) {
             newActiveButton.setStyle("-fx-background-color: white; -fx-background-radius: 8; -fx-text-fill: #34495e; -fx-font-weight: bold;");
         }
 
-        // Update the current active button reference
+
         currentActiveButton = newActiveButton;
     }
 
@@ -148,7 +142,6 @@ public class DashboardController implements Initializable {
     }
 
     public void btnGoLogoutOnAction(ActionEvent actionEvent) throws IOException {
-        // Logout button has special styling and doesn't participate in 'selected' state
         Stage stage = (Stage) ancMainContainer.getScene().getWindow();
 
         Parent root = FXMLLoader.load(getClass().getResource("/View/LoginView.fxml"));
