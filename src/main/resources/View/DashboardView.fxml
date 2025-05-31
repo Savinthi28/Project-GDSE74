@@ -8,92 +8,94 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="900.0" prefWidth="1176.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.desktop.myfx.myfinalproject.Controller.DashboardController">
+<AnchorPane prefHeight="900.0" prefWidth="1400.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.desktop.myfx.myfinalproject.Controller.DashboardController">
     <children>
-        <VBox prefHeight="900.0" prefWidth="227.0" style="-fx-background-color: #b0b0b0;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <VBox prefHeight="900.0" prefWidth="250.0" style="-fx-background-color: #34495e;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
-                <Label alignment="CENTER" text="Curd Mate" textFill="#030303" VBox.vgrow="ALWAYS">
+                <Label alignment="CENTER" prefHeight="100.0" prefWidth="250.0" text="Curd Mate" textFill="WHITE">
                     <font>
                         <Font name="System Bold" size="36.0" />
                     </font>
-               <VBox.margin>
-                  <Insets left="25.0" />
-               </VBox.margin>
+                    <VBox.margin>
+                        <Insets top="20.0" />
+                    </VBox.margin>
                 </Label>
-            <Line endX="118.50738525390625" endY="2.384185791015625E-6" fill="#0a0101" startX="-100.0" strokeLineCap="ROUND" strokeWidth="3.0">
-               <VBox.margin>
-                  <Insets bottom="10.0" />
-               </VBox.margin>
-            </Line>
-                <VBox alignment="CENTER" prefHeight="793.0" prefWidth="224.0" spacing="25.0" style="-fx-background-color: #b0b0b0;">
+                <Line endX="150.0" startX="-50.0" stroke="WHITE" strokeWidth="2.0">
+                    <VBox.margin>
+                        <Insets bottom="20.0" />
+                    </VBox.margin>
+                </Line>
+
+                <VBox alignment="TOP_CENTER" prefHeight="700.0" prefWidth="250.0" spacing="15.0">
                     <children>
-                  <Button mnemonicParsing="false" onAction="#btnGoDashboardOnAction" prefHeight="35.0" prefWidth="165.0" style="-fx-background-color: #d1d1d1; -fx-background-radius: 20;" text="Dashboard">
-                     <font>
-                        <Font name="System Bold" size="18.0" />
-                     </font>
-                  </Button>
-                        <Button mnemonicParsing="false" onAction="#btnGoBuffaloOnAction" prefHeight="35.0" prefWidth="165.0" style="-fx-background-color: #d1d1d1; -fx-background-radius: 20;" text="Buffalo">
+                        <Button mnemonicParsing="false" onAction="#btnGoDashboardOnAction" prefHeight="45.0" prefWidth="200.0" style="-fx-background-color: #5d6d7e; -fx-background-radius: 8; -fx-text-fill: white; -fx-font-weight: bold;" text="Dashboard">
                             <font>
-                                <Font name="System Bold" size="18.0" />
+                                <Font size="18.0" />
                             </font>
                         </Button>
-                        <Button mnemonicParsing="false" onAction="#btnGoIMilkOnAction" prefHeight="35.0" prefWidth="165.0" style="-fx-background-color: #d1d1d1; -fx-background-radius: 20;" text="Milk">
+                        <Button mnemonicParsing="false" onAction="#btnGoBuffaloOnAction" prefHeight="45.0" prefWidth="200.0" style="-fx-background-color: #5d6d7e; -fx-background-radius: 8; -fx-text-fill: white; -fx-font-weight: bold;" text="Buffalo">
                             <font>
-                                <Font name="System Bold" size="18.0" />
+                                <Font size="18.0" />
                             </font>
                         </Button>
-                        <Button mnemonicParsing="false" onAction="#btnGoCurdProductionOnAction" prefHeight="35.0" prefWidth="165.0" style="-fx-background-color: #d1d1d1; -fx-background-radius: 20;" text="Curd Production">
+                        <Button mnemonicParsing="false" onAction="#btnGoIMilkOnAction" prefHeight="45.0" prefWidth="200.0" style="-fx-background-color: #5d6d7e; -fx-background-radius: 8; -fx-text-fill: white; -fx-font-weight: bold;" text="Milk Collection">
                             <font>
-                                <Font name="System Bold" size="18.0" />
+                                <Font size="18.0" />
                             </font>
                         </Button>
-                  <Button mnemonicParsing="false" onAction="#btnGoSupplierOnAction" prefHeight="35.0" prefWidth="165.0" style="-fx-background-color: #d1d1d1; -fx-background-radius: 20;" text="Supplier">
-                     <font>
-                        <Font name="System Bold" size="18.0" />
-                     </font>
-                  </Button>
-                  <Button mnemonicParsing="false" onAction="#btnGoOrderOnAction" prefHeight="35.0" prefWidth="165.0" style="-fx-background-color: #d1d1d1; -fx-background-radius: 20;" text="Order">
-                     <font>
-                        <Font name="System Bold" size="18.0" />
-                     </font>
-                  </Button>
-                  <Button mnemonicParsing="false" onAction="#btnGoCustomerOnAction" prefHeight="35.0" prefWidth="165.0" style="-fx-background-color: #d1d1d1; -fx-background-radius: 20;" text="Customer">
-                     <font>
-                        <Font name="System Bold" size="18.0" />
-                     </font>
-                  </Button>
-                  <Button mnemonicParsing="false" onAction="#btnGoPaymentOnAction" prefHeight="35.0" prefWidth="165.0" style="-fx-background-color: #d1d1d1; -fx-background-radius: 20;" text="Payment">
-                     <font>
-                        <Font name="System Bold" size="18.0" />
-                     </font>
-                  </Button>
-                  <Button mnemonicParsing="false" onAction="#btnGoIncomeOnAction" prefHeight="35.0" prefWidth="165.0" style="-fx-background-color: #d1d1d1; -fx-background-radius: 20;" text="Income &amp; Expense">
-                     <font>
-                        <Font name="System Bold" size="18.0" />
-                     </font>
-                  </Button>
-                  <Button mnemonicParsing="false" onAction="#btnGoUserOnAction" prefHeight="35.0" prefWidth="165.0" style="-fx-background-color: #d1d1d1; -fx-background-radius: 20;" text="User">
-                     <font>
-                        <Font name="System Bold" size="18.0" />
-                     </font>
-                  </Button>
-                  <Button mnemonicParsing="false" onAction="#btnGoReportOnAction" prefHeight="35.0" prefWidth="165.0" style="-fx-background-color: #d1d1d1; -fx-background-radius: 20;" text="Reports">
-                     <font>
-                        <Font name="System Bold" size="18.0" />
-                     </font>
-                  </Button>
-                  <Button mnemonicParsing="false" onAction="#btnGoLogoutOnAction" prefHeight="35.0" prefWidth="165.0" style="-fx-background-color: black; -fx-background-radius: 20;" text="Logout" textFill="WHITE">
-                     <font>
-                        <Font name="System Bold" size="18.0" />
-                     </font>
-                  </Button>
+                        <Button mnemonicParsing="false" onAction="#btnGoCurdProductionOnAction" prefHeight="45.0" prefWidth="200.0" style="-fx-background-color: #5d6d7e; -fx-background-radius: 8; -fx-text-fill: white; -fx-font-weight: bold;" text="Curd Production">
+                            <font>
+                                <Font size="18.0" />
+                            </font>
+                        </Button>
+                        <Button mnemonicParsing="false" onAction="#btnGoSupplierOnAction" prefHeight="45.0" prefWidth="200.0" style="-fx-background-color: #5d6d7e; -fx-background-radius: 8; -fx-text-fill: white; -fx-font-weight: bold;" text="Supplier">
+                            <font>
+                                <Font size="18.0" />
+                            </font>
+                        </Button>
+                        <Button mnemonicParsing="false" onAction="#btnGoOrderOnAction" prefHeight="45.0" prefWidth="200.0" style="-fx-background-color: #5d6d7e; -fx-background-radius: 8; -fx-text-fill: white; -fx-font-weight: bold;" text="Order">
+                            <font>
+                                <Font size="18.0" />
+                            </font>
+                        </Button>
+                        <Button mnemonicParsing="false" onAction="#btnGoCustomerOnAction" prefHeight="45.0" prefWidth="200.0" style="-fx-background-color: #5d6d7e; -fx-background-radius: 8; -fx-text-fill: white; -fx-font-weight: bold;" text="Customer">
+                            <font>
+                                <Font size="18.0" />
+                            </font>
+                        </Button>
+                        <Button mnemonicParsing="false" onAction="#btnGoPaymentOnAction" prefHeight="45.0" prefWidth="200.0" style="-fx-background-color: #5d6d7e; -fx-background-radius: 8; -fx-text-fill: white; -fx-font-weight: bold;" text="Payment">
+                            <font>
+                                <Font size="18.0" />
+                            </font>
+                        </Button>
+                        <Button mnemonicParsing="false" onAction="#btnGoIncomeOnAction" prefHeight="45.0" prefWidth="200.0" style="-fx-background-color: #5d6d7e; -fx-background-radius: 8; -fx-text-fill: white; -fx-font-weight: bold;" text="Income &amp; Expense">
+                            <font>
+                                <Font size="18.0" />
+                            </font>
+                        </Button>
+                        <Button mnemonicParsing="false" onAction="#btnGoUserOnAction" prefHeight="45.0" prefWidth="200.0" style="-fx-background-color: #5d6d7e; -fx-background-radius: 8; -fx-text-fill: white; -fx-font-weight: bold;" text="User Accounts">
+                            <font>
+                                <Font size="18.0" />
+                            </font>
+                        </Button>
+                        <Button mnemonicParsing="false" onAction="#btnGoReportOnAction" prefHeight="45.0" prefWidth="200.0" style="-fx-background-color: #5d6d7e; -fx-background-radius: 8; -fx-text-fill: white; -fx-font-weight: bold;" text="Reports">
+                            <font>
+                                <Font size="18.0" />
+                            </font>
+                        </Button>
+                        <Button mnemonicParsing="false" onAction="#btnGoLogoutOnAction" prefHeight="45.0" prefWidth="200.0" style="-fx-background-color: #e74c3c; -fx-background-radius: 8; -fx-text-fill: white; -fx-font-weight: bold;" text="Logout">
+                            <font>
+                                <Font size="18.0" />
+                            </font>
+                        </Button>
                     </children>
-               <VBox.margin>
-                  <Insets bottom="150.0" />
-               </VBox.margin>
+                    <padding>
+                        <Insets bottom="20.0" />
+                    </padding>
                 </VBox>
             </children>
         </VBox>
-        <AnchorPane fx:id="ancMainContainer" layoutX="225.0" prefHeight="900.0" prefWidth="962.0" style="-fx-background-color: white;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="225.0" AnchorPane.rightAnchor="-11.0" AnchorPane.topAnchor="0.0" />
+
+        <AnchorPane fx:id="ancMainContainer" layoutX="250.0" prefHeight="900.0" prefWidth="1150.0" style="-fx-background-color: #f0f2f5;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="250.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
     </children>
 </AnchorPane>

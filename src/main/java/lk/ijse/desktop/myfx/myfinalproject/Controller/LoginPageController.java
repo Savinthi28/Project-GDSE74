@@ -38,4 +38,6 @@ public class LoginPageController {
         }
     }
 
+    public void btnForgotPasswordOnAction(ActionEvent actionEvent) {
+    }
 }

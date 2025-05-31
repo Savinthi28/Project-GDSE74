@@ -12,7 +12,7 @@ public class AppInitializer extends Application {
     }
     @Override
     public void start(Stage stage) throws Exception {
-        Parent parent = FXMLLoader.load(getClass().getResource("/View/LoginView.fxml"));
+        Parent parent = FXMLLoader.load(getClass().getResource("/View/LoginScreenView.fxml"));
         Scene scene = new Scene(parent);
         stage.setScene(scene);
         stage.setTitle("MyFinal Project");
