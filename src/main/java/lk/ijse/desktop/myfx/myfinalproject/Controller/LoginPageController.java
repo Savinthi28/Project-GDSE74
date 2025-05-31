@@ -33,11 +33,16 @@ public class LoginPageController {
             Parent parent = FXMLLoader.load(getClass().getResource("/View/DashboardView.fxml"));
             ancPage.getChildren().add(parent);
         }else {
-            new Alert(Alert.AlertType.ERROR, "Invalid Username or Password").show();
+            new Alert(Alert.AlertType.ERROR, "වැරදි පරිශීලක නාමය හෝ මුරපදය").show();
             System.out.println("Invalid Username or Password");
         }
     }
 
-    public void btnForgotPasswordOnAction(ActionEvent actionEvent) {
+    @FXML
+    public void btnForgotPasswordOnAction(ActionEvent actionEvent) throws IOException {
+        ancPage.getChildren().clear();
+        // ForgotPasswordView.fxml file එක load කරනවා
+        Parent parent = FXMLLoader.load(getClass().getResource("/View/ForgotPasswordView.fxml"));
+        ancPage.getChildren().add(parent);
     }
 }

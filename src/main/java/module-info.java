@@ -4,6 +4,7 @@ module lk.ijse.desktop.myfx.myfinalproject {
     requires java.sql;
     requires static lombok;
     requires net.sf.jasperreports.core;
+    requires jakarta.mail;
 
 
     opens lk.ijse.desktop.myfx.myfinalproject.Controller to javafx.fxml;

@@ -34,7 +34,7 @@ public class UserModel {
     }
 
     public ArrayList<UserDto> viewAllUser() throws ClassNotFoundException, SQLException {
-       ResultSet rs = CrudUtil.execute("SELECT * FROM User");
+        ResultSet rs = CrudUtil.execute("SELECT * FROM User");
         ArrayList<UserDto> user = new ArrayList<>();
         while (rs.next()) {
             UserDto userDto = new UserDto(
@@ -60,5 +60,19 @@ public class UserModel {
     public boolean deleteUser(UserDto userDto) throws SQLException{
         String sql = "delete from User where User_ID=?";
         return CrudUtil.execute(sql, userDto.getId());
+    }
+
+    // අලුත් method එක: Email එකෙන් user කෙනෙක් හොයාගන්න
+    public UserDto getUserByEmail(String email) throws SQLException {
+        ResultSet rs = CrudUtil.execute("SELECT * FROM User WHERE Email = ?", email);
+        if (rs.next()) {
+            return new UserDto(
+                    rs.getString("User_ID"),
+                    rs.getString("User_Name"),
+                    rs.getString("Password"),
+                    rs.getString("Email")
+            );
+        }
+        return null; // දී ඇති ඊමේල් එකෙන් user කෙනෙක් හමු නොවූ විට
     }
 }
