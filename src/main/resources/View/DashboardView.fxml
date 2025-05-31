@@ -28,7 +28,7 @@
 
                 <VBox alignment="TOP_CENTER" prefHeight="700.0" prefWidth="250.0" spacing="15.0">
                     <children>
-                        <Button mnemonicParsing="false" onAction="#btnGoDashboardOnAction" prefHeight="45.0" prefWidth="200.0" style="-fx-background-color: #5d6d7e; -fx-background-radius: 8; -fx-text-fill: white; -fx-font-weight: bold;" text="Dashboard">
+                        <Button mnemonicParsing="false" onAction="#btnGoDashboardOnAction" prefHeight="45.0" prefWidth="200.0" style="-fx-background-color: white; -fx-background-radius: 8; -fx-text-fill: #34495e; -fx-font-weight: bold;" text="Dashboard">
                             <font>
                                 <Font size="18.0" />
                             </font>
