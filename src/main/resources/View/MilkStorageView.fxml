@@ -20,7 +20,7 @@
             <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
          </padding>
          <children>
-            <HBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="760.0" style="-fx-background-color: #4a6b7a;">
+            <HBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="760.0" style="-fx-background-color: #3a6b7a;">
                <children>
                   <Button mnemonicParsing="false" onAction="#btnGoToMilkCollectionOnAction" style="-fx-background-color: s; -fx-background-radius: 10;" text="MilkCollection" textFill="WHITE">
                      <HBox.margin>

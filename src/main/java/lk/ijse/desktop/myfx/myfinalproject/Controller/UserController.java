@@ -23,6 +23,9 @@ public class UserController implements Initializable {
     private TableColumn<UserDto, String> colId;
 
     @FXML
+    private TableColumn<UserDto, String> colEmail;
+
+    @FXML
     private TableColumn<UserDto, String> colName;
 
     @FXML
@@ -36,6 +39,9 @@ public class UserController implements Initializable {
 
     @FXML
     private TextField txtName;
+
+    @FXML
+    private TextField txtEmail;
 
     @FXML
     private TextField txtPassword;
@@ -71,7 +77,7 @@ public class UserController implements Initializable {
 
     @FXML
    public void btnSaveOnAction(ActionEvent event) throws ClassNotFoundException, SQLException {
-        UserDto userDto = new UserDto(lblId.getText(), txtName.getText(), txtPassword.getText());
+        UserDto userDto = new UserDto(lblId.getText(), txtName.getText(), txtPassword.getText(), txtEmail.getText());
 
         try {
             UserModel userModel = new UserModel();
@@ -92,6 +98,7 @@ public class UserController implements Initializable {
         lblId.setText("");
         txtName.setText("");
         txtPassword.setText("");
+        txtEmail.setText("");
 
         loadNextId();
         Platform.runLater(()-> {
@@ -114,6 +121,7 @@ public class UserController implements Initializable {
         colId.setCellValueFactory(new PropertyValueFactory<>("id"));
         colName.setCellValueFactory(new PropertyValueFactory<>("userName"));
         colPassword.setCellValueFactory(new PropertyValueFactory<>("password"));
+        colEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
 
         try {
             UserModel userModel = new UserModel();
@@ -131,7 +139,7 @@ public class UserController implements Initializable {
 
     @FXML
     public void btnUpdateOnAction(ActionEvent event) {
-        UserDto userDto = new UserDto(lblId.getText(), txtName.getText(), txtPassword.getText());
+        UserDto userDto = new UserDto(lblId.getText(), txtName.getText(), txtPassword.getText(), txtEmail.getText());
         try {
             boolean isSave = UserModel.updateUser(userDto);
             if (isSave) {
@@ -153,6 +161,7 @@ public class UserController implements Initializable {
             lblId.setText(String.valueOf(userDto.getId()));
             txtName.setText(userDto.getUserName());
             txtPassword.setText(userDto.getPassword());
+            txtEmail.setText(userDto.getEmail());
         }
 
     }

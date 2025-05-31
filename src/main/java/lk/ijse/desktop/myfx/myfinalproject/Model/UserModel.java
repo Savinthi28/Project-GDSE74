@@ -11,9 +11,10 @@ public class UserModel {
 
     public static boolean updateUser(UserDto userDto) throws SQLException {
         return CrudUtil.execute(
-                "update User set User_Name = ?, Password = ? where User_ID = ?",
+                "update User set User_Name = ?, Password = ?, Email = ? where User_ID = ?",
                 userDto.getUserName(),
                 userDto.getPassword(),
+                userDto.getEmail(),
                 userDto.getId()
         );
     }
@@ -39,7 +40,8 @@ public class UserModel {
             UserDto userDto = new UserDto(
                     rs.getString("User_ID"),
                     rs.getString("User_Name"),
-                    rs.getString("Password")
+                    rs.getString("Password"),
+                    rs.getString("Email")
             );
             user.add(userDto);
         }
@@ -47,10 +49,11 @@ public class UserModel {
     }
     public boolean saveUser(UserDto userDto) throws ClassNotFoundException, SQLException {
         return CrudUtil.execute(
-                "insert into User values (?,?,?)",
+                "insert into User values (?,?,?,?)",
                 userDto.getId(),
                 userDto.getUserName(),
-                userDto.getPassword()
+                userDto.getPassword(),
+                userDto.getEmail()
         );
     }
 
