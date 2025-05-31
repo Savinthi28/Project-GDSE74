@@ -58,7 +58,7 @@
                      </font>
                   </Label>
 
-                  <Label style="-fx-font-weight: bold;" text="Daily Milk Production (Liters):" GridPane.rowIndex="1">
+                  <Label style="-fx-font-weight: bold;" text="Daily Milk Production:" GridPane.rowIndex="1">
                      <font>
                         <Font size="16.0" />
                      </font>

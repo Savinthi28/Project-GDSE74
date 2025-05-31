@@ -192,6 +192,7 @@ public class BuffaloController implements Initializable {
 
         Optional<ButtonType> result = alert.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
+
         String milk = txtMilkProduction.getText();
         String ageString = txtAge.getText();
         String health = txtHealth.getText();

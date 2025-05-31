@@ -91,12 +91,12 @@
                   </Label>
                   <TextField fx:id="txtDate" promptText="YYYY-MM-DD" style="-fx-background-radius: 5; -fx-border-color: #cccccc; -fx-border-radius: 5;" GridPane.columnIndex="1" GridPane.rowIndex="2" />
 
-                  <Label style="-fx-font-weight: bold;" text="Storage Duration (Hours):" GridPane.rowIndex="3">
+                  <Label style="-fx-font-weight: bold;" text="Storage Duration:" GridPane.rowIndex="3">
                      <font>
                         <Font size="16.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="txtDuration" promptText="e.g., 24" style="-fx-background-radius: 5; -fx-border-color: #cccccc; -fx-border-radius: 5;" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                  <TextField fx:id="txtDuration" promptText="00:00:00" style="-fx-background-radius: 5; -fx-border-color: #cccccc; -fx-border-radius: 5;" GridPane.columnIndex="1" GridPane.rowIndex="3" />
 
                   <Label style="-fx-font-weight: bold;" text="Temperature (°C):" GridPane.rowIndex="4">
                      <font>

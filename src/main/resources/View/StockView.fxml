@@ -25,7 +25,7 @@
          <children>
             <HBox alignment="CENTER_LEFT" prefHeight="70.0" style="-fx-background-color: #4a6fa5; -fx-background-radius: 8;">
                <children>
-                  <Button mnemonicParsing="false" onAction="#btnGoToCurdProduOnAction" style="-fx-background-color: #5b7da6; -fx-background-radius: 10; -fx-text-fill: WHITE; -fx-font-weight: bold;" text="Curd Production">
+                  <Button fx:id="btnCurdProduction" mnemonicParsing="false" onAction="#btnGoToCurdProduOnAction" prefHeight="50.0" prefWidth="225.0" style="-fx-background-color: #5b7da6; -fx-background-radius: 10; -fx-text-fill: WHITE; -fx-font-weight: bold;" text="Curd Production">
                      <font>
                         <Font size="26.0" />
                      </font>
@@ -33,7 +33,7 @@
                         <Insets left="300.0" right="100.0" />
                      </HBox.margin>
                   </Button>
-                  <Button mnemonicParsing="false" onAction="#btnGoToStockOnAction" prefHeight="50.0" prefWidth="180.0" style="-fx-background-color: #6a9acb; -fx-background-radius: 10; -fx-text-fill: WHITE; -fx-font-weight: bold;" text="Stock">
+                  <Button fx:id="btnStock" mnemonicParsing="false" onAction="#btnGoToStockOnAction" prefHeight="50.0" prefWidth="180.0" style="-fx-background-color: #6a9acb; -fx-background-radius: 10; -fx-text-fill: WHITE; -fx-font-weight: bold;" text="Stock">
                      <font>
                         <Font size="26.0" />
                      </font>

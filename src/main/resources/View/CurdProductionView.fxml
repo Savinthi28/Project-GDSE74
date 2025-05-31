@@ -25,7 +25,7 @@
 
             <HBox alignment="CENTER_LEFT" prefHeight="70.0" style="-fx-background-color: #4a6fa5; -fx-background-radius: 8;">
                 <children>
-                    <Button mnemonicParsing="false" onAction="#btnGoToCurdProduOnAction" style="-fx-background-color: #6a9acb; -fx-background-radius: 10; -fx-text-fill: WHITE; -fx-font-weight: bold;" text="Curd Production">
+                    <Button mnemonicParsing="false" onAction="#btnGoToCurdProduOnAction" prefHeight="50.0" prefWidth="225.0" style="-fx-background-color: #6a9acb; -fx-background-radius: 10; -fx-text-fill: WHITE; -fx-font-weight: bold;" text="Curd Production">
                         <HBox.margin>
                             <Insets left="300.0" right="100.0" />
                         </HBox.margin>

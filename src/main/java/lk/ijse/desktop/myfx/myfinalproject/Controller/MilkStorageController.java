@@ -9,6 +9,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import lk.ijse.desktop.myfx.myfinalproject.Dto.MilkStorageDto;
@@ -83,6 +84,7 @@ public class MilkStorageController implements Initializable {
     @FXML
     private TextField txtTemperature;
 
+
     @FXML
     void btnClearOnAction(ActionEvent event) throws SQLException {
         clearField();
@@ -120,7 +122,7 @@ public class MilkStorageController implements Initializable {
 
     private void loadNextId() throws SQLException {
         MilkStorageModel milkStorageModel = new MilkStorageModel();
-        String id  = milkStorageModel.getNextId();
+        String id = milkStorageModel.getNextId();
         lblId.setText(id);
     }
 
@@ -128,23 +130,24 @@ public class MilkStorageController implements Initializable {
     void btnSaveOnAction(ActionEvent event) {
         Time duration = Time.valueOf(txtDuration.getText());
         double temperature = Double.parseDouble(txtTemperature.getText());
-        MilkStorageDto milkStorageDto = new MilkStorageDto(lblId.getText(),comMilkStorage.getValue(),txtDate.getText(),duration,temperature);
+        MilkStorageDto milkStorageDto = new MilkStorageDto(lblId.getText(), comMilkStorage.getValue(), txtDate.getText(), duration, temperature);
 
-        try {
-            MilkStorageModel milkStorageModel = new MilkStorageModel();
-            boolean isSave = milkStorageModel.saveMilkStorage(milkStorageDto);
-            if (isSave) {
-                clearField();
-                new Alert(Alert.AlertType.INFORMATION, "Milk Storage has been saved successfully").show();
-            }else {
+            try {
+                MilkStorageModel milkStorageModel = new MilkStorageModel();
+                boolean isSave = milkStorageModel.saveMilkStorage(milkStorageDto);
+                if (isSave) {
+                    clearField();
+                    new Alert(Alert.AlertType.INFORMATION, "Milk Storage has been saved successfully").show();
+                } else {
+                    new Alert(Alert.AlertType.ERROR, "Milk Storage has not been saved").show();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
                 new Alert(Alert.AlertType.ERROR, "Milk Storage has not been saved").show();
             }
-        }catch (Exception e){
-            e.printStackTrace();
-            new Alert(Alert.AlertType.ERROR, "Milk Storage has not been saved").show();
         }
-    }
-private void clearField() throws SQLException {
+
+    private void clearField() throws SQLException {
         loadTable();
         lblId.setText("");
         comMilkStorage.setValue("");
@@ -152,12 +155,13 @@ private void clearField() throws SQLException {
         txtDuration.setText("");
         txtTemperature.setText("");
 
-    loadNextId();
-    Platform.runLater(()-> {
-        lblId.setText(lblId.getText());
-    });
-}
-private void loadTable() {
+        loadNextId();
+        Platform.runLater(() -> {
+            lblId.setText(lblId.getText());
+        });
+    }
+
+    private void loadTable() {
         colStorageId.setCellValueFactory(new PropertyValueFactory<>("storageId"));
         colCollectionId.setCellValueFactory(new PropertyValueFactory<>("collectionId"));
         colDate.setCellValueFactory(new PropertyValueFactory<>("date"));
@@ -170,13 +174,14 @@ private void loadTable() {
             if (milkStorageDtos != null) {
                 ObservableList<MilkStorageDto> list = FXCollections.observableArrayList(milkStorageDtos);
                 tblMilkStorage.setItems(list);
-            }else {
+            } else {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
-}
+    }
+
     @FXML
     void btnUpdateOnAction(ActionEvent event) {
         Time duration = Time.valueOf(txtDuration.getText());
@@ -220,7 +225,8 @@ private void loadTable() {
     public void btnGoToMilkCollectionOnAction(ActionEvent actionEvent) {
         navigateTo("/View/MilkCollectionView.fxml");
     }
-    private <Sring> void navigateTo(Sring path){
+
+    private <Sring> void navigateTo(Sring path) {
         try {
             ancMilkStorage.getChildren().clear();
             AnchorPane anchorPane = FXMLLoader.load(getClass().getResource((String) path));
@@ -228,12 +234,13 @@ private void loadTable() {
             anchorPane.prefWidthProperty().bind(ancMilkStorage.widthProperty());
             anchorPane.prefHeightProperty().bind(ancMilkStorage.heightProperty());
             ancMilkStorage.getChildren().add(anchorPane);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             new Alert(Alert.AlertType.ERROR, "Something went wrong", ButtonType.OK).show();
 
         }
     }
+
     public void btnGoToMilkStorageOnAction(ActionEvent actionEvent) {
         navigateTo("/View/MilkStorageView.fxml");
     }
@@ -243,7 +250,8 @@ private void loadTable() {
     }
 
     public void comMilkStorageOnAction(ActionEvent actionEvent) {
-        String selectedMilkStorage = (String)comMilkStorage.getSelectionModel().getSelectedItem();
+        String selectedMilkStorage = (String) comMilkStorage.getSelectionModel().getSelectedItem();
         System.out.println(selectedMilkStorage);
     }
+
 }
