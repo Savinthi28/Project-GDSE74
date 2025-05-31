@@ -18,6 +18,7 @@ import lombok.SneakyThrows;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class DailyIncomeController implements Initializable {
@@ -69,19 +70,28 @@ public class DailyIncomeController implements Initializable {
 
     @FXML
     void btnDeleteOnAction(ActionEvent event) {
-       String id = lblId.getText();
-        try {
-            boolean isDelete = new DailyIncomeModel().deleteDailyIncome(new DailyIncomeDto(id));
-            if (isDelete) {
-                clearFilds();
-                loadTable();
-                new Alert(Alert.AlertType.INFORMATION, "Deleted Successfully").show();
-            }else {
-                new Alert(Alert.AlertType.ERROR, "Something went wrong").show();
+        String id = lblId.getText();
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation Dialog");
+        alert.setHeaderText("Delete Daily Income");
+        alert.setContentText("Are you sure you want to delete this daily income?");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            try {
+                boolean isDelete = new DailyIncomeModel().deleteDailyIncome(new DailyIncomeDto(id));
+                if (isDelete) {
+                    clearFilds();
+                    loadTable();
+                    new Alert(Alert.AlertType.INFORMATION, "Deleted Successfully").show();
+                } else {
+                    new Alert(Alert.AlertType.ERROR, "Something went wrong").show();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                new Alert(Alert.AlertType.ERROR, "Something went error").show();
             }
-        }catch (Exception e){
-            e.printStackTrace();
-            new Alert(Alert.AlertType.ERROR, "Something went error").show();
         }
     }
 
@@ -166,19 +176,28 @@ public class DailyIncomeController implements Initializable {
     @FXML
     void btnUpdateOnAction(ActionEvent event) {
         double amount = Double.parseDouble(txtAmount.getText());
-        DailyIncomeDto dailyIncomeDto = new DailyIncomeDto(lblId.getText(),txtName.getText(),txtDate.getText(),comDescription.getValue(),amount);
-        try {
-            boolean isSave = DailyIncomeModel.updateDailyIncome(dailyIncomeDto);
-            if (isSave) {
-                clearFilds();
-                loadTable();
-                new Alert(Alert.AlertType.INFORMATION, "Updated Successfully").show();
-            }else {
+        DailyIncomeDto dailyIncomeDto = new DailyIncomeDto(lblId.getText(), txtName.getText(), txtDate.getText(), comDescription.getValue(), amount);
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation Dialog");
+        alert.setHeaderText("Update Daily Income");
+        alert.setContentText("Are you sure you want to update this daily income?");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            try {
+                boolean isSave = DailyIncomeModel.updateDailyIncome(dailyIncomeDto);
+                if (isSave) {
+                    clearFilds();
+                    loadTable();
+                    new Alert(Alert.AlertType.INFORMATION, "Updated Successfully").show();
+                } else {
+                    new Alert(Alert.AlertType.ERROR, "Failed to save income").show();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
                 new Alert(Alert.AlertType.ERROR, "Failed to save income").show();
             }
-        }catch (Exception e){
-            e.printStackTrace();
-            new Alert(Alert.AlertType.ERROR, "Failed to save income").show();
         }
     }
 

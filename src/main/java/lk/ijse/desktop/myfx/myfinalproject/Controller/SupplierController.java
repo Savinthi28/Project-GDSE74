@@ -17,6 +17,7 @@ import lk.ijse.desktop.myfx.myfinalproject.Model.SupplierModel;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class SupplierController implements Initializable {
@@ -62,18 +63,27 @@ public class SupplierController implements Initializable {
     @FXML
     void btnDeleteOnAction(ActionEvent event) {
         String id = lblId.getText();
-        try {
-            boolean isDelete = new SupplierModel().deleteSupplier(new SupplierDto(id));
-            if (isDelete) {
-                clearFields();
-                loadTable();
-                new Alert(Alert.AlertType.CONFIRMATION, "Deleted Successfully").show();
-            }else {
-                new Alert(Alert.AlertType.ERROR, "Deletion Failed").show();
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation Dialog");
+        alert.setHeaderText("Delete Supplier");
+        alert.setContentText("Are you sure you want to delete supplier?");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            try {
+                boolean isDelete = new SupplierModel().deleteSupplier(new SupplierDto(id));
+                if (isDelete) {
+                    clearFields();
+                    loadTable();
+                    new Alert(Alert.AlertType.CONFIRMATION, "Deleted Successfully").show();
+                } else {
+                    new Alert(Alert.AlertType.ERROR, "Deletion Failed").show();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                new Alert(Alert.AlertType.ERROR, "Delete Failed").show();
             }
-        }catch (Exception e){
-            e.printStackTrace();
-            new Alert(Alert.AlertType.ERROR, "Delete Failed").show();
         }
     }
 
@@ -149,18 +159,27 @@ public class SupplierController implements Initializable {
     @FXML
     public void btnUpdateOnAction(ActionEvent event) {
         SupplierDto supplierDto = new SupplierDto(lblId.getText(), txtName.getText(), txtNumber.getText(), txtAddress.getText());
-        try {
-            boolean isSave = SupplierModel.updateSupplier(supplierDto);
-            if (isSave) {
-                clearFields();
-                loadTable();
-                new Alert(Alert.AlertType.INFORMATION, "Supplier has been updated successfully").show();
-            }else {
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation Dialog");
+        alert.setHeaderText("Update Supplier");
+        alert.setContentText("Are you sure you want to update supplier?");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            try {
+                boolean isSave = SupplierModel.updateSupplier(supplierDto);
+                if (isSave) {
+                    clearFields();
+                    loadTable();
+                    new Alert(Alert.AlertType.INFORMATION, "Supplier has been updated successfully").show();
+                } else {
+                    new Alert(Alert.AlertType.ERROR, "Failed to update supplier").show();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
                 new Alert(Alert.AlertType.ERROR, "Failed to update supplier").show();
             }
-        }catch (Exception e) {
-            e.printStackTrace();
-            new Alert(Alert.AlertType.ERROR, "Failed to update supplier").show();
         }
     }
 

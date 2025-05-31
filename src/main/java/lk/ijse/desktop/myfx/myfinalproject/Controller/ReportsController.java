@@ -16,6 +16,7 @@ import lk.ijse.desktop.myfx.myfinalproject.Model.ReportsModel;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class ReportsController implements Initializable {
@@ -83,18 +84,27 @@ public class ReportsController implements Initializable {
             new Alert(Alert.AlertType.WARNING, "Please select a Report from the table or enter an ID to delete.").show();
             return;
         }
-        try {
-            boolean isDeleted = ReportsModel.deleteReports(idToDelete);
-            if (isDeleted) {
-                clearFields();
-                loadTable();
-                new Alert(Alert.AlertType.INFORMATION, "Report Deleted Successfully!").show();
-            } else {
-                new Alert(Alert.AlertType.ERROR, "Failed to delete Report.").show();
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation Dialog");
+        alert.setHeaderText("Delete Report");
+        alert.setContentText("Are you sure you want to delete this report?");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            try {
+                boolean isDeleted = ReportsModel.deleteReports(idToDelete);
+                if (isDeleted) {
+                    clearFields();
+                    loadTable();
+                    new Alert(Alert.AlertType.INFORMATION, "Report Deleted Successfully!").show();
+                } else {
+                    new Alert(Alert.AlertType.ERROR, "Failed to delete Report.").show();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+                new Alert(Alert.AlertType.ERROR, "Error deleting Report: " + e.getMessage()).show();
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            new Alert(Alert.AlertType.ERROR, "Error deleting Report: " + e.getMessage()).show();
         }
     }
 
@@ -158,19 +168,28 @@ public class ReportsController implements Initializable {
 
     @FXML
     public void btnUpdateOnAction(ActionEvent event) {
-        ReportsDto reportsDto= new ReportsDto(lblId.getText(),txtDate.getText(),comUserId.getValue(),txtType.getText(),txtGenerateBy.getText());
-        try {
-            boolean isSave = ReportsModel.updateReports(reportsDto);
-            if (isSave) {
-                clearFields();
-                loadTable();
-                new Alert(Alert.AlertType.INFORMATION, "Report has been updated successfully").show();
-            }else {
+        ReportsDto reportsDto = new ReportsDto(lblId.getText(), txtDate.getText(), comUserId.getValue(), txtType.getText(), txtGenerateBy.getText());
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation Dialog");
+        alert.setHeaderText("Update Report");
+        alert.setContentText("Are you sure you want to update this report?");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            try {
+                boolean isSave = ReportsModel.updateReports(reportsDto);
+                if (isSave) {
+                    clearFields();
+                    loadTable();
+                    new Alert(Alert.AlertType.INFORMATION, "Report has been updated successfully").show();
+                } else {
+                    new Alert(Alert.AlertType.ERROR, "Report could not be updated").show();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
                 new Alert(Alert.AlertType.ERROR, "Report could not be updated").show();
             }
-        }catch (Exception e){
-            e.printStackTrace();
-            new Alert(Alert.AlertType.ERROR, "Report could not be updated").show();
         }
     }
 

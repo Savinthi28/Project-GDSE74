@@ -17,6 +17,7 @@ import lk.ijse.desktop.myfx.myfinalproject.Model.RawMaterialPurchaseModel;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class RawMaterialPurchaseController implements Initializable {
@@ -93,18 +94,27 @@ public class RawMaterialPurchaseController implements Initializable {
     @FXML
     public void btnDeleteOnAction(ActionEvent event) {
         String id = lblId.getText();
-        try {
-            boolean isDelete = new RawMaterialPurchaseModel().deleteRawMaterialPurchase(new RawMaterialPurchaseDto(id));
-            if (isDelete) {
-                clearFields();
-                loadTable();
-                new Alert(Alert.AlertType.INFORMATION, "Delete Saved").show();
-            }else {
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation Dialog");
+        alert.setHeaderText("Delete Raw Material Purchase");
+        alert.setContentText("Are you sure you want to delete Raw Material Purchase?");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            try {
+                boolean isDelete = new RawMaterialPurchaseModel().deleteRawMaterialPurchase(new RawMaterialPurchaseDto(id));
+                if (isDelete) {
+                    clearFields();
+                    loadTable();
+                    new Alert(Alert.AlertType.INFORMATION, "Delete Saved").show();
+                } else {
+                    new Alert(Alert.AlertType.ERROR, "Delete Not Saved").show();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
                 new Alert(Alert.AlertType.ERROR, "Delete Not Saved").show();
             }
-        }catch (Exception e){
-            e.printStackTrace();
-            new Alert(Alert.AlertType.ERROR, "Delete Not Saved").show();
         }
     }
 
@@ -172,21 +182,30 @@ public class RawMaterialPurchaseController implements Initializable {
 
     @FXML
     public void btnUpdateOnAction(ActionEvent event) {
-        int quantity=Integer.parseInt(txtQuantity.getText());
-        double price=Double.parseDouble(txtPrice.getText());
-        RawMaterialPurchaseDto rawMaterialPurchaseDto = new RawMaterialPurchaseDto(lblId.getText(),comSupplierId.getValue(),txtMaterialName.getText(),txtDate.getText(),quantity,price);
-        try {
-            boolean isSave = RawMaterialPurchaseModel.updateRawMaterialPurchase(rawMaterialPurchaseDto);
-            if(isSave){
-                clearFields();
-                loadTable();
-                new Alert(Alert.AlertType.INFORMATION,"Updated Successfully", ButtonType.OK).show();
-            }else {
+        int quantity = Integer.parseInt(txtQuantity.getText());
+        double price = Double.parseDouble(txtPrice.getText());
+        RawMaterialPurchaseDto rawMaterialPurchaseDto = new RawMaterialPurchaseDto(lblId.getText(), comSupplierId.getValue(), txtMaterialName.getText(), txtDate.getText(), quantity, price);
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation Dialog");
+        alert.setHeaderText("Update Raw Material Purchase");
+        alert.setContentText("Are you sure you want to update Raw Material Purchase?");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            try {
+                boolean isSave = RawMaterialPurchaseModel.updateRawMaterialPurchase(rawMaterialPurchaseDto);
+                if (isSave) {
+                    clearFields();
+                    loadTable();
+                    new Alert(Alert.AlertType.INFORMATION, "Updated Successfully", ButtonType.OK).show();
+                } else {
+                    new Alert(Alert.AlertType.ERROR, "Update Failed", ButtonType.OK).show();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
                 new Alert(Alert.AlertType.ERROR, "Update Failed", ButtonType.OK).show();
             }
-        }catch (Exception e){
-            e.printStackTrace();
-            new Alert(Alert.AlertType.ERROR, "Update Failed", ButtonType.OK).show();
         }
     }
 

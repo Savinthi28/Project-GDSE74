@@ -15,6 +15,7 @@ import lk.ijse.desktop.myfx.myfinalproject.Model.UserModel;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class UserController implements Initializable {
@@ -54,18 +55,27 @@ public class UserController implements Initializable {
     @FXML
     public void btnDeleteOnAction(ActionEvent event) {
         String id = lblId.getText();
-        try {
-            boolean isDelete = new UserModel().deleteUser(new UserDto(id));
-            if (isDelete) {
-                clearFields();
-                loadTable();
-                new Alert(Alert.AlertType.INFORMATION, "Deleted Successfully").show();
-            }else {
-                new Alert(Alert.AlertType.ERROR, "Something went wrong").show();
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation Dialog");
+        alert.setHeaderText("Delete User");
+        alert.setContentText("Are you sure you want to delete this user?");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            try {
+                boolean isDelete = new UserModel().deleteUser(new UserDto(id));
+                if (isDelete) {
+                    clearFields();
+                    loadTable();
+                    new Alert(Alert.AlertType.INFORMATION, "Deleted Successfully").show();
+                } else {
+                    new Alert(Alert.AlertType.ERROR, "Something went wrong").show();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                new Alert(Alert.AlertType.ERROR, "Something went error").show();
             }
-        }catch (Exception e){
-            e.printStackTrace();
-            new Alert(Alert.AlertType.ERROR, "Something went error").show();
         }
     }
 
@@ -140,18 +150,27 @@ public class UserController implements Initializable {
     @FXML
     public void btnUpdateOnAction(ActionEvent event) {
         UserDto userDto = new UserDto(lblId.getText(), txtName.getText(), txtPassword.getText(), txtEmail.getText());
-        try {
-            boolean isSave = UserModel.updateUser(userDto);
-            if (isSave) {
-                clearFields();
-                loadTable();
-                new Alert(Alert.AlertType.INFORMATION, "User has been updated successfully").show();
-            }else {
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation Dialog");
+        alert.setHeaderText("Update User");
+        alert.setContentText("Are you sure you want to update this user?");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            try {
+                boolean isSave = UserModel.updateUser(userDto);
+                if (isSave) {
+                    clearFields();
+                    loadTable();
+                    new Alert(Alert.AlertType.INFORMATION, "User has been updated successfully").show();
+                } else {
+                    new Alert(Alert.AlertType.ERROR, "User has not been updated").show();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
                 new Alert(Alert.AlertType.ERROR, "User has not been updated").show();
             }
-        }catch (Exception e) {
-            e.printStackTrace();
-            new Alert(Alert.AlertType.ERROR, "User has not been updated").show();
         }
     }
 

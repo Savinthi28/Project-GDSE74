@@ -17,6 +17,7 @@ import lk.ijse.desktop.myfx.myfinalproject.Model.PotsPurchaseModel;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class PotsPurchaseController implements Initializable {
@@ -89,18 +90,27 @@ public class PotsPurchaseController implements Initializable {
     @FXML
     public void btnDeleteOnAction(ActionEvent event) {
         String id = lblId.getText();
-        try {
-            boolean isDelete = new PotsPurchaseModel().deletePotsPurchase(new PotsPurchaseDto(id));
-            if (isDelete) {
-                clearFields();
-                loadTable();
-                new Alert(Alert.AlertType.INFORMATION, "Pots Purchase Deleted Successfully").show();
-            }else {
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation Dialog");
+        alert.setHeaderText("Delete Pots Purchase");
+        alert.setContentText("Are you sure you want to delete pots purchase?");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            try {
+                boolean isDelete = new PotsPurchaseModel().deletePotsPurchase(new PotsPurchaseDto(id));
+                if (isDelete) {
+                    clearFields();
+                    loadTable();
+                    new Alert(Alert.AlertType.INFORMATION, "Pots Purchase Deleted Successfully").show();
+                } else {
+                    new Alert(Alert.AlertType.ERROR, "Pots Purchase Deletion Failed").show();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
                 new Alert(Alert.AlertType.ERROR, "Pots Purchase Deletion Failed").show();
             }
-        }catch (Exception e){
-            e.printStackTrace();
-            new Alert(Alert.AlertType.ERROR, "Pots Purchase Deletion Failed").show();
         }
     }
 
@@ -170,19 +180,28 @@ public class PotsPurchaseController implements Initializable {
         int potsSize = Integer.parseInt(String.valueOf(comPotsSize.getValue()));
         int quantity = Integer.parseInt(txtQuantity.getText());
         double unitPrice = Double.parseDouble(txtUnitPrice.getText());
-        PotsPurchaseDto potsPurchaseDto = new PotsPurchaseDto(lblId.getText(),potsSize,txtDate.getText(),quantity,unitPrice);
-        try {
-            boolean isSave = PotsPurchaseModel.updatePotsPurchase(potsPurchaseDto);
-            if (isSave) {
-                clearFields();
-                loadTable();
-                new Alert(Alert.AlertType.INFORMATION, "Pots Purchase Successfully Updated").show();
-            }else {
-                new Alert(Alert.AlertType.ERROR, "Pots Purchase Failed").show();
+        PotsPurchaseDto potsPurchaseDto = new PotsPurchaseDto(lblId.getText(), potsSize, txtDate.getText(), quantity, unitPrice);
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation Dialog");
+        alert.setHeaderText("Update Pots Purchase");
+        alert.setContentText("Are you sure you want to update pots purchase?");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            try {
+                boolean isSave = PotsPurchaseModel.updatePotsPurchase(potsPurchaseDto);
+                if (isSave) {
+                    clearFields();
+                    loadTable();
+                    new Alert(Alert.AlertType.INFORMATION, "Pots Purchase Successfully Updated").show();
+                } else {
+                    new Alert(Alert.AlertType.ERROR, "Pots Purchase Failed").show();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                new Alert(Alert.AlertType.ERROR, "Pots Purchase Faile").show();
             }
-        }catch (Exception e){
-            e.printStackTrace();
-            new Alert(Alert.AlertType.ERROR, "Pots Purchase Faile").show();
         }
     }
 

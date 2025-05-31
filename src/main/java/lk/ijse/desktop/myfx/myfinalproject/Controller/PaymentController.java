@@ -15,6 +15,7 @@ import lk.ijse.desktop.myfx.myfinalproject.Model.PaymentModel;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class PaymentController implements Initializable {
@@ -66,18 +67,27 @@ public class PaymentController implements Initializable {
     @FXML
     void btnDeleteOnAction(ActionEvent event) {
         String id = lblId.getText();
-        try {
-            boolean isDelete = new PaymentModel().deletePayment(new PaymentDto(id));
-            if (isDelete) {
-                clearFields();
-                loadTable();
-                new Alert(Alert.AlertType.INFORMATION, "Payment Deleted").show();
-            }else {
-                new Alert(Alert.AlertType.ERROR, "Payment Not Deleted").show();
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation Dialog");
+        alert.setHeaderText("Delete Payment");
+        alert.setContentText("Are you sure you want to delete this payment?");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            try {
+                boolean isDelete = new PaymentModel().deletePayment(new PaymentDto(id));
+                if (isDelete) {
+                    clearFields();
+                    loadTable();
+                    new Alert(Alert.AlertType.INFORMATION, "Payment Deleted").show();
+                } else {
+                    new Alert(Alert.AlertType.ERROR, "Payment Not Deleted").show();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                new Alert(Alert.AlertType.ERROR, "Payment Not Delete").show();
             }
-        }catch (Exception e){
-            e.printStackTrace();
-            new Alert(Alert.AlertType.ERROR, "Payment Not Delete").show();
         }
     }
 
@@ -180,19 +190,28 @@ public class PaymentController implements Initializable {
     @FXML
     public void btnUpdateOnAction(ActionEvent event) {
         double amount = Double.parseDouble(txtAmount.getText());
-        PaymentDto paymentDto = new PaymentDto(lblId.getText(),comOrderId.getValue(),comCustomerId.getValue(),txtDate.getText(),comPaymentMethod.getValue(),amount);
-        try {
-            boolean isSave = PaymentModel.updatePayment(paymentDto);
-            if (isSave) {
-                clearFields();
-                loadTable();
-                new Alert(Alert.AlertType.INFORMATION, "Payment Updated Successfully").show();
-            }else {
+        PaymentDto paymentDto = new PaymentDto(lblId.getText(), comOrderId.getValue(), comCustomerId.getValue(), txtDate.getText(), comPaymentMethod.getValue(), amount);
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation Dialog");
+        alert.setHeaderText("Update Payment");
+        alert.setContentText("Are you sure you want to update this payment?");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            try {
+                boolean isSave = PaymentModel.updatePayment(paymentDto);
+                if (isSave) {
+                    clearFields();
+                    loadTable();
+                    new Alert(Alert.AlertType.INFORMATION, "Payment Updated Successfully").show();
+                } else {
+                    new Alert(Alert.AlertType.ERROR, "Payment Not Updated").show();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
                 new Alert(Alert.AlertType.ERROR, "Payment Not Updated").show();
             }
-        }catch (Exception e){
-            e.printStackTrace();
-            new Alert(Alert.AlertType.ERROR, "Payment Not Updated").show();
         }
     }
 

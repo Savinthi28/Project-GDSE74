@@ -18,6 +18,7 @@ import lk.ijse.desktop.myfx.myfinalproject.Model.PotsInventoryModel;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class PotsInventoryController implements Initializable {
@@ -83,18 +84,27 @@ public class PotsInventoryController implements Initializable {
     @FXML
     public void btnDeleteOnAction(ActionEvent event) {
         String id = lblId.getText();
-        try {
-            boolean isDelete = new PotsInventoryModel().deletePotsInventory(new PotsInventoryDto(id));
-            if (isDelete) {
-                clearFields();
-                loadTable();
-                new Alert(Alert.AlertType.INFORMATION, "Pots deleted successfully").show();
-            }else {
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation Dialog");
+        alert.setHeaderText("Delete Pots Inventory");
+        alert.setContentText("Are you sure you want to delete pots inventory?");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            try {
+                boolean isDelete = new PotsInventoryModel().deletePotsInventory(new PotsInventoryDto(id));
+                if (isDelete) {
+                    clearFields();
+                    loadTable();
+                    new Alert(Alert.AlertType.INFORMATION, "Pots deleted successfully").show();
+                } else {
+                    new Alert(Alert.AlertType.ERROR, "Pots not deleted successfully").show();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
                 new Alert(Alert.AlertType.ERROR, "Pots not deleted successfully").show();
             }
-        }catch (Exception e){
-            e.printStackTrace();
-            new Alert(Alert.AlertType.ERROR, "Pots not deleted successfully").show();
         }
     }
 
@@ -161,19 +171,28 @@ public class PotsInventoryController implements Initializable {
     public void btnUpdateOnAction(ActionEvent event) {
         int quantity = Integer.parseInt(txtQuantity.getText());
         int potsSize = Integer.parseInt(String.valueOf(comPotsSize.getValue()));
-        PotsInventoryDto potsInventoryDto = new PotsInventoryDto(lblId.getText(),quantity,potsSize,txtCondition.getText());
-        try {
-            boolean isSave = PotsInventoryModel.updatePotsInventory(potsInventoryDto);
-            if (isSave) {
-                clearFields();
-                loadTable();
-                new Alert(Alert.AlertType.INFORMATION, "Pots updated successfully").show();
-            }else {
-                new Alert(Alert.AlertType.ERROR, "Pots not updated").show();
+        PotsInventoryDto potsInventoryDto = new PotsInventoryDto(lblId.getText(), quantity, potsSize, txtCondition.getText());
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation Dialog");
+        alert.setHeaderText("Update Pots Inventory");
+        alert.setContentText("Are you sure you want to update pots inventory?");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            try {
+                boolean isSave = PotsInventoryModel.updatePotsInventory(potsInventoryDto);
+                if (isSave) {
+                    clearFields();
+                    loadTable();
+                    new Alert(Alert.AlertType.INFORMATION, "Pots updated successfully").show();
+                } else {
+                    new Alert(Alert.AlertType.ERROR, "Pots not updated").show();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                new Alert(Alert.AlertType.ERROR, "Pots not update").show();
             }
-        }catch (Exception e){
-            e.printStackTrace();
-            new Alert(Alert.AlertType.ERROR, "Pots not update").show();
         }
     }
 

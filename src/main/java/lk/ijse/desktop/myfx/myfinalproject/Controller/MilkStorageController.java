@@ -18,13 +18,15 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class MilkStorageController implements Initializable {
 
-    public AnchorPane getAncMilkStorage(){
+    public AnchorPane getAncMilkStorage() {
         return null;
     }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
@@ -91,20 +93,30 @@ public class MilkStorageController implements Initializable {
         String id = lblId.getText();
         Time duration = Time.valueOf(txtDuration.getText());
         double temperature = Double.parseDouble(txtTemperature.getText());
-        try {
-            boolean isDelete = new MilkStorageModel().deleteMilkStorage(new MilkStorageDto(id, comMilkStorage.getValue(), txtDate.getText(), duration, temperature));
-            if (isDelete) {
-                clearField();
-                loadTable();
-                new Alert(Alert.AlertType.INFORMATION, "Milk Storage Deleted Successfully").show();
-            }else {
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation Dialog");
+        alert.setHeaderText("Delete Milk Storage");
+        alert.setContentText("Are you sure you want to delete milk storage?");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            try {
+                boolean isDelete = new MilkStorageModel().deleteMilkStorage(new MilkStorageDto(id, comMilkStorage.getValue(), txtDate.getText(), duration, temperature));
+                if (isDelete) {
+                    clearField();
+                    loadTable();
+                    new Alert(Alert.AlertType.INFORMATION, "Milk Storage Deleted Successfully").show();
+                } else {
+                    new Alert(Alert.AlertType.ERROR, "Milk Storage Deletion Failed").show();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
                 new Alert(Alert.AlertType.ERROR, "Milk Storage Deletion Failed").show();
             }
-        }catch (Exception e){
-            e.printStackTrace();
-            new Alert(Alert.AlertType.ERROR, "Milk Storage Deletion Failed").show();
         }
     }
+
 
     private void loadNextId() throws SQLException {
         MilkStorageModel milkStorageModel = new MilkStorageModel();
@@ -169,19 +181,28 @@ private void loadTable() {
     void btnUpdateOnAction(ActionEvent event) {
         Time duration = Time.valueOf(txtDuration.getText());
         double temperature = Double.parseDouble(txtTemperature.getText());
-        MilkStorageDto milkStorageDto = new MilkStorageDto(lblId.getText(),comMilkStorage.getValue(),txtDate.getText(),duration,temperature);
-        try {
-            boolean isSave = MilkStorageModel.updateMilkStorage(milkStorageDto);
-            if (isSave) {
-                clearField();
-                loadTable();
-                new Alert(Alert.AlertType.INFORMATION, "Milk Storage has been updated successfully").show();
-            }else {
+        MilkStorageDto milkStorageDto = new MilkStorageDto(lblId.getText(), comMilkStorage.getValue(), txtDate.getText(), duration, temperature);
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation Dialog");
+        alert.setHeaderText("Update Milk Storage");
+        alert.setContentText("Are you sure you want to update milk storage?");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            try {
+                boolean isSave = MilkStorageModel.updateMilkStorage(milkStorageDto);
+                if (isSave) {
+                    clearField();
+                    loadTable();
+                    new Alert(Alert.AlertType.INFORMATION, "Milk Storage has been updated successfully").show();
+                } else {
+                    new Alert(Alert.AlertType.ERROR, "Milk Storage has not been updated").show();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
                 new Alert(Alert.AlertType.ERROR, "Milk Storage has not been updated").show();
             }
-        }catch (Exception e){
-            e.printStackTrace();
-            new Alert(Alert.AlertType.ERROR, "Milk Storage has not been updated").show();
         }
     }
 

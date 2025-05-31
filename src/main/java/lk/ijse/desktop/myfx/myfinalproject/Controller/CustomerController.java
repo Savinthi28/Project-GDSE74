@@ -77,18 +77,27 @@ public class CustomerController implements Initializable {
     @FXML
     void btnDeleteOnAction(ActionEvent event) {
         String id = lblId.getText();
-        try {
-            boolean isDelete = new CustomerModel().deleteCustomer(new CustomerDto(id));
-            if (isDelete) {
-                clearFields();
-                loadTable();
-                new Alert(Alert.AlertType.INFORMATION, "Customer has been deleted").show();
-            }else {
-                new Alert(Alert.AlertType.ERROR, "Customer has not been deleted").show();
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation Dialog");
+        alert.setHeaderText("Delete Customer");
+        alert.setContentText("Are you sure you want to delete this customer?");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            try {
+                boolean isDelete = new CustomerModel().deleteCustomer(new CustomerDto(id));
+                if (isDelete) {
+                    clearFields();
+                    loadTable();
+                    new Alert(Alert.AlertType.INFORMATION, "Customer has been deleted").show();
+                } else {
+                    new Alert(Alert.AlertType.ERROR, "Customer has not been deleted").show();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                new Alert(Alert.AlertType.ERROR, "Customer has not been delete").show();
             }
-        }catch (Exception e){
-            e.printStackTrace();
-            new Alert(Alert.AlertType.ERROR, "Customer has not been delete").show();
         }
     }
 
@@ -178,6 +187,14 @@ public class CustomerController implements Initializable {
 
         boolean isValidName = name.matches(namePattern);
         boolean isValidNumber = number.matches(numberPattern);
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation Dialog");
+        alert.setHeaderText("Update Customer");
+        alert.setContentText("Are you sure you want to update this customer?");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
         if (isValidName && isValidNumber) {
             try {
                 boolean isSave = CustomerModel.updateCustomer(customerDto);
@@ -193,6 +210,7 @@ public class CustomerController implements Initializable {
                 new Alert(Alert.AlertType.ERROR, "Customer Not Update").show();
             }
         }
+    }
     }
 
     public void tableOnClick(MouseEvent mouseEvent) {

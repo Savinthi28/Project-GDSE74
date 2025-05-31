@@ -18,6 +18,7 @@ import lk.ijse.desktop.myfx.myfinalproject.Model.CurdProductionModel;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 
@@ -89,21 +90,29 @@ public class CurdProductionController implements Initializable {
         String id = txtProductionDate.getText();
         int quantity = Integer.parseInt(txtQuantity.getText());
         int potsSize = Integer.parseInt(String.valueOf(comPotsSize.getValue()));
-        try {
-            boolean isDelete = new CurdProductionModel().deleteCurdProduction(new CurdProductionDto(lblId.getText(), txtProductionDate.getText(), txtExpiryDate.getText(), quantity, potsSize, txtIngredients.getText(), id));
-            if (isDelete) {
-                clearFields();
-                loadTable();
-                new Alert(Alert.AlertType.INFORMATION, "Deleted").show();
-            }else {
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation Dialog");
+        alert.setHeaderText("Delete production");
+        alert.setContentText("Are you sure you want to delete this production?");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            try {
+                boolean isDelete = new CurdProductionModel().deleteCurdProduction(new CurdProductionDto(lblId.getText(), txtProductionDate.getText(), txtExpiryDate.getText(), quantity, potsSize, txtIngredients.getText(), id));
+                if (isDelete) {
+                    clearFields();
+                    loadTable();
+                    new Alert(Alert.AlertType.INFORMATION, "Deleted").show();
+                } else {
+                    new Alert(Alert.AlertType.ERROR, "Not Deleted").show();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
                 new Alert(Alert.AlertType.ERROR, "Not Deleted").show();
             }
-        }catch (Exception e){
-            e.printStackTrace();
-            new Alert(Alert.AlertType.ERROR, "Not Deleted").show();
         }
     }
-
     private void loadNextId () throws SQLException {
         CurdProductionModel curdProductionModel = new CurdProductionModel();
         String nextId = curdProductionModel.getNextId();
@@ -205,51 +214,59 @@ public class CurdProductionController implements Initializable {
 
     @FXML
     public void btnUpdateOnAction(ActionEvent event) {
-        try {
-            if (txtQuantity.getText().isEmpty() || comPotsSize.getValue() == null) {
-                new Alert(Alert.AlertType.ERROR, "Quantity and Pot Size must be filled!").show();
-                return;
-            }
-            int quantity;
-            int potsSize;
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation Dialog");
+        alert.setHeaderText("Update production");
+        alert.setContentText("Are you sure you want to update this production?");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
             try {
-                quantity = Integer.parseInt(txtQuantity.getText());
-                potsSize = Integer.parseInt(String.valueOf(comPotsSize.getValue()));
-            } catch (NumberFormatException e) {
-                new Alert(Alert.AlertType.ERROR, "Quantity and Pot Size must be numbers!").show();
-                return;
-            }
-            String quantityText = txtQuantity.getText();
-            String ingredients = txtIngredients.getText();
+                if (txtQuantity.getText().isEmpty() || comPotsSize.getValue() == null) {
+                    new Alert(Alert.AlertType.ERROR, "Quantity and Pot Size must be filled!").show();
+                    return;
+                }
+                int quantity;
+                int potsSize;
+                try {
+                    quantity = Integer.parseInt(txtQuantity.getText());
+                    potsSize = Integer.parseInt(String.valueOf(comPotsSize.getValue()));
+                } catch (NumberFormatException e) {
+                    new Alert(Alert.AlertType.ERROR, "Quantity and Pot Size must be numbers!").show();
+                    return;
+                }
+                String quantityText = txtQuantity.getText();
+                String ingredients = txtIngredients.getText();
 
-            boolean isValidQuantity = quantityText.matches(quantityPattern);
-            boolean isValidIngredients = ingredients.matches(ingredientsPattern);
+                boolean isValidQuantity = quantityText.matches(quantityPattern);
+                boolean isValidIngredients = ingredients.matches(ingredientsPattern);
 
-            if (!isValidQuantity && !isValidIngredients) {
-                new Alert(Alert.AlertType.ERROR, "Invalid input format!").show();
-                return;
-            }
+                if (!isValidQuantity && !isValidIngredients) {
+                    new Alert(Alert.AlertType.ERROR, "Invalid input format!").show();
+                    return;
+                }
 
-            CurdProductionDto curdProductionDto = new CurdProductionDto(
-                    lblId.getText(),
-                    txtProductionDate.getText(),
-                    txtExpiryDate.getText(),
-                    quantity,
-                    potsSize,
-                    txtIngredients.getText(),
-                    comStorageId.getValue()
-            );
-            boolean isUpdated = CurdProductionModel.updateCurdProduction(curdProductionDto);
-            if (isUpdated) {
-                clearFields();
-                loadTable();
-                new Alert(Alert.AlertType.INFORMATION, "Updated successfully!").show();
-            } else {
-                new Alert(Alert.AlertType.ERROR, "Update failed!").show();
+                CurdProductionDto curdProductionDto = new CurdProductionDto(
+                        lblId.getText(),
+                        txtProductionDate.getText(),
+                        txtExpiryDate.getText(),
+                        quantity,
+                        potsSize,
+                        txtIngredients.getText(),
+                        comStorageId.getValue()
+                );
+                boolean isUpdated = CurdProductionModel.updateCurdProduction(curdProductionDto);
+                if (isUpdated) {
+                    clearFields();
+                    loadTable();
+                    new Alert(Alert.AlertType.INFORMATION, "Updated successfully!").show();
+                } else {
+                    new Alert(Alert.AlertType.ERROR, "Update failed!").show();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                new Alert(Alert.AlertType.ERROR, "An error occurred: " + e.getMessage()).show();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-            new Alert(Alert.AlertType.ERROR, "An error occurred: " + e.getMessage()).show();
         }
     }
     public void tableOnClick(MouseEvent mouseEvent) {

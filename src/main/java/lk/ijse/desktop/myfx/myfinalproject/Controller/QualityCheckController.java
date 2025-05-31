@@ -17,6 +17,7 @@ import lk.ijse.desktop.myfx.myfinalproject.Model.QualityCheckModel;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class QualityCheckController implements Initializable {
@@ -101,18 +102,27 @@ public class QualityCheckController implements Initializable {
     @FXML
     public void btnDeleteOnAction(ActionEvent event) {
         String id = lblId.getText();
-        try {
-            boolean isDelete = new QualityCheckModel().deleteQualityCheck(new QualityCheckDto(id));
-            if (isDelete) {
-                clearFields();
-                loadTable();
-                new Alert(Alert.AlertType.INFORMATION, "Quality Check Deleted Successfully").show();
-            }else {
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation Dialog");
+        alert.setHeaderText("Delete Quality Check");
+        alert.setContentText("Are you sure you want to delete quality check?");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            try {
+                boolean isDelete = new QualityCheckModel().deleteQualityCheck(new QualityCheckDto(id));
+                if (isDelete) {
+                    clearFields();
+                    loadTable();
+                    new Alert(Alert.AlertType.INFORMATION, "Quality Check Deleted Successfully").show();
+                } else {
+                    new Alert(Alert.AlertType.ERROR, "Quality Check Deletion Failed").show();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
                 new Alert(Alert.AlertType.ERROR, "Quality Check Deletion Failed").show();
             }
-        }catch (Exception e){
-            e.printStackTrace();
-            new Alert(Alert.AlertType.ERROR, "Quality Check Deletion Failed").show();
         }
     }
 
@@ -184,19 +194,28 @@ public class QualityCheckController implements Initializable {
     public void btnUpdateOnAction(ActionEvent event) {
         double fatContent = Double.parseDouble(txtFatContent.getText());
         double temperature = Double.parseDouble(txtTemperature.getText());
-        QualityCheckDto qualityCheckDto = new QualityCheckDto(lblId.getText(),comCollectionId.getValue(),txtAppearance.getText(),fatContent,temperature,txtDate.getText(),txtNotes.getText());
-        try {
-            boolean isSave = QualityCheckModel.updateQualityCheck(qualityCheckDto);
-            if (isSave) {
-                clearFields();
-                loadTable();
-                new Alert(Alert.AlertType.INFORMATION, "Quality Check Updated Successfully").show();
-            }else {
+        QualityCheckDto qualityCheckDto = new QualityCheckDto(lblId.getText(), comCollectionId.getValue(), txtAppearance.getText(), fatContent, temperature, txtDate.getText(), txtNotes.getText());
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation Dialog");
+        alert.setHeaderText("Update Quality Check");
+        alert.setContentText("Are you sure you want to update quality check?");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            try {
+                boolean isSave = QualityCheckModel.updateQualityCheck(qualityCheckDto);
+                if (isSave) {
+                    clearFields();
+                    loadTable();
+                    new Alert(Alert.AlertType.INFORMATION, "Quality Check Updated Successfully").show();
+                } else {
+                    new Alert(Alert.AlertType.ERROR, "Quality Check Not Updated").show();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
                 new Alert(Alert.AlertType.ERROR, "Quality Check Not Updated").show();
             }
-        }catch (Exception e){
-            e.printStackTrace();
-            new Alert(Alert.AlertType.ERROR, "Quality Check Not Updated").show();
         }
     }
 

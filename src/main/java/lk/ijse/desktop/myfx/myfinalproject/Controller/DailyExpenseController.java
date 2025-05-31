@@ -17,6 +17,7 @@ import lk.ijse.desktop.myfx.myfinalproject.Model.DailyExpenseModel;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class DailyExpenseController implements Initializable {
@@ -69,18 +70,26 @@ public class DailyExpenseController implements Initializable {
     @FXML
     void btnDeleteOnAction(ActionEvent event) {
         String id = lblId.getText();
-        try {
-            boolean isDelete = new DailyExpenseModel().deleteDailyExpense(new DailyExpenseDto(id));
-            if (isDelete) {
-                clearFields();
-                loadTable();
-                new Alert(Alert.AlertType.INFORMATION, "Deleted Successfully").show();
-            }else {
-                new Alert(Alert.AlertType.ERROR, "Something went wrong").show();
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation Dialog");
+        alert.setHeaderText("Delete Daily Expense");
+        alert.setContentText("Are you sure you want to delete this daily expense?");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            try {
+                boolean isDelete = new DailyExpenseModel().deleteDailyExpense(new DailyExpenseDto(id));
+                if (isDelete) {
+                    clearFields();
+                    loadTable();
+                    new Alert(Alert.AlertType.INFORMATION, "Deleted Successfully").show();
+                } else {
+                    new Alert(Alert.AlertType.ERROR, "Something went wrong").show();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                new Alert(Alert.AlertType.ERROR, "Something went error").show();
             }
-        }catch (Exception e){
-            e.printStackTrace();
-            new Alert(Alert.AlertType.ERROR, "Something went error").show();
         }
     }
 
@@ -166,19 +175,28 @@ public class DailyExpenseController implements Initializable {
     void btnUpdateOnAction(ActionEvent event) {
         double amount = Double.parseDouble(txtAmount.getText());
         boolean expense = Boolean.parseBoolean(String.valueOf(comExpense.getValue()));
-        DailyExpenseDto dailyExpenseDto = new DailyExpenseDto(lblId.getText(),txtDate.getText(),txtDescription.getText(),amount,expense);
-        try {
-            boolean isSave = DailyExpenseModel.updateDailyExpense(dailyExpenseDto);
-            if (isSave) {
-                clearFields();
-                loadTable();
-                new Alert(Alert.AlertType.INFORMATION,"Updated Successfully").show();
-            }else {
-                new Alert(Alert.AlertType.ERROR,"Failed to update daily expense").show();
+        DailyExpenseDto dailyExpenseDto = new DailyExpenseDto(lblId.getText(), txtDate.getText(), txtDescription.getText(), amount, expense);
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation Dialog");
+        alert.setHeaderText("Update Daily Expense");
+        alert.setContentText("Are you sure you want to update this daily expense?");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            try {
+                boolean isSave = DailyExpenseModel.updateDailyExpense(dailyExpenseDto);
+                if (isSave) {
+                    clearFields();
+                    loadTable();
+                    new Alert(Alert.AlertType.INFORMATION, "Updated Successfully").show();
+                } else {
+                    new Alert(Alert.AlertType.ERROR, "Failed to update daily expense").show();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                new Alert(Alert.AlertType.ERROR, "Failed to add daily expense").show();
             }
-        }catch (Exception e){
-            e.printStackTrace();
-            new Alert(Alert.AlertType.ERROR,"Failed to add daily expense").show();
         }
     }
 
