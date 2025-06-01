@@ -19,6 +19,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.time.LocalDate;
+import java.util.Random;
 
 public class QualityCheckController implements Initializable {
 
@@ -134,9 +136,51 @@ public class QualityCheckController implements Initializable {
 
     @FXML
     public void btnSaveOnAction(ActionEvent event) throws ClassNotFoundException, SQLException {
-        double fatContent = Double.parseDouble(txtFatContent.getText());
-        double temperature = Double.parseDouble(txtTemperature.getText());
-        QualityCheckDto qualityCheckDto = new QualityCheckDto(lblId.getText(),comCollectionId.getValue(),txtAppearance.getText(),fatContent,temperature,txtDate.getText(),txtNotes.getText());
+        String autoAppearance;
+        Random random = new Random();
+        if (random.nextBoolean()) {
+            autoAppearance = "Normal";
+        } else {
+            autoAppearance = "Clotted";
+        }
+        txtAppearance.setText(autoAppearance);
+
+        double fatContent;
+        try {
+            fatContent = txtFatContent.getText().isEmpty() ? 3.5 + (random.nextDouble() * 0.5 - 0.25) : Double.parseDouble(txtFatContent.getText());
+            fatContent = Math.round(fatContent * 100.0) / 100.0;
+        } catch (NumberFormatException e) {
+            fatContent = 3.5 + (random.nextDouble() * 0.5 - 0.25);
+            fatContent = Math.round(fatContent * 100.0) / 100.0;
+        }
+        txtFatContent.setText(String.valueOf(fatContent));
+
+        double temperature;
+        try {
+            temperature = txtTemperature.getText().isEmpty() ? 4.0 + (random.nextDouble() * 2.0 - 1.0) : Double.parseDouble(txtTemperature.getText());
+            temperature = Math.round(temperature * 10.0) / 10.0;
+        } catch (NumberFormatException e) {
+            temperature = 4.0 + (random.nextDouble() * 2.0 - 1.0);
+            temperature = Math.round(temperature * 10.0) / 10.0;
+        }
+        txtTemperature.setText(String.valueOf(temperature));
+
+        String date = txtDate.getText().isEmpty() ? LocalDate.now().toString() : txtDate.getText();
+        txtDate.setText(date);
+
+        String notes = txtNotes.getText().isEmpty() ? "Auto-generated quality check." : txtNotes.getText();
+        txtNotes.setText(notes);
+
+
+        QualityCheckDto qualityCheckDto = new QualityCheckDto(
+                lblId.getText(),
+                comCollectionId.getValue(),
+                txtAppearance.getText(),
+                Double.parseDouble(txtFatContent.getText()),
+                Double.parseDouble(txtTemperature.getText()),
+                txtDate.getText(),
+                txtNotes.getText()
+        );
 
         try {
             QualityCheckModel qualityCheckModel = new QualityCheckModel();
@@ -152,10 +196,11 @@ public class QualityCheckController implements Initializable {
             new Alert(Alert.AlertType.ERROR, "Quality Check Not Saved").show();
         }
     }
+
     private void clearFields() throws SQLException {
         loadTable();
         lblId.setText("");
-        comCollectionId.setValue("");
+        comCollectionId.setValue(null);
         txtAppearance.setText("");
         txtFatContent.setText("");
         txtTemperature.setText("");
@@ -167,6 +212,7 @@ public class QualityCheckController implements Initializable {
             lblId.setText(lblId.getText());
         });
     }
+
     private void loadTable() {
         colCheckId.setCellValueFactory(new PropertyValueFactory<>("checkId"));
         colCollectionId.setCellValueFactory(new PropertyValueFactory<>("collectionId"));
