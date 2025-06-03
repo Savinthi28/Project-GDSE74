@@ -36,7 +36,7 @@ public class ForgotPasswordController {
             UserDto userDto = userModel.getUserByEmail(email);
 
             if (userDto != null) {
-                String subject = "MyFinalProject Password Reset";
+                String subject = "Password Reset By CURD MATE";
                 String body = "Lovely" + userDto.getUserName() + ",\n\nYour Password " + userDto.getPassword() + "\n\nCongratulations,\nMyFinalProject ";
 
                 boolean emailSent = EmailSender.sendEmail(email, subject, body);

@@ -23,7 +23,7 @@
             <Insets bottom="25.0" left="30.0" right="30.0" top="25.0" />
          </padding>
          <children>
-            <HBox alignment="CENTER" prefHeight="70.0" style="-fx-background-color: #4a6fa5; -fx-background-radius: 8;">
+            <HBox alignment="CENTER" prefHeight="77.0" prefWidth="1340.0" style="-fx-background-color: #4a6fa5; -fx-background-radius: 8;">
                <children>
                   <Label style="-fx-font-weight: bold; -fx-text-fill: WHITE;" text="Reports Management">
                      <font>
