@@ -1,6 +1,5 @@
 package lk.ijse.desktop.myfx.myfinalproject.Controller;
 
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -9,6 +8,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import lk.ijse.desktop.myfx.myfinalproject.Dto.QualityCheckDto;
@@ -16,11 +16,11 @@ import lk.ijse.desktop.myfx.myfinalproject.Model.QualityCheckModel;
 
 import java.net.URL;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Optional;
-import java.util.ResourceBundle;
-import java.time.LocalDate;
 import java.util.Random;
+import java.util.ResourceBundle;
 
 public class QualityCheckController implements Initializable {
 
@@ -32,17 +32,16 @@ public class QualityCheckController implements Initializable {
         try {
             loadNextId();
             loadQualityCollectionId();
+            setupTableColumns();
             clearFields();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Error initializing controller: " + e.getMessage(), e);
         }
-        loadTable();
     }
 
     private void loadQualityCollectionId() throws SQLException {
         ArrayList<String> collectionId = QualityCheckModel.getAllQualityCollectionId();
         ObservableList<String> observableList = FXCollections.observableArrayList(collectionId);
-        observableList.addAll(collectionId);
         comCollectionId.setItems(observableList);
     }
 
@@ -96,6 +95,10 @@ public class QualityCheckController implements Initializable {
     @FXML
     private TextField txtTemperature;
 
+    private final String doublePattern = "^\\d+(\\.\\d{1,2})?$";
+    private final String datePattern = "^\\d{4}-\\d{2}-\\d{2}$";
+    private final String notesPattern = "^[a-zA-Z0-9.,\\- ]{0,255}$";
+
     @FXML
     void btnClearOnAction(ActionEvent event) throws SQLException {
         clearFields();
@@ -105,25 +108,29 @@ public class QualityCheckController implements Initializable {
     public void btnDeleteOnAction(ActionEvent event) {
         String id = lblId.getText();
 
+        if (id == null || id.isEmpty() || id.equals("Auto Generated")) {
+            new Alert(Alert.AlertType.WARNING, "Please select a quality check record to delete from the table.").show();
+            return;
+        }
+
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirmation Dialog");
         alert.setHeaderText("Delete Quality Check");
-        alert.setContentText("Are you sure you want to delete quality check?");
+        alert.setContentText("Are you sure you want to delete this quality check record?");
 
         Optional<ButtonType> result = alert.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
             try {
-                boolean isDelete = new QualityCheckModel().deleteQualityCheck(new QualityCheckDto(id));
-                if (isDelete) {
+                boolean isDeleted = new QualityCheckModel().deleteQualityCheck(new QualityCheckDto(id, null, null, 0.0, 0.0, null, null));
+                if (isDeleted) {
                     clearFields();
-                    loadTable();
-                    new Alert(Alert.AlertType.INFORMATION, "Quality Check Deleted Successfully").show();
+                    new Alert(Alert.AlertType.INFORMATION, "Quality Check record deleted successfully!").show();
                 } else {
-                    new Alert(Alert.AlertType.ERROR, "Quality Check Deletion Failed").show();
+                    new Alert(Alert.AlertType.ERROR, "Failed to delete quality check record.").show();
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                new Alert(Alert.AlertType.ERROR, "Quality Check Deletion Failed").show();
+                new Alert(Alert.AlertType.ERROR, "An error occurred during deletion: " + e.getMessage()).show();
             }
         }
     }
@@ -135,33 +142,29 @@ public class QualityCheckController implements Initializable {
     }
 
     @FXML
-    public void btnSaveOnAction(ActionEvent event) throws ClassNotFoundException, SQLException {
-        String autoAppearance;
-        Random random = new Random();
-        if (random.nextBoolean()) {
-            autoAppearance = "Normal";
-        } else {
-            autoAppearance = "Clotted";
-        }
+    public void btnSaveOnAction(ActionEvent event) {
+        String autoAppearance = txtAppearance.getText().isEmpty() ? (new Random().nextBoolean() ? "Normal" : "Clotted") : txtAppearance.getText();
         txtAppearance.setText(autoAppearance);
 
         double fatContent;
         try {
-            fatContent = txtFatContent.getText().isEmpty() ? 3.5 + (random.nextDouble() * 0.5 - 0.25) : Double.parseDouble(txtFatContent.getText());
+            fatContent = txtFatContent.getText().isEmpty() ? 3.5 + (new Random().nextDouble() * 0.5 - 0.25) : Double.parseDouble(txtFatContent.getText());
             fatContent = Math.round(fatContent * 100.0) / 100.0;
         } catch (NumberFormatException e) {
-            fatContent = 3.5 + (random.nextDouble() * 0.5 - 0.25);
+            fatContent = 3.5 + (new Random().nextDouble() * 0.5 - 0.25);
             fatContent = Math.round(fatContent * 100.0) / 100.0;
+            new Alert(Alert.AlertType.WARNING, "Invalid Fat Content input. Auto-generating value.").show();
         }
         txtFatContent.setText(String.valueOf(fatContent));
 
         double temperature;
         try {
-            temperature = txtTemperature.getText().isEmpty() ? 4.0 + (random.nextDouble() * 2.0 - 1.0) : Double.parseDouble(txtTemperature.getText());
+            temperature = txtTemperature.getText().isEmpty() ? 4.0 + (new Random().nextDouble() * 2.0 - 1.0) : Double.parseDouble(txtTemperature.getText());
             temperature = Math.round(temperature * 10.0) / 10.0;
         } catch (NumberFormatException e) {
-            temperature = 4.0 + (random.nextDouble() * 2.0 - 1.0);
+            temperature = 4.0 + (new Random().nextDouble() * 2.0 - 1.0);
             temperature = Math.round(temperature * 10.0) / 10.0;
+            new Alert(Alert.AlertType.WARNING, "Invalid Temperature input. Auto-generating value.").show();
         }
         txtTemperature.setText(String.valueOf(temperature));
 
@@ -171,49 +174,60 @@ public class QualityCheckController implements Initializable {
         String notes = txtNotes.getText().isEmpty() ? "Auto-generated quality check." : txtNotes.getText();
         txtNotes.setText(notes);
 
+        boolean isCollectionIdSelected = comCollectionId.getValue() != null && !comCollectionId.getValue().isEmpty();
+        boolean isValidFatContent = txtFatContent.getText().matches(doublePattern);
+        boolean isValidTemperature = txtTemperature.getText().matches(doublePattern);
+        boolean isValidDate = txtDate.getText().matches(datePattern);
+        boolean isValidNotes = txtNotes.getText().matches(notesPattern);
 
-        QualityCheckDto qualityCheckDto = new QualityCheckDto(
-                lblId.getText(),
-                comCollectionId.getValue(),
-                txtAppearance.getText(),
-                Double.parseDouble(txtFatContent.getText()),
-                Double.parseDouble(txtTemperature.getText()),
-                txtDate.getText(),
-                txtNotes.getText()
-        );
 
-        try {
-            QualityCheckModel qualityCheckModel = new QualityCheckModel();
-            boolean isSaved = qualityCheckModel.saveQualityCheck(qualityCheckDto);
-            if (isSaved) {
-                clearFields();
-                new Alert(Alert.AlertType.INFORMATION, "Quality Check Saved").show();
-            }else {
-                new Alert(Alert.AlertType.ERROR, "Quality Check Not Saved").show();
+        if (isCollectionIdSelected && isValidFatContent && isValidTemperature && isValidDate && isValidNotes) {
+            try {
+                QualityCheckDto qualityCheckDto = new QualityCheckDto(
+                        lblId.getText(),
+                        comCollectionId.getValue(),
+                        txtAppearance.getText(),
+                        Double.parseDouble(txtFatContent.getText()),
+                        Double.parseDouble(txtTemperature.getText()),
+                        txtDate.getText(),
+                        txtNotes.getText()
+                );
+
+                QualityCheckModel qualityCheckModel = new QualityCheckModel();
+                boolean isSaved = qualityCheckModel.saveQualityCheck(qualityCheckDto);
+                if (isSaved) {
+                    clearFields();
+                    new Alert(Alert.AlertType.INFORMATION, "Quality Check saved successfully!").show();
+                } else {
+                    new Alert(Alert.AlertType.ERROR, "Failed to save quality check.").show();
+                }
+            } catch (NumberFormatException e) {
+                new Alert(Alert.AlertType.ERROR, "Invalid number format in Fat Content or Temperature fields.").show();
+            } catch (Exception e) {
+                e.printStackTrace();
+                new Alert(Alert.AlertType.ERROR, "Failed to save quality check due to a database error: " + e.getMessage()).show();
             }
-        }catch (Exception e){
-            e.printStackTrace();
-            new Alert(Alert.AlertType.ERROR, "Quality Check Not Saved").show();
+        } else {
+            new Alert(Alert.AlertType.WARNING, "Please ensure all fields are filled correctly. (Fat Content/Temperature: numbers, Date: YYYY-MM-DD, Notes: alphanumeric with common punctuation).").show();
+            applyValidationStyles();
         }
     }
 
     private void clearFields() throws SQLException {
-        loadTable();
         lblId.setText("");
-        comCollectionId.setValue(null);
+        comCollectionId.getSelectionModel().clearSelection();
         txtAppearance.setText("");
         txtFatContent.setText("");
         txtTemperature.setText("");
         txtDate.setText("");
         txtNotes.setText("");
+        resetValidationStyles();
 
         loadNextId();
-        Platform.runLater(()-> {
-            lblId.setText(lblId.getText());
-        });
+        loadTable();
     }
 
-    private void loadTable() {
+    private void setupTableColumns() {
         colCheckId.setCellValueFactory(new PropertyValueFactory<>("checkId"));
         colCollectionId.setCellValueFactory(new PropertyValueFactory<>("collectionId"));
         colAppearance.setCellValueFactory(new PropertyValueFactory<>("appearance"));
@@ -221,52 +235,76 @@ public class QualityCheckController implements Initializable {
         colTemperature.setCellValueFactory(new PropertyValueFactory<>("temperature"));
         colDate.setCellValueFactory(new PropertyValueFactory<>("date"));
         colNotes.setCellValueFactory(new PropertyValueFactory<>("notes"));
+    }
 
+    private void loadTable() {
         try {
             QualityCheckModel qualityCheckModel = new QualityCheckModel();
             ArrayList<QualityCheckDto> qualityCheckDtos = qualityCheckModel.viewAllQualityCheck();
             if (qualityCheckDtos != null) {
                 ObservableList<QualityCheckDto> observableList = FXCollections.observableArrayList(qualityCheckDtos);
                 tblQualityCheck.setItems(observableList);
-            }else {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
+            } else {
+                tblQualityCheck.setItems(FXCollections.emptyObservableList());
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR, "Error loading quality check data into table.").show();
         }
     }
 
     @FXML
     public void btnUpdateOnAction(ActionEvent event) {
-        double fatContent = Double.parseDouble(txtFatContent.getText());
-        double temperature = Double.parseDouble(txtTemperature.getText());
-        QualityCheckDto qualityCheckDto = new QualityCheckDto(lblId.getText(), comCollectionId.getValue(), txtAppearance.getText(), fatContent, temperature, txtDate.getText(), txtNotes.getText());
 
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Confirmation Dialog");
-        alert.setHeaderText("Update Quality Check");
-        alert.setContentText("Are you sure you want to update quality check?");
+        boolean isCollectionIdSelected = comCollectionId.getValue() != null && !comCollectionId.getValue().isEmpty();
+        boolean isValidFatContent = txtFatContent.getText().matches(doublePattern);
+        boolean isValidTemperature = txtTemperature.getText().matches(doublePattern);
+        boolean isValidDate = txtDate.getText().matches(datePattern);
+        boolean isValidNotes = txtNotes.getText().matches(notesPattern);
 
-        Optional<ButtonType> result = alert.showAndWait();
-        if (result.isPresent() && result.get() == ButtonType.OK) {
-            try {
-                boolean isSave = QualityCheckModel.updateQualityCheck(qualityCheckDto);
-                if (isSave) {
-                    clearFields();
-                    loadTable();
-                    new Alert(Alert.AlertType.INFORMATION, "Quality Check Updated Successfully").show();
-                } else {
-                    new Alert(Alert.AlertType.ERROR, "Quality Check Not Updated").show();
+        if (isCollectionIdSelected && isValidFatContent && isValidTemperature && isValidDate && isValidNotes) {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Confirmation Dialog");
+            alert.setHeaderText("Update Quality Check");
+            alert.setContentText("Are you sure you want to update this quality check record?");
+
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.isPresent() && result.get() == ButtonType.OK) {
+                try {
+                    double fatContent = Double.parseDouble(txtFatContent.getText());
+                    double temperature = Double.parseDouble(txtTemperature.getText());
+                    QualityCheckDto qualityCheckDto = new QualityCheckDto(
+                            lblId.getText(),
+                            comCollectionId.getValue(),
+                            txtAppearance.getText(),
+                            fatContent,
+                            temperature,
+                            txtDate.getText(),
+                            txtNotes.getText()
+                    );
+
+                    boolean isUpdated = QualityCheckModel.updateQualityCheck(qualityCheckDto);
+                    if (isUpdated) {
+                        clearFields();
+                        new Alert(Alert.AlertType.INFORMATION, "Quality Check updated successfully!").show();
+                    } else {
+                        new Alert(Alert.AlertType.ERROR, "Failed to update quality check.").show();
+                    }
+                } catch (NumberFormatException e) {
+                    new Alert(Alert.AlertType.ERROR, "Invalid number format in Fat Content or Temperature fields.").show();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    new Alert(Alert.AlertType.ERROR, "An error occurred during update: " + e.getMessage()).show();
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
-                new Alert(Alert.AlertType.ERROR, "Quality Check Not Updated").show();
             }
+        } else {
+            new Alert(Alert.AlertType.WARNING, "Please ensure all fields are filled correctly (Fat Content/Temperature: numbers, Date: YYYY-MM-DD, Notes: alphanumeric with common punctuation).").show();
+            applyValidationStyles();
         }
     }
 
     public void tableOnClick(MouseEvent mouseEvent) {
-        QualityCheckDto qualityCheckDto = (QualityCheckDto) tblQualityCheck.getSelectionModel().getSelectedItem();
+        QualityCheckDto qualityCheckDto = tblQualityCheck.getSelectionModel().getSelectedItem();
         if (qualityCheckDto != null) {
             lblId.setText(qualityCheckDto.getCheckId());
             comCollectionId.setValue(qualityCheckDto.getCollectionId());
@@ -275,6 +313,7 @@ public class QualityCheckController implements Initializable {
             txtTemperature.setText(String.valueOf(qualityCheckDto.getTemperature()));
             txtDate.setText(String.valueOf(qualityCheckDto.getDate()));
             txtNotes.setText(String.valueOf(qualityCheckDto.getNotes()));
+            resetValidationStyles();
         }
     }
 
@@ -282,18 +321,17 @@ public class QualityCheckController implements Initializable {
         navigateTo("/View/MilkCollectionView.fxml");
     }
 
-    private <Sring> void navigateTo(Sring path){
+    private void navigateTo(String path){
         try {
             ancQualityCheck.getChildren().clear();
-            AnchorPane anchorPane = FXMLLoader.load(getClass().getResource((String) path));
+            AnchorPane anchorPane = FXMLLoader.load(getClass().getResource(path));
 
             anchorPane.prefWidthProperty().bind(ancQualityCheck.widthProperty());
             anchorPane.prefHeightProperty().bind(ancQualityCheck.heightProperty());
             ancQualityCheck.getChildren().add(anchorPane);
         }catch (Exception e){
             e.printStackTrace();
-            new Alert(Alert.AlertType.ERROR, "Something went wrong", ButtonType.OK).show();
-
+            new Alert(Alert.AlertType.ERROR, "Something went wrong: " + e.getMessage(), ButtonType.OK).show();
         }
     }
     public void btnGoToMilkStorageOnAction(ActionEvent actionEvent) {
@@ -305,7 +343,67 @@ public class QualityCheckController implements Initializable {
     }
 
     public void comCollectionIdOnAction(ActionEvent actionEvent) {
-        String selectedCollectionId = (String) comCollectionId.getSelectionModel().getSelectedItem();
-        System.out.println(selectedCollectionId);
+        String selectedCollectionId = comCollectionId.getValue();
+        if (selectedCollectionId != null && !selectedCollectionId.isEmpty()) {
+            comCollectionId.setStyle("-fx-background-radius: 5; -fx-border-color: green; -fx-border-radius: 5;");
+        } else {
+            comCollectionId.setStyle("-fx-background-radius: 5; -fx-border-color: red; -fx-border-radius: 5;");
+        }
+    }
+
+    public void txtFatContentChange(KeyEvent keyEvent) {
+        String fatContent = txtFatContent.getText();
+        boolean isValid = fatContent.matches(doublePattern);
+        if (isValid) {
+            txtFatContent.setStyle("-fx-background-radius: 5; -fx-border-color: green; -fx-border-radius: 5;");
+        } else {
+            txtFatContent.setStyle("-fx-background-radius: 5; -fx-border-color: red; -fx-border-radius: 5;");
+        }
+    }
+
+    public void txtTemperatureChange(KeyEvent keyEvent) {
+        String temperature = txtTemperature.getText();
+        boolean isValid = temperature.matches(doublePattern);
+        if (isValid) {
+            txtTemperature.setStyle("-fx-background-radius: 5; -fx-border-color: green; -fx-border-radius: 5;");
+        } else {
+            txtTemperature.setStyle("-fx-background-radius: 5; -fx-border-color: red; -fx-border-radius: 5;");
+        }
+    }
+
+    public void txtDateChange(KeyEvent keyEvent) {
+        String date = txtDate.getText();
+        boolean isValid = date.matches(datePattern);
+        if (isValid) {
+            txtDate.setStyle("-fx-background-radius: 5; -fx-border-color: green; -fx-border-radius: 5;");
+        } else {
+            txtDate.setStyle("-fx-background-radius: 5; -fx-border-color: red; -fx-border-radius: 5;");
+        }
+    }
+
+    public void txtNotesChange(KeyEvent keyEvent) {
+        String notes = txtNotes.getText();
+        boolean isValid = notes.matches(notesPattern);
+        if (isValid) {
+            txtNotes.setStyle("-fx-background-radius: 5; -fx-border-color: green; -fx-border-radius: 5;");
+        } else {
+            txtNotes.setStyle("-fx-background-radius: 5; -fx-border-color: red; -fx-border-radius: 5;");
+        }
+    }
+
+    private void applyValidationStyles() {
+        comCollectionIdOnAction(null);
+        txtFatContentChange(null);
+        txtTemperatureChange(null);
+        txtDateChange(null);
+        txtNotesChange(null);
+    }
+
+    private void resetValidationStyles() {
+        comCollectionId.setStyle("-fx-background-radius: 5; -fx-border-color: #cccccc; -fx-border-radius: 5;");
+        txtFatContent.setStyle("-fx-background-radius: 5; -fx-border-color: #cccccc; -fx-border-radius: 5;");
+        txtTemperature.setStyle("-fx-background-radius: 5; -fx-border-color: #cccccc; -fx-border-radius: 5;");
+        txtDate.setStyle("-fx-background-radius: 5; -fx-border-color: #cccccc; -fx-border-radius: 5;");
+        txtNotes.setStyle("-fx-background-radius: 5; -fx-border-color: #cccccc; -fx-border-radius: 5;");
     }
 }

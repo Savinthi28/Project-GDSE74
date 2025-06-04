@@ -85,21 +85,21 @@
                         <Font size="16.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="txtName" promptText="Enter supplier name" style="-fx-background-radius: 5; -fx-border-color: #cccccc; -fx-border-radius: 5;" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <TextField fx:id="txtName" onKeyReleased="#txtNameChange" promptText="Enter supplier name" style="-fx-background-radius: 5; -fx-border-color: #cccccc; -fx-border-radius: 5;" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
                   <Label style="-fx-font-weight: bold;" text="Contact Number:" GridPane.rowIndex="2">
                      <font>
                         <Font size="16.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="txtNumber" promptText="e.g., 07XXXXXXXX" style="-fx-background-radius: 5; -fx-border-color: #cccccc; -fx-border-radius: 5;" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <TextField fx:id="txtNumber" onKeyReleased="#txtNumberChange" promptText="e.g., 07XXXXXXXX" style="-fx-background-radius: 5; -fx-border-color: #cccccc; -fx-border-radius: 5;" GridPane.columnIndex="1" GridPane.rowIndex="2" />
 
                   <Label style="-fx-font-weight: bold;" text="Address:" GridPane.rowIndex="3">
                      <font>
                         <Font size="16.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="txtAddress" promptText="Enter supplier address" style="-fx-background-radius: 5; -fx-border-color: #cccccc; -fx-border-radius: 5;" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                  <TextField fx:id="txtAddress" onKeyReleased="#txtAddressChange" promptText="Enter supplier address" style="-fx-background-radius: 5; -fx-border-color: #cccccc; -fx-border-radius: 5;" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                </GridPane>
             </VBox>
 

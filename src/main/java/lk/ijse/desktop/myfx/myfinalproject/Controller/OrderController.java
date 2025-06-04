@@ -8,7 +8,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import lk.ijse.desktop.myfx.myfinalproject.DBConnection.DBConnection;
 import lk.ijse.desktop.myfx.myfinalproject.Dto.CurdProductionDto;
+import lk.ijse.desktop.myfx.myfinalproject.Dto.CustomerDto;
 import lk.ijse.desktop.myfx.myfinalproject.Dto.OrderDetailsDto;
 import lk.ijse.desktop.myfx.myfinalproject.Dto.OrderDto;
 import lk.ijse.desktop.myfx.myfinalproject.Dto.TM.CartTM;
@@ -118,11 +120,12 @@ public class OrderController implements Initializable {
         clearFields();
     }
 
-    private void loadNextId () throws SQLException {
+    private void loadNextId() throws SQLException {
         OrderModel orderModel = new OrderModel();
         String id = orderModel.getNextId();
         lblID.setText(id);
     }
+
     public void comCustomerOnAction(ActionEvent actionEvent) throws SQLException {
         String selectedCustomerId = comCustomerID.getSelectionModel().getSelectedItem();
         if (selectedCustomerId != null && !selectedCustomerId.isEmpty()) {
@@ -141,7 +144,7 @@ public class OrderController implements Initializable {
         System.out.println(selectedCustomerId);
     }
 
-    private void clearFields(){
+    private void clearFields() {
         comCustomerID.getSelectionModel().clearSelection();
         comProductionId.getSelectionModel().clearSelection();
         lblCustomerName.setText("");
@@ -163,17 +166,17 @@ public class OrderController implements Initializable {
             String selectedItemId = comProductionId.getValue();
             String cartQtyString = txtQuantity.getText();
 
-            if (selectedItemId == null || selectedItemId.isEmpty()){
+            if (selectedItemId == null || selectedItemId.isEmpty()) {
                 new Alert(Alert.AlertType.WARNING, "Please select a production item").show();
                 return;
             }
-            if (!cartQtyString.matches("^[0-9]+$") || cartQtyString.isEmpty()){
+            if (!cartQtyString.matches("^[0-9]+$") || cartQtyString.isEmpty()) {
                 new Alert(Alert.AlertType.WARNING, "Please enter a valid quantity (numbers only)").show();
                 return;
             }
             int cartQty = Integer.parseInt(cartQtyString);
 
-            if (cartQty <= 0){
+            if (cartQty <= 0) {
                 new Alert(Alert.AlertType.WARNING, "Quantity must be positive").show();
                 return;
             }
@@ -197,13 +200,13 @@ public class OrderController implements Initializable {
 
             double total = unitPrice * cartQty;
 
-            for(CartTM existingItem : cartData){
-                if(existingItem.getProductionId().equals(selectedItemId)){
+            for (CartTM existingItem : cartData) {
+                if (existingItem.getProductionId().equals(selectedItemId)) {
                     int newQty = existingItem.getQty() + cartQty;
 
                     int originalStock = currentAvailableQty + existingItem.getQty();
 
-                    if (newQty > originalStock){
+                    if (newQty > originalStock) {
                         new Alert(Alert.AlertType.WARNING, "Cannot add more than available stock. Available: " +
                                 (originalStock - existingItem.getQty())).show();
                         return;
@@ -216,7 +219,7 @@ public class OrderController implements Initializable {
                     return;
                 }
             }
-            if (cartQty > currentAvailableQty){
+            if (cartQty > currentAvailableQty) {
                 new Alert(Alert.AlertType.WARNING, "Cannot add more than available stock. Available: " + currentAvailableQty).show();
                 return;
             }
@@ -244,18 +247,18 @@ public class OrderController implements Initializable {
             txtQuantity.clear();
             table.refresh();
 
-        }catch (Exception e){
+        } catch (Exception e) {
             new Alert(Alert.AlertType.ERROR, "Something went wrong adding to cart: " + e.getMessage()).show();
             e.printStackTrace();
         }
     }
 
     public void btnPlaceOrder0nAction(ActionEvent actionEvent) {
-        if (table.getItems().isEmpty()){
+        if (table.getItems().isEmpty()) {
             new Alert(Alert.AlertType.WARNING, "Please add items to the cart before placing an order.").show();
             return;
         }
-        if (comCustomerID.getValue() == null || comCustomerID.getValue().isEmpty()){
+        if (comCustomerID.getValue() == null || comCustomerID.getValue().isEmpty()) {
             new Alert(Alert.AlertType.WARNING, "Please select a customer ID.").show();
             return;
         }
@@ -267,7 +270,7 @@ public class OrderController implements Initializable {
         ArrayList<OrderDetailsDto> cartList = new ArrayList<>();
         int orderTotalQuantity = 0;
 
-        for (CartTM cartTM : cartData){
+        for (CartTM cartTM : cartData) {
             orderTotalQuantity += cartTM.getQty();
             OrderDetailsDto orderDetailsDto = new OrderDetailsDto(
                     orderId,
@@ -288,13 +291,13 @@ public class OrderController implements Initializable {
         );
         try {
             boolean isPlaced = OrderModel.placeOrder(orderDto);
-            if(isPlaced){
+            if (isPlaced) {
                 new Alert(Alert.AlertType.INFORMATION, "Order Placed Successfully!").show();
                 clearFields();
-            }else {
+            } else {
                 new Alert(Alert.AlertType.ERROR, "Order Not Placed. Please check details.").show();
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             new Alert(Alert.AlertType.ERROR, "An error occurred while placing the order: " + e.getMessage()).show();
         }
@@ -311,9 +314,9 @@ public class OrderController implements Initializable {
     public void comProductionIdOnAction(ActionEvent actionEvent) throws SQLException, ClassNotFoundException {
 
         String selectedItemId = comProductionId.getValue();
-        if (selectedItemId != null && !selectedItemId.isEmpty()){
+        if (selectedItemId != null && !selectedItemId.isEmpty()) {
             CurdProductionDto product = CurdProductionModel.findById(selectedItemId);
-            if (product != null){
+            if (product != null) {
                 lblItemName.setText(String.valueOf(product.getPotsSize()));
                 lblItemQty.setText(String.valueOf(product.getQuantity()));
 

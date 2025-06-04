@@ -63,7 +63,6 @@
                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   </rowConstraints>
 
                   <Label style="-fx-font-weight: bold;" text="Storage ID:">
@@ -89,21 +88,21 @@
                         <Font size="16.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="txtDate" promptText="YYYY-MM-DD" style="-fx-background-radius: 5; -fx-border-color: #cccccc; -fx-border-radius: 5;" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <TextField fx:id="txtDate" onKeyReleased="#txtDateChange" promptText="YYYY-MM-DD" style="-fx-background-radius: 5; -fx-border-color: #cccccc; -fx-border-radius: 5;" GridPane.columnIndex="1" GridPane.rowIndex="2" />
 
-                  <Label style="-fx-font-weight: bold;" text="Storage Duration:" GridPane.rowIndex="3">
+                  <Label style="-fx-font-weight: bold;" text="Duration (HH:MM:SS):" GridPane.rowIndex="3">
                      <font>
                         <Font size="16.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="txtDuration" promptText="00:00:00" style="-fx-background-radius: 5; -fx-border-color: #cccccc; -fx-border-radius: 5;" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                  <TextField fx:id="txtDuration" onKeyReleased="#txtDurationChange" promptText="e.g., 01:30:00" style="-fx-background-radius: 5; -fx-border-color: #cccccc; -fx-border-radius: 5;" GridPane.columnIndex="1" GridPane.rowIndex="3" />
 
-                  <Label style="-fx-font-weight: bold;" text="Temperature (°C):" GridPane.rowIndex="4">
+                  <Label style="-fx-font-weight: bold;" text="Temperature (°C):" GridPane.columnIndex="0" GridPane.rowIndex="4">
                      <font>
                         <Font size="16.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="txtTemperature" promptText="e.g., 4" style="-fx-background-radius: 5; -fx-border-color: #cccccc; -fx-border-radius: 5;" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                  <TextField fx:id="txtTemperature" onKeyReleased="#txtTemperatureChange" promptText="e.g., 4.5" style="-fx-background-radius: 5; -fx-border-color: #cccccc; -fx-border-radius: 5;" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                </GridPane>
             </VBox>
 
@@ -121,7 +120,7 @@
                   <TableColumn fx:id="colStorageId" style="-fx-alignment: CENTER; -fx-font-weight: bold;" text="Storage ID" />
                   <TableColumn fx:id="colCollectionId" style="-fx-alignment: CENTER; -fx-font-weight: bold;" text="Collection ID" />
                   <TableColumn fx:id="colDate" style="-fx-alignment: CENTER; -fx-font-weight: bold;" text="Storage Date" />
-                  <TableColumn fx:id="colDuration" style="-fx-alignment: CENTER; -fx-font-weight: bold;" text="Duration (Hours)" />
+                  <TableColumn fx:id="colDuration" style="-fx-alignment: CENTER; -fx-font-weight: bold;" text="Duration" />
                   <TableColumn fx:id="colTemperature" style="-fx-alignment: CENTER; -fx-font-weight: bold;" text="Temperature (°C)" />
                </columns>
                <columnResizePolicy>

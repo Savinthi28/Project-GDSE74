@@ -71,21 +71,21 @@
                         <Font size="16.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="txtDate" promptText="YYYY-MM-DD" style="-fx-background-radius: 5; -fx-border-color: #cccccc; -fx-border-radius: 5;" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <TextField fx:id="txtDate" onKeyReleased="#txtDateChange" promptText="YYYY-MM-DD" style="-fx-border-color: #cccccc; -fx-background-radius: 5; -fx-border-radius: 5;" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
                   <Label style="-fx-font-weight: bold;" text="Description:" GridPane.rowIndex="2">
                      <font>
                         <Font size="16.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="txtDescription" promptText="Brief description of expense" style="-fx-background-radius: 5; -fx-border-color: #cccccc; -fx-border-radius: 5;" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <TextField fx:id="txtDescription" onKeyReleased="#txtDescriptionChange" promptText="Brief description of expense" style="-fx-background-radius: 5; -fx-border-color: #cccccc; -fx-border-radius: 5;" GridPane.columnIndex="1" GridPane.rowIndex="2" />
 
                   <Label style="-fx-font-weight: bold;" text="Amount (LKR):" GridPane.columnIndex="2" GridPane.rowIndex="0">
                      <font>
                         <Font size="16.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="txtAmount" promptText="e.g., 1500.00" style="-fx-background-radius: 5; -fx-border-color: #cccccc; -fx-border-radius: 5;" GridPane.columnIndex="3" GridPane.rowIndex="0" />
+                  <TextField fx:id="txtAmount" onKeyReleased="#txtAmountChange" promptText="e.g., 1500.00" style="-fx-background-radius: 5; -fx-border-color: #cccccc; -fx-border-radius: 5;" GridPane.columnIndex="3" GridPane.rowIndex="0" />
 
                   <Label style="-fx-font-weight: bold;" text="Expense Category:" GridPane.columnIndex="2" GridPane.rowIndex="1">
                      <font>

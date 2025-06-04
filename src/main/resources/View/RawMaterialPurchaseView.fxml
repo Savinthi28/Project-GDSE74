@@ -95,28 +95,28 @@
                         <Font size="16.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="txtMaterialName" promptText="e.g., Chemicals, Feed" style="-fx-background-radius: 5; -fx-border-color: #cccccc; -fx-border-radius: 5;" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <TextField fx:id="txtMaterialName" onKeyReleased="#txtMaterialNameChange" promptText="e.g., Chemicals, Feed" style="-fx-background-radius: 5; -fx-border-color: #cccccc; -fx-border-radius: 5;" GridPane.columnIndex="1" GridPane.rowIndex="2" />
 
                   <Label style="-fx-font-weight: bold;" text="Purchase Date:" GridPane.rowIndex="3">
                      <font>
                         <Font size="16.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="txtDate" promptText="YYYY-MM-DD" style="-fx-background-radius: 5; -fx-border-color: #cccccc; -fx-border-radius: 5;" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                  <TextField fx:id="txtDate" onKeyReleased="#txtDateChange" promptText="YYYY-MM-DD" style="-fx-background-radius: 5; -fx-border-color: #cccccc; -fx-border-radius: 5;" GridPane.columnIndex="1" GridPane.rowIndex="3" />
 
                   <Label style="-fx-font-weight: bold;" text="Quantity:" GridPane.columnIndex="2" GridPane.rowIndex="0">
                      <font>
                         <Font size="16.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="txtQuantity" promptText="e.g., 100 kg" style="-fx-background-radius: 5; -fx-border-color: #cccccc; -fx-border-radius: 5;" GridPane.columnIndex="3" GridPane.rowIndex="0" />
+                  <TextField fx:id="txtQuantity" onKeyReleased="#txtQuantityChange" promptText="e.g., 100 kg" style="-fx-background-radius: 5; -fx-border-color: #cccccc; -fx-border-radius: 5;" GridPane.columnIndex="3" GridPane.rowIndex="0" />
 
                   <Label style="-fx-font-weight: bold;" text="Unit Price (LKR):" GridPane.columnIndex="2" GridPane.rowIndex="1">
                      <font>
                         <Font size="16.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="txtPrice" promptText="e.g., 2500.00" style="-fx-background-radius: 5; -fx-border-color: #cccccc; -fx-border-radius: 5;" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                  <TextField fx:id="txtPrice" onKeyReleased="#txtPriceChange" promptText="e.g., 2500.00" style="-fx-background-radius: 5; -fx-border-color: #cccccc; -fx-border-radius: 5;" GridPane.columnIndex="3" GridPane.rowIndex="1" />
                </GridPane>
             </VBox>
 

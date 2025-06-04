@@ -1,6 +1,5 @@
 package lk.ijse.desktop.myfx.myfinalproject.Controller;
 
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -18,7 +17,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.ResourceBundle;
-
 
 
 public class BuffaloController implements Initializable {
@@ -87,11 +85,12 @@ public class BuffaloController implements Initializable {
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                new Alert(Alert.AlertType.ERROR, "Error").show();
+                new Alert(Alert.AlertType.ERROR, "Error deleting buffalo.").show();
             }
         }
     }
-    private void loadNextId () throws SQLException{
+
+    private void loadNextId() throws SQLException {
         BuffaloModel buffaloModel = new BuffaloModel();
         String nextId = buffaloModel.getNextId();
         lblId.setText(nextId);
@@ -99,20 +98,18 @@ public class BuffaloController implements Initializable {
 
     @FXML
     public void btnSaveOnAction(ActionEvent event) throws ClassNotFoundException, SQLException {
-        int age = Integer.parseInt(txtAge.getText());
-        double milkProduction = Double.parseDouble(txtMilkProduction.getText());
-        BuffaloDto buffaloDto = new BuffaloDto(lblId.getText(), milkProduction, comGender.getValue(), age, txtHealth.getText());
 
-        String milk = txtMilkProduction.getText();
-        String ageString = txtAge.getText();
-        String health = txtHealth.getText();
+        boolean isValidMilk = txtMilkProduction.getText().matches(milkPattern);
+        boolean isValidAge = txtAge.getText().matches(agePattern);
+        boolean isValidHealth = txtHealth.getText().matches(healthPattern);
+        boolean isGenderSelected = comGender.getValue() != null && !comGender.getValue().isEmpty();
 
-        boolean isValidMilk = milk.matches(milkPattern);
-        boolean isValidAge = ageString.matches(agePattern);
-        boolean isValidHealth = health.matches(healthPattern);
-
-        if (isValidMilk &&  isValidAge && isValidHealth) {
+        if (isValidMilk && isValidAge && isValidHealth && isGenderSelected) {
             try {
+                double milkProduction = Double.parseDouble(txtMilkProduction.getText());
+                int age = Integer.parseInt(txtAge.getText());
+                BuffaloDto buffaloDto = new BuffaloDto(lblId.getText(), milkProduction, comGender.getValue(), age, txtHealth.getText());
+
                 BuffaloModel buffaloModel = new BuffaloModel();
                 boolean isSave = buffaloModel.saveBuffalo(buffaloDto);
                 if (isSave) {
@@ -121,25 +118,30 @@ public class BuffaloController implements Initializable {
                 } else {
                     new Alert(Alert.AlertType.ERROR, "Failed to save buffalo").show();
                 }
+            } catch (NumberFormatException e) {
+                new Alert(Alert.AlertType.ERROR, "Invalid number format for Milk Production or Age.").show();
+
             } catch (Exception e) {
                 e.printStackTrace();
-                new Alert(Alert.AlertType.ERROR, "Failed to save buffalo").show();
+                new Alert(Alert.AlertType.ERROR, "Failed to save buffalo due to a database error.").show();
             }
+        } else {
+            new Alert(Alert.AlertType.WARNING, "Please ensure all fields are valid and gender is selected.").show();
+            applyValidationStyles();
         }
     }
+
     private void clearFields() throws SQLException {
-        loadTable();
         txtAge.setText("");
         txtMilkProduction.setText("");
-        comGender.setValue("");
-        lblId.setText("");
+        comGender.setValue(null);
         txtHealth.setText("");
+        resetValidationStyles();
 
         loadNextId();
-        Platform.runLater(()-> {
-            lblId.setText(lblId.getText());
-        });
+        loadTable();
     }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
@@ -147,84 +149,92 @@ public class BuffaloController implements Initializable {
             loadBuffaloGender();
             clearFields();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Error initializing controller: " + e.getMessage(), e);
         }
-        loadTable();
+        setupTableColumns();
     }
+
     private void loadBuffaloGender() throws SQLException {
         ArrayList<String> genderList = BuffaloModel.getAllBuffaloGender();
         ObservableList<String> genderObservableList = FXCollections.observableArrayList(genderList);
-        genderObservableList.addAll(genderList);
         comGender.setItems(genderObservableList);
     }
-    private void loadTable() {
+
+    private void setupTableColumns() {
         colID.setCellValueFactory(new PropertyValueFactory<>("buffaloID"));
         colMilk.setCellValueFactory(new PropertyValueFactory<>("milkProduction"));
         colGender.setCellValueFactory(new PropertyValueFactory<>("gender"));
         colAge.setCellValueFactory(new PropertyValueFactory<>("age"));
         colHealth.setCellValueFactory(new PropertyValueFactory<>("healthStatus"));
+    }
 
-
+    private void loadTable() {
         try {
             BuffaloModel buffaloModel = new BuffaloModel();
             ArrayList<BuffaloDto> buffaloDtos = buffaloModel.viewAllBuffalo();
             if (buffaloDtos != null) {
                 ObservableList<BuffaloDto> data = FXCollections.observableArrayList(buffaloDtos);
                 tblBuffalo.setItems(data);
-            }else {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
+            } else {
+                tblBuffalo.setItems(FXCollections.emptyObservableList());
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR, "Error loading buffalo data into table.").show();
         }
     }
+
     @FXML
     public void btnUpdateOnAction(ActionEvent event) {
-        double milkProduction = Double.parseDouble(txtMilkProduction.getText());
-        int age = Integer.parseInt(txtAge.getText());
-        BuffaloDto buffaloDto = new BuffaloDto(lblId.getText(), milkProduction, comGender.getValue(), age, txtHealth.getText());
 
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Confirmation Dialog");
-        alert.setHeaderText("Update Buffalo");
-        alert.setContentText("Are you sure you want to update buffalo?");
+        boolean isValidMilk = txtMilkProduction.getText().matches(milkPattern);
+        boolean isValidAge = txtAge.getText().matches(agePattern);
+        boolean isValidHealth = txtHealth.getText().matches(healthPattern);
+        boolean isGenderSelected = comGender.getValue() != null && !comGender.getValue().isEmpty();
 
-        Optional<ButtonType> result = alert.showAndWait();
-        if (result.isPresent() && result.get() == ButtonType.OK) {
 
-        String milk = txtMilkProduction.getText();
-        String ageString = txtAge.getText();
-        String health = txtHealth.getText();
+        if (isValidMilk && isValidAge && isValidHealth && isGenderSelected) {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Confirmation Dialog");
+            alert.setHeaderText("Update Buffalo");
+            alert.setContentText("Are you sure you want to update buffalo?");
 
-        boolean isValidMilk = milk.matches(milkPattern);
-        boolean isValidAge = ageString.matches(agePattern);
-        boolean isValidHealth = health.matches(healthPattern);
-        if (isValidMilk && isValidAge && isValidHealth) {
-            try {
-                boolean isSave = BuffaloModel.updateFarmer(buffaloDto);
-                if (isSave) {
-                    clearFields();
-                    loadTable();
-                    new Alert(Alert.AlertType.INFORMATION, "Buffalo has been updated successfully").show();
-                } else {
-                    new Alert(Alert.AlertType.ERROR, "Failed to update buffalo").show();
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.isPresent() && result.get() == ButtonType.OK) {
+                try {
+                    double milkProduction = Double.parseDouble(txtMilkProduction.getText());
+                    int age = Integer.parseInt(txtAge.getText());
+                    BuffaloDto buffaloDto = new BuffaloDto(lblId.getText(), milkProduction, comGender.getValue(), age, txtHealth.getText());
+
+                    boolean isUpdated = BuffaloModel.updateFarmer(buffaloDto);
+                    if (isUpdated) {
+                        clearFields();
+                        new Alert(Alert.AlertType.INFORMATION, "Buffalo has been updated successfully").show();
+                    } else {
+                        new Alert(Alert.AlertType.ERROR, "Failed to update buffalo").show();
+                    }
+                } catch (NumberFormatException e) {
+                    new Alert(Alert.AlertType.ERROR, "Invalid number format for Milk Production or Age.").show();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    new Alert(Alert.AlertType.ERROR, "Failed to update buffalo due to a database error.").show();
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
-                new Alert(Alert.AlertType.ERROR, "Failed to save buffalo").show();
             }
-            }
+        } else {
+            new Alert(Alert.AlertType.WARNING, "Please ensure all fields are valid and gender is selected.").show();
+            applyValidationStyles();
         }
     }
 
     public void tableOnClick(MouseEvent mouseEvent) {
-        BuffaloDto buffaloDto = (BuffaloDto) tblBuffalo.getSelectionModel().getSelectedItem();
+        BuffaloDto buffaloDto = tblBuffalo.getSelectionModel().getSelectedItem();
         if (buffaloDto != null) {
             lblId.setText(buffaloDto.getBuffaloID());
             txtMilkProduction.setText(String.valueOf(buffaloDto.getMilkProduction()));
             comGender.setValue(buffaloDto.getGender());
             txtAge.setText(String.valueOf(buffaloDto.getAge()));
             txtHealth.setText(String.valueOf(buffaloDto.getHealthStatus()));
+            resetValidationStyles();
         }
     }
 
@@ -232,9 +242,9 @@ public class BuffaloController implements Initializable {
         String milk = txtMilkProduction.getText();
         boolean isValidMilk = milk.matches(milkPattern);
         if (isValidMilk) {
-            txtMilkProduction.setStyle(txtMilkProduction.getStyle()+ ";-fx-border-color: blue");
-        }else {
-            txtMilkProduction.setStyle(txtMilkProduction.getStyle()+ ";-fx-border-color: red");
+            txtMilkProduction.setStyle("-fx-background-radius: 5; -fx-border-color: green; -fx-border-radius: 5;");
+        } else {
+            txtMilkProduction.setStyle("-fx-background-radius: 5; -fx-border-color: red; -fx-border-radius: 5;");
         }
     }
 
@@ -242,9 +252,9 @@ public class BuffaloController implements Initializable {
         String age = txtAge.getText();
         boolean isValidAge = age.matches(agePattern);
         if (isValidAge) {
-            txtAge.setStyle(txtAge.getStyle()+ ";-fx-border-color: blue");
-        }else {
-            txtAge.setStyle(txtAge.getStyle()+ ";-fx-border-color: red");
+            txtAge.setStyle("-fx-background-radius: 5; -fx-border-color: green; -fx-border-radius: 5;");
+        } else {
+            txtAge.setStyle("-fx-background-radius: 5; -fx-border-color: red; -fx-border-radius: 5;");
         }
     }
 
@@ -252,14 +262,32 @@ public class BuffaloController implements Initializable {
         String health = txtHealth.getText();
         boolean isValidHealth = health.matches(healthPattern);
         if (isValidHealth) {
-            txtHealth.setStyle(txtHealth.getStyle()+ ";-fx-border-color: blue");
-        }else {
-            txtHealth.setStyle(txtHealth.getStyle()+ ";-fx-border-color: red");
+            txtHealth.setStyle("-fx-background-radius: 5; -fx-border-color: green; -fx-border-radius: 5;");
+        } else {
+            txtHealth.setStyle("-fx-background-radius: 5; -fx-border-color: red; -fx-border-radius: 5;");
         }
     }
 
     public void comGenderOnAction(ActionEvent actionEvent) {
-        String selectedGender = (String) comGender.getSelectionModel().getSelectedItem();
-        System.out.println(selectedGender);
+        String selectedGender = comGender.getValue();
+        if (selectedGender != null && !selectedGender.isEmpty()) {
+            comGender.setStyle("-fx-background-radius: 5; -fx-border-color: green; -fx-border-radius: 5;");
+        } else {
+            comGender.setStyle("-fx-background-radius: 5; -fx-border-color: red; -fx-border-radius: 5;");
+        }
+    }
+
+    private void applyValidationStyles() {
+        txtMilkChange(null);
+        txtAgeChange(null);
+        txtHealthChange(null);
+        comGenderOnAction(null);
+    }
+
+    private void resetValidationStyles() {
+        txtMilkProduction.setStyle("-fx-background-radius: 5; -fx-border-color: #cccccc; -fx-border-radius: 5;");
+        txtAge.setStyle("-fx-background-radius: 5; -fx-border-color: #cccccc; -fx-border-radius: 5;");
+        txtHealth.setStyle("-fx-background-radius: 5; -fx-border-color: #cccccc; -fx-border-radius: 5;");
+        comGender.setStyle("-fx-background-radius: 5; -fx-border-color: #cccccc; -fx-border-radius: 5;");
     }
 }

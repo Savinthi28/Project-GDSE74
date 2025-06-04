@@ -61,7 +61,7 @@
                         <Font size="16.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="txtName" promptText="Enter username" style="-fx-background-radius: 5; -fx-border-color: #cccccc; -fx-border-radius: 5;" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                  <TextField fx:id="txtName" onKeyReleased="#txtNameChange" promptText="Enter username" style="-fx-background-radius: 5; -fx-border-color: #cccccc; -fx-border-radius: 5;" GridPane.columnIndex="1" GridPane.rowIndex="1">
                      <GridPane.margin>
                         <Insets />
                      </GridPane.margin></TextField>
@@ -71,7 +71,7 @@
                         <Font size="16.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="txtPassword" promptText="Enter password" style="-fx-background-radius: 5; -fx-border-color: #cccccc; -fx-border-radius: 5;" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                  <TextField fx:id="txtPassword" onKeyReleased="#txtPasswordChange" promptText="Enter password" style="-fx-background-radius: 5; -fx-border-color: #cccccc; -fx-border-radius: 5;" GridPane.columnIndex="1" GridPane.rowIndex="2">
                      <GridPane.margin>
                         <Insets />
                      </GridPane.margin></TextField>
@@ -81,7 +81,7 @@
                         <Font size="16.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="txtEmail" promptText="Enter email address" style="-fx-background-radius: 5; -fx-border-color: #cccccc; -fx-border-radius: 5;" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                  <TextField fx:id="txtEmail" onKeyReleased="#txtEmailChange" promptText="Enter email address" style="-fx-background-radius: 5; -fx-border-color: #cccccc; -fx-border-radius: 5;" GridPane.columnIndex="1" GridPane.rowIndex="3">
                      <GridPane.margin>
                         <Insets />
                      </GridPane.margin></TextField>

@@ -6,7 +6,6 @@ module lk.ijse.desktop.myfx.myfinalproject {
     requires net.sf.jasperreports.core;
     requires jakarta.mail;
 
-
     opens lk.ijse.desktop.myfx.myfinalproject.Controller to javafx.fxml;
     exports lk.ijse.desktop.myfx.myfinalproject;
     opens lk.ijse.desktop.myfx.myfinalproject.Dto to javafx.base;

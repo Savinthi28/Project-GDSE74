@@ -39,9 +39,9 @@
                         </font>
                     </Button>
                 </children>
-            <padding>
-               <Insets bottom="5.0" top="5.0" />
-            </padding>
+                <padding>
+                    <Insets bottom="5.0" top="5.0" />
+                </padding>
             </HBox>
 
             <VBox prefHeight="250.0" prefWidth="1340.0" spacing="10.0" style="-fx-background-color: WHITE; -fx-background-radius: 8; -fx-padding: 20; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 8, 0, 0, 2);">

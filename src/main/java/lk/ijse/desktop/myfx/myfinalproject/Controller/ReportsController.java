@@ -1,6 +1,5 @@
 package lk.ijse.desktop.myfx.myfinalproject.Controller;
 
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -8,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import lk.ijse.desktop.myfx.myfinalproject.Dto.ReportsDto;
 import lk.ijse.desktop.myfx.myfinalproject.Model.ReportsModel;
@@ -24,17 +24,16 @@ public class ReportsController implements Initializable {
         try {
             loadNextId();
             loadUserId();
+            setupTableColumns();
             clearFields();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Error initializing controller: " + e.getMessage(), e);
         }
-        loadTable();
     }
 
     private void loadUserId() throws SQLException {
         ArrayList<String> userIds = ReportsModel.getAllUserId();
         ObservableList<String> users = FXCollections.observableArrayList(userIds);
-        users.addAll(userIds);
         comUserId.setItems(users);
     }
 
@@ -71,6 +70,10 @@ public class ReportsController implements Initializable {
     @FXML
     private ComboBox<String> comUserId;
 
+    private final String datePattern = "^\\d{4}-\\d{2}-\\d{2}$";
+    private final String typePattern = "^[a-zA-Z0-9 ]{2,50}$";
+    private final String generatedByPattern = "^[a-zA-Z ]{2,100}$";
+
     @FXML
     void btnClearOnAction(ActionEvent event) throws SQLException {
         clearFields();
@@ -79,7 +82,7 @@ public class ReportsController implements Initializable {
     @FXML
     public void btnDeleteOnAction(ActionEvent event) {
         String idToDelete = lblId.getText();
-        if (idToDelete == null || idToDelete.isEmpty()) {
+        if (idToDelete == null || idToDelete.isEmpty() || idToDelete.equals("Auto Generated")) {
             new Alert(Alert.AlertType.WARNING, "Please select a Report from the table or enter an ID to delete.").show();
             return;
         }
@@ -95,7 +98,6 @@ public class ReportsController implements Initializable {
                 boolean isDeleted = ReportsModel.deleteReports(idToDelete);
                 if (isDeleted) {
                     clearFields();
-                    loadTable();
                     new Alert(Alert.AlertType.INFORMATION, "Report Deleted Successfully!").show();
                 } else {
                     new Alert(Alert.AlertType.ERROR, "Failed to delete Report.").show();
@@ -115,96 +117,181 @@ public class ReportsController implements Initializable {
 
     @FXML
     void btnSaveOnAction(ActionEvent event) {
-        ReportsDto reportsDto = new ReportsDto(lblId.getText(),txtDate.getText(),comUserId.getValue(),txtType.getText(),txtGenerateBy.getText());
 
-        try {
-            ReportsModel reportsModel = new ReportsModel();
-            boolean isSaved = reportsModel.saveReport(reportsDto);
-            if (isSaved) {
-                clearFields();
-                new Alert(Alert.AlertType.INFORMATION, "Report has been saved successfully").show();
-            }else {
-                new Alert(Alert.AlertType.ERROR, "Report could not be saved").show();
+        boolean isUserIdSelected = comUserId.getValue() != null && !comUserId.getValue().isEmpty();
+        boolean isValidDate = txtDate.getText().matches(datePattern);
+        boolean isValidType = txtType.getText().matches(typePattern);
+        boolean isValidGeneratedBy = txtGenerateBy.getText().matches(generatedByPattern);
+
+        if (isUserIdSelected && isValidDate && isValidType && isValidGeneratedBy) {
+            ReportsDto reportsDto = new ReportsDto(
+                    lblId.getText(),
+                    txtDate.getText(),
+                    comUserId.getValue(),
+                    txtType.getText(),
+                    txtGenerateBy.getText()
+            );
+
+            try {
+                ReportsModel reportsModel = new ReportsModel();
+                boolean isSaved = reportsModel.saveReport(reportsDto);
+                if (isSaved) {
+                    clearFields();
+                    new Alert(Alert.AlertType.INFORMATION, "Report has been saved successfully!").show();
+                } else {
+                    new Alert(Alert.AlertType.ERROR, "Report could not be saved.").show();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                new Alert(Alert.AlertType.ERROR, "Report could not be saved due to an error: " + e.getMessage()).show();
             }
-        }catch (Exception e){
-            e.printStackTrace();
-            new Alert(Alert.AlertType.ERROR, "Report could not be saved").show();
+        } else {
+            new Alert(Alert.AlertType.WARNING, "Please ensure all fields are filled correctly. (Date: YYYY-MM-DD, Report Type: alphanumeric, Generated By: alphabetic).").show();
+            applyValidationStyles();
         }
     }
+
     private void clearFields() throws SQLException {
-        loadTable();
         lblId.setText("");
         txtDate.setText("");
-        comUserId.setValue("");
+        comUserId.getSelectionModel().clearSelection();
         txtType.setText("");
         txtGenerateBy.setText("");
+        resetValidationStyles();
 
         loadNextId();
-        Platform.runLater(()-> {
-            lblId.setText(lblId.getText());
-        });
+        loadTable();
     }
-    private void loadTable() {
+
+    private void setupTableColumns() {
         colReportId.setCellValueFactory(new PropertyValueFactory<>("reportId"));
         colDate.setCellValueFactory(new PropertyValueFactory<>("date"));
         colUserId.setCellValueFactory(new PropertyValueFactory<>("userId"));
         colType.setCellValueFactory(new PropertyValueFactory<>("reportType"));
         colGenerateBy.setCellValueFactory(new PropertyValueFactory<>("generateBy"));
+    }
 
+    private void loadTable() {
         try {
             ReportsModel reportsModel = new ReportsModel();
             ArrayList<ReportsDto> reportsDtos = reportsModel.viewAllReports();
             if (reportsDtos != null) {
                 ObservableList<ReportsDto> List = FXCollections.observableArrayList(reportsDtos);
                 tblReports.setItems(List);
-            }else {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
+            } else {
+                tblReports.setItems(FXCollections.emptyObservableList());
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR, "Error loading report data into table.").show();
         }
     }
 
     @FXML
     public void btnUpdateOnAction(ActionEvent event) {
-        ReportsDto reportsDto = new ReportsDto(lblId.getText(), txtDate.getText(), comUserId.getValue(), txtType.getText(), txtGenerateBy.getText());
 
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Confirmation Dialog");
-        alert.setHeaderText("Update Report");
-        alert.setContentText("Are you sure you want to update this report?");
+        boolean isUserIdSelected = comUserId.getValue() != null && !comUserId.getValue().isEmpty();
+        boolean isValidDate = txtDate.getText().matches(datePattern);
+        boolean isValidType = txtType.getText().matches(typePattern);
+        boolean isValidGeneratedBy = txtGenerateBy.getText().matches(generatedByPattern);
 
-        Optional<ButtonType> result = alert.showAndWait();
-        if (result.isPresent() && result.get() == ButtonType.OK) {
-            try {
-                boolean isSave = ReportsModel.updateReports(reportsDto);
-                if (isSave) {
-                    clearFields();
-                    loadTable();
-                    new Alert(Alert.AlertType.INFORMATION, "Report has been updated successfully").show();
-                } else {
-                    new Alert(Alert.AlertType.ERROR, "Report could not be updated").show();
+        if (isUserIdSelected && isValidDate && isValidType && isValidGeneratedBy) {
+            ReportsDto reportsDto = new ReportsDto(
+                    lblId.getText(),
+                    txtDate.getText(),
+                    comUserId.getValue(),
+                    txtType.getText(),
+                    txtGenerateBy.getText()
+            );
+
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Confirmation Dialog");
+            alert.setHeaderText("Update Report");
+            alert.setContentText("Are you sure you want to update this report?");
+
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.isPresent() && result.get() == ButtonType.OK) {
+                try {
+                    boolean isUpdated = ReportsModel.updateReports(reportsDto);
+                    if (isUpdated) {
+                        clearFields();
+                        new Alert(Alert.AlertType.INFORMATION, "Report has been updated successfully!").show();
+                    } else {
+                        new Alert(Alert.AlertType.ERROR, "Report could not be updated.").show();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    new Alert(Alert.AlertType.ERROR, "Report could not be updated due to an error: " + e.getMessage()).show();
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
-                new Alert(Alert.AlertType.ERROR, "Report could not be updated").show();
             }
+        } else {
+            new Alert(Alert.AlertType.WARNING, "Please ensure all fields are filled correctly (Date: YYYY-MM-DD, Report Type: alphanumeric, Generated By: alphabetic).").show();
+            applyValidationStyles();
         }
     }
 
     public void tableOnClick(MouseEvent mouseEvent) {
-        ReportsDto reportsDto = (ReportsDto) tblReports.getSelectionModel().getSelectedItem();
+        ReportsDto reportsDto = tblReports.getSelectionModel().getSelectedItem();
         if (reportsDto != null) {
             lblId.setText(reportsDto.getReportId());
-            txtDate.setText(String.valueOf(reportsDto.getDate()));
+            txtDate.setText(reportsDto.getDate());
             comUserId.setValue(reportsDto.getUserId());
-            txtType.setText(String.valueOf(reportsDto.getReportType()));
-            txtGenerateBy.setText(String.valueOf(reportsDto.getGenerateBy()));
+            txtType.setText(reportsDto.getReportType());
+            txtGenerateBy.setText(reportsDto.getGenerateBy());
+            resetValidationStyles();
         }
     }
 
     public void comUserIdOnAction(ActionEvent actionEvent) {
-        String selectedUserId = (String) comUserId.getSelectionModel().getSelectedItem();
-        System.out.println(selectedUserId);
+        String selectedUserId = comUserId.getValue();
+        if (selectedUserId != null && !selectedUserId.isEmpty()) {
+            comUserId.setStyle("-fx-background-radius: 5; -fx-border-color: green; -fx-border-radius: 5;");
+        } else {
+            comUserId.setStyle("-fx-background-radius: 5; -fx-border-color: red; -fx-border-radius: 5;");
+        }
+    }
+
+    public void txtDateChange(KeyEvent keyEvent) {
+        String date = txtDate.getText();
+        boolean isValid = date.matches(datePattern);
+        if (isValid) {
+            txtDate.setStyle("-fx-background-radius: 5; -fx-border-color: green; -fx-border-radius: 5;");
+        } else {
+            txtDate.setStyle("-fx-background-radius: 5; -fx-border-color: red; -fx-border-radius: 5;");
+        }
+    }
+
+    public void txtTypeChange(KeyEvent keyEvent) {
+        String type = txtType.getText();
+        boolean isValid = type.matches(typePattern);
+        if (isValid) {
+            txtType.setStyle("-fx-background-radius: 5; -fx-border-color: green; -fx-border-radius: 5;");
+        } else {
+            txtType.setStyle("-fx-background-radius: 5; -fx-border-color: red; -fx-border-radius: 5;");
+        }
+    }
+
+    public void txtGenerateByChange(KeyEvent keyEvent) {
+        String generatedBy = txtGenerateBy.getText();
+        boolean isValid = generatedBy.matches(generatedByPattern);
+        if (isValid) {
+            txtGenerateBy.setStyle("-fx-background-radius: 5; -fx-border-color: green; -fx-border-radius: 5;");
+        } else {
+            txtGenerateBy.setStyle("-fx-background-radius: 5; -fx-border-color: red; -fx-border-radius: 5;");
+        }
+    }
+
+    private void applyValidationStyles() {
+        comUserIdOnAction(null);
+        txtDateChange(null);
+        txtTypeChange(null);
+        txtGenerateByChange(null);
+    }
+
+    private void resetValidationStyles() {
+        comUserId.setStyle("-fx-background-radius: 5; -fx-border-color: #cccccc; -fx-border-radius: 5;");
+        txtDate.setStyle("-fx-background-radius: 5; -fx-border-color: #cccccc; -fx-border-radius: 5;");
+        txtType.setStyle("-fx-background-radius: 5; -fx-border-color: #cccccc; -fx-border-radius: 5;");
+        txtGenerateBy.setStyle("-fx-background-radius: 5; -fx-border-color: #cccccc; -fx-border-radius: 5;");
     }
 }

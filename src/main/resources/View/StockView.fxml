@@ -81,21 +81,21 @@
                         <Font size="16.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="txtDate" promptText="YYYY-MM-DD" style="-fx-background-radius: 5; -fx-border-color: #cccccc; -fx-border-radius: 5;" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <TextField fx:id="txtDate" onKeyReleased="#txtDateChange" promptText="YYYY-MM-DD" style="-fx-background-radius: 5; -fx-border-color: #cccccc; -fx-border-radius: 5;" GridPane.columnIndex="1" GridPane.rowIndex="2" />
 
                   <Label style="-fx-font-weight: bold;" text="Quantity (Units):" GridPane.rowIndex="3">
                      <font>
                         <Font size="16.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="txtQuantity" promptText="Enter quantity" style="-fx-background-radius: 5; -fx-border-color: #cccccc; -fx-border-radius: 5;" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                  <TextField fx:id="txtQuantity" onKeyReleased="#txtQuantityChange" promptText="Enter quantity" style="-fx-background-radius: 5; -fx-border-color: #cccccc; -fx-border-radius: 5;" GridPane.columnIndex="1" GridPane.rowIndex="3" />
 
                   <Label style="-fx-font-weight: bold;" text="Stock Type:" GridPane.rowIndex="4">
                      <font>
                         <Font size="16.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="txtStockType" promptText="e.g., Finished Goods" style="-fx-background-radius: 5; -fx-border-color: #cccccc; -fx-border-radius: 5;" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                  <TextField fx:id="txtStockType" onKeyReleased="#txtStockTypeChange" promptText="e.g., Finished Goods" style="-fx-background-radius: 5; -fx-border-color: #cccccc; -fx-border-radius: 5;" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                </GridPane>
             </VBox>
 

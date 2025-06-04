@@ -97,28 +97,28 @@
                         <Font size="16.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="txtFatContent" promptText="e.g., 3.5" style="-fx-background-radius: 5; -fx-border-color: #cccccc; -fx-border-radius: 5;" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                  <TextField fx:id="txtFatContent" onKeyReleased="#txtFatContentChange" promptText="e.g., 3.5" style="-fx-background-radius: 5; -fx-border-color: #cccccc; -fx-border-radius: 5;" GridPane.columnIndex="1" GridPane.rowIndex="3" />
 
                   <Label style="-fx-font-weight: bold;" text="Temperature (°C):" GridPane.columnIndex="2" GridPane.rowIndex="0">
                      <font>
                         <Font size="16.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="txtTemperature" promptText="e.g., 4" style="-fx-background-radius: 5; -fx-border-color: #cccccc; -fx-border-radius: 5;" GridPane.columnIndex="3" GridPane.rowIndex="0" />
+                  <TextField fx:id="txtTemperature" onKeyReleased="#txtTemperatureChange" promptText="e.g., 4" style="-fx-background-radius: 5; -fx-border-color: #cccccc; -fx-border-radius: 5;" GridPane.columnIndex="3" GridPane.rowIndex="0" />
 
                   <Label style="-fx-font-weight: bold;" text="Check Date:" GridPane.columnIndex="2" GridPane.rowIndex="1">
                      <font>
                         <Font size="16.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="txtDate" promptText="YYYY-MM-DD" style="-fx-background-radius: 5; -fx-border-color: #cccccc; -fx-border-radius: 5;" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                  <TextField fx:id="txtDate" onKeyReleased="#txtDateChange" promptText="YYYY-MM-DD" style="-fx-background-radius: 5; -fx-border-color: #cccccc; -fx-border-radius: 5;" GridPane.columnIndex="3" GridPane.rowIndex="1" />
 
                   <Label style="-fx-font-weight: bold;" text="Notes:" GridPane.columnIndex="2" GridPane.rowIndex="2">
                      <font>
                         <Font size="16.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="txtNotes" promptText="Any additional observations" style="-fx-background-radius: 5; -fx-border-color: #cccccc; -fx-border-radius: 5;" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                  <TextField fx:id="txtNotes" onKeyReleased="#txtNotesChange" promptText="Any additional observations" style="-fx-background-radius: 5; -fx-border-color: #cccccc; -fx-border-radius: 5;" GridPane.columnIndex="3" GridPane.rowIndex="2" />
                </GridPane>
             </VBox>
 

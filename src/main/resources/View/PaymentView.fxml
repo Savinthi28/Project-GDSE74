@@ -78,7 +78,7 @@
                         <Font size="16.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="txtDate" promptText="YYYY-MM-DD" style="-fx-background-radius: 5; -fx-border-color: #cccccc; -fx-border-radius: 5;" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                  <TextField fx:id="txtDate" onKeyReleased="#txtDateChange" promptText="YYYY-MM-DD" style="-fx-background-radius: 5; -fx-border-color: #cccccc; -fx-border-radius: 5;" GridPane.columnIndex="1" GridPane.rowIndex="3" />
 
                   <Label style="-fx-font-weight: bold;" text="Payment Method:" GridPane.columnIndex="2" GridPane.rowIndex="0">
                      <font>
@@ -87,12 +87,12 @@
                   </Label>
                   <ComboBox fx:id="comPaymentMethod" onAction="#comPaymentMethodOnAction" prefWidth="250.0" style="-fx-background-radius: 5; -fx-border-color: #cccccc; -fx-border-radius: 5;" GridPane.columnIndex="3" GridPane.rowIndex="0" />
 
-                  <Label style="-fx-font-weight: bold;" text="Payment Amount (LKR):" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                  <Label style="-fx-font-weight: bold;" text="Payment Amount:" GridPane.columnIndex="2" GridPane.rowIndex="1">
                      <font>
                         <Font size="16.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="txtAmount" promptText="e.g., 5000.00" style="-fx-background-radius: 5; -fx-border-color: #cccccc; -fx-border-radius: 5;" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                  <TextField fx:id="txtAmount" onKeyReleased="#txtAmountChange" promptText="e.g., 5000.00" style="-fx-background-radius: 5; -fx-border-color: #cccccc; -fx-border-radius: 5;" GridPane.columnIndex="3" GridPane.rowIndex="1" />
                </GridPane>
             </VBox>
 
