@@ -206,7 +206,7 @@ public class BuffaloController implements Initializable {
                     int age = Integer.parseInt(txtAge.getText());
                     BuffaloDto buffaloDto = new BuffaloDto(lblId.getText(), milkProduction, comGender.getValue(), age, txtHealth.getText());
 
-                    boolean isUpdated = BuffaloModel.updateFarmer(buffaloDto);
+                    boolean isUpdated = BuffaloModel.updateBuffalo(buffaloDto);
                     if (isUpdated) {
                         clearFields();
                         new Alert(Alert.AlertType.INFORMATION, "Buffalo has been updated successfully").show();

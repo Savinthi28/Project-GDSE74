@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public class BuffaloModel {
 
-    public static boolean updateFarmer(BuffaloDto buffaloDto) throws SQLException {
+    public static boolean updateBuffalo(BuffaloDto buffaloDto) throws SQLException {
         return CrudUtil.execute(
                 "update Buffalo set Milk_Production = ?, Gender = ?, Age = ?, Health_Status = ? where Buffalo_ID = ?",
                 buffaloDto.getMilkProduction(),
