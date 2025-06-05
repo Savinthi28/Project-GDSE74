@@ -25,7 +25,7 @@
          <children>
             <HBox alignment="CENTER_LEFT" prefHeight="70.0" style="-fx-background-color: #4a6fa5; -fx-background-radius: 8;">
                <children>
-                  <Button mnemonicParsing="false" onAction="#btnGoToMilkCollectionOnAction" style="-fx-background-color: #6a9acb; -fx-background-radius: 10; -fx-text-fill: WHITE; -fx-font-weight: bold;" text="Milk Collection">
+                  <Button mnemonicParsing="false" onAction="#btnGoToMilkCollectionOnAction" prefHeight="50.0" prefWidth="200.0" style="-fx-background-color: #6a9acb; -fx-background-radius: 10; -fx-text-fill: WHITE; -fx-font-weight: bold;" text="Milk Collection">
                      <HBox.margin>
                         <Insets left="180.0" right="80.0" />
                      </HBox.margin>

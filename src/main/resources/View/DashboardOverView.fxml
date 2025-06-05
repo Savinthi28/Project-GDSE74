@@ -27,12 +27,12 @@
                   <children>
                      <VBox alignment="CENTER_LEFT" spacing="5">
                         <children>
-                           <Label style="-fx-font-weight: bold; -fx-text-fill: WHITE;" text="Dashboard Overview">
+                           <Label style="-fx-font-weight: bold; -fx-text-fill: WHITE;" text="Dairy Operations Dashboard">
                               <font>
                                  <Font size="28.0" />
                               </font>
                            </Label>
-                           <Label style="-fx-text-fill: #e0e0e0;" text="Welcome back, Admin">
+                           <Label style="-fx-text-fill: #e0e0e0;" text="Welcome back, Farm Manager">
                               <font>
                                  <Font size="14.0" />
                               </font>
@@ -47,35 +47,35 @@
 
                <HBox alignment="CENTER" prefHeight="150.0" spacing="20">
                   <children>
-                     <VBox alignment="CENTER" prefHeight="150.0" prefWidth="300.0" spacing="5" style="-fx-background-color: #e9f5ff; -fx-background-radius: 10; -fx-padding: 20; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 8, 0, 0, 2);">
+                     <VBox fx:id="vboxMilkCollection" alignment="CENTER" prefHeight="150.0" prefWidth="300.0" spacing="5" style="-fx-background-color: #e9f5ff; -fx-background-radius: 10; -fx-padding: 20; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 8, 0, 0, 2);">
                         <children>
-                           <Label style="-fx-text-fill: #495057; -fx-font-size: 16; -fx-font-weight: bold;" text="Milling (Today)" />
-                           <Label style="-fx-font-weight: bold; -fx-font-size: 30;" text="2500 Kg" />
+                           <Label style="-fx-text-fill: #495057; -fx-font-size: 16; -fx-font-weight: bold;" text="Milk Collection (Today)" />
+                           <Label fx:id="lblMilkCollectionTotal" style="-fx-font-weight: bold; -fx-font-size: 30;" text="2500 Liters" />
                            <Label style="-fx-text-fill: #28a745; -fx-font-size: 14;" text="↑ 15% From Yesterday" />
                         </children>
                      </VBox>
 
-                     <VBox alignment="CENTER" prefHeight="150.0" prefWidth="300.0" spacing="5" style="-fx-background-color: #fff8e1; -fx-background-radius: 10; -fx-padding: 20; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 8, 0, 0, 2);">
+                     <VBox fx:id="vboxMilkStock" alignment="CENTER" prefHeight="150.0" prefWidth="300.0" spacing="5" style="-fx-background-color: #fff8e1; -fx-background-radius: 10; -fx-padding: 20; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 8, 0, 0, 2);">
                         <children>
-                           <Label style="-fx-text-fill: #495057; -fx-font-size: 16; -fx-font-weight: bold;" text="Current Inventory Value" />
-                           <Label style="-fx-font-weight: bold; -fx-font-size: 30;" text="LKR 450,000" />
-                           <Label style="-fx-text-fill: #6c757d; -fx-font-size: 14;" text="1,200 Units in Stock" />
+                           <Label style="-fx-text-fill: #495057; -fx-font-size: 16; -fx-font-weight: bold;" text="Current Milk Stock" />
+                           <Label fx:id="lblCurrentMilkStock" style="-fx-font-weight: bold; -fx-font-size: 30;" text="45,000 Liters" />
+                           <Label style="-fx-text-fill: #6c757d; -fx-font-size: 14;" text="1,200 Liters Processed" />
                         </children>
                      </VBox>
 
-                     <VBox alignment="CENTER" prefHeight="150.0" prefWidth="300.0" spacing="5" style="-fx-background-color: #ffe8e8; -fx-background-radius: 10; -fx-padding: 20; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 8, 0, 0, 2);">
+                     <VBox fx:id="vboxOrders" alignment="CENTER" prefHeight="150.0" prefWidth="300.0" spacing="5" style="-fx-background-color: #ffe8e8; -fx-background-radius: 10; -fx-padding: 20; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 8, 0, 0, 2);">
                         <children>
-                           <Label style="-fx-text-fill: #495057; -fx-font-size: 16; -fx-font-weight: bold;" text="Pending Orders" />
-                           <Label style="-fx-font-weight: bold; -fx-font-size: 30;" text="18" />
-                           <Label style="-fx-text-fill: #6c757d; -fx-font-size: 14;" text="Worth LKR 400,000" />
+                           <Label style="-fx-text-fill: #495057; -fx-font-size: 16; -fx-font-weight: bold;" text="Pending Deliveries" />
+                           <Label fx:id="lblPendingDeliveries" style="-fx-font-weight: bold; -fx-font-size: 30;" text="15" />
+                           <Label style="-fx-text-fill: #6c757d; -fx-font-size: 14;" text="Worth LKR 400,000" visible="false" />
                         </children>
                      </VBox>
 
-                     <VBox alignment="CENTER" prefHeight="150.0" prefWidth="300.0" spacing="5" style="-fx-background-color: #e8f5e9; -fx-background-radius: 10; -fx-padding: 20; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 8, 0, 0, 2);">
+                     <VBox fx:id="vboxIncome" alignment="CENTER" prefHeight="150.0" prefWidth="300.0" spacing="5" style="-fx-background-color: #e8f5e9; -fx-background-radius: 10; -fx-padding: 20; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 8, 0, 0, 2);">
                         <children>
-                           <Label style="-fx-text-fill: #495057; -fx-font-size: 16; -fx-font-weight: bold;" text="Today's Revenue" />
-                           <Label style="-fx-font-weight: bold; -fx-font-size: 30;" text="LKR 120,000" />
-                           <Label style="-fx-text-fill: #6c757d; -fx-font-size: 14;" text="8 Orders Completed" />
+                           <Label style="-fx-text-fill: #495057; -fx-font-size: 16; -fx-font-weight: bold;" text="Today's Sales Revenue" />
+                           <Label fx:id="lblTodaySalesRevenue" style="-fx-font-weight: bold; -fx-font-size: 30;" text="LKR 120,000" />
+                           <Label style="-fx-text-fill: #6c757d; -fx-font-size: 14;" text="8 Deliveries Completed" visible="false"/>
                         </children>
                      </VBox>
                   </children>
@@ -83,24 +83,24 @@
 
                <HBox prefHeight="350.0" spacing="20">
                   <children>
-                     <VBox HBox.hgrow="ALWAYS" spacing="10" style="-fx-background-color: #ffffff; -fx-background-radius: 10; -fx-padding: 20; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 8, 0, 0, 2);">
+                     <VBox spacing="10" style="-fx-background-color: #ffffff; -fx-background-radius: 10; -fx-padding: 20; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 8, 0, 0, 2);" HBox.hgrow="ALWAYS">
                         <children>
-                           <Label style="-fx-font-weight: bold; -fx-font-size: 18;" text="Milling Process Timeline" />
+                           <Label style="-fx-font-weight: bold; -fx-font-size: 18;" text="Daily Milk Production Trend" />
                            <Separator />
                            <LineChart prefHeight="250.0">
                               <xAxis>
                                  <NumberAxis label="Day" side="BOTTOM" />
                               </xAxis>
                               <yAxis>
-                                 <NumberAxis label="Quantity (Kg)" side="LEFT" />
+                                 <NumberAxis label="Quantity (Liters)" side="LEFT" />
                               </yAxis>
                            </LineChart>
                         </children>
                      </VBox>
 
-                     <VBox HBox.hgrow="ALWAYS" spacing="10" style="-fx-background-color: #ffffff; -fx-background-radius: 10; -fx-padding: 20; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 8, 0, 0, 2);">
+                     <VBox spacing="10" style="-fx-background-color: #ffffff; -fx-background-radius: 10; -fx-padding: 20; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 8, 0, 0, 2);" HBox.hgrow="ALWAYS">
                         <children>
-                           <Label style="-fx-font-weight: bold; -fx-font-size: 18;" text="Stock Distribution" />
+                           <Label style="-fx-font-weight: bold; -fx-font-size: 18;" text="Product Distribution" />
                            <Separator />
                            <PieChart prefHeight="250.0" />
                         </children>
@@ -110,9 +110,9 @@
 
                <HBox prefHeight="350.0" spacing="20">
                   <children>
-                     <VBox HBox.hgrow="ALWAYS" spacing="10" style="-fx-background-color: #ffffff; -fx-background-radius: 10; -fx-padding: 20; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 8, 0, 0, 2);">
+                     <VBox spacing="10" style="-fx-background-color: #ffffff; -fx-background-radius: 10; -fx-padding: 20; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 8, 0, 0, 2);" HBox.hgrow="ALWAYS">
                         <children>
-                           <Label style="-fx-font-weight: bold; -fx-font-size: 18;" text="Recent Activities" />
+                           <Label style="-fx-font-weight: bold; -fx-font-size: 18;" text="Recent Farm Activities" />
                            <Separator />
                            <TableView prefHeight="250.0">
                               <columns>
@@ -123,9 +123,9 @@
                         </children>
                      </VBox>
 
-                     <VBox HBox.hgrow="ALWAYS" spacing="10" style="-fx-background-color: #ffffff; -fx-background-radius: 10; -fx-padding: 20; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 8, 0, 0, 2);">
+                     <VBox spacing="10" style="-fx-background-color: #ffffff; -fx-background-radius: 10; -fx-padding: 20; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 8, 0, 0, 2);" HBox.hgrow="ALWAYS">
                         <children>
-                           <Label style="-fx-font-weight: bold; -fx-font-size: 18;" text="Quality Metrics" />
+                           <Label style="-fx-font-weight: bold; -fx-font-size: 18;" text="Milk Quality Metrics" />
                            <Separator />
                            <TableView prefHeight="250.0">
                               <columns>
