@@ -12,15 +12,11 @@ public class DBConnection {
         connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Curd_Mate", "root", "savi11@28");
     }
     public static DBConnection getInstance() throws SQLException {
-        //  if (dbConnection == null) {
-        //    dbConnection = new DBConnection();
-
-        //}
-        // return dbConnection;
 
         return dbConnection == null ? new DBConnection() : dbConnection;
     }
     public Connection getConnection(){
+
         return connection;
     }
 }
